@@ -1,5 +1,5 @@
 export const SAMPLE_VALUES: Record<string, number | string> = {
-  model: 'claude-sonnet-4-6',
+  model: 'Sonnet 4.6',
   total_cost: 0.0234,
   cache_hit_rate: 87.3,
   input_tokens: 12400,

@@ -11,14 +11,91 @@ const rawBase = import.meta.env.BASE_URL as string;
 const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
 const SEGMENT_TYPES = [
-  { type: 'model',        label: { ko: '모델명', en: 'Model' },         defaultFormat: '{model}',                    sample: SAMPLE_VALUES.model },
-  { type: 'cwd',          label: { ko: '디렉터리', en: 'Directory' },    defaultFormat: '{cwd}',                      sample: SAMPLE_VALUES.cwd },
-  { type: 'cost',         label: { ko: '비용', en: 'Cost' },             defaultFormat: '${total_cost:.4f}',          sample: `$${(SAMPLE_VALUES.total_cost as number).toFixed(4)}` },
-  { type: 'tokens',       label: { ko: '토큰', en: 'Tokens' },           defaultFormat: '{input_tokens}+{output_tokens}', sample: `${SAMPLE_VALUES.input_tokens}+${SAMPLE_VALUES.output_tokens}` },
-  { type: 'cache',        label: { ko: '캐시', en: 'Cache' },            defaultFormat: 'C:{cache_hit_rate:.0f}%',    sample: `C:${Math.round(SAMPLE_VALUES.cache_hit_rate as number)}%` },
-  { type: 'git',          label: { ko: 'Git 브랜치', en: 'Git Branch' }, defaultFormat: ' {branch}',                sample: ` ${SAMPLE_VALUES.branch}` },
-  { type: 'git_changes',  label: { ko: '변경 파일', en: 'Changes' },     defaultFormat: '{changed} changed',          sample: `${SAMPLE_VALUES.changed} changed` },
-  { type: 'session_time', label: { ko: '세션 시간', en: 'Session Time' }, defaultFormat: '{duration}',               sample: SAMPLE_VALUES.duration },
+  {
+    type: 'model',
+    label: { ko: '모델명', en: 'Model' },
+    defaultFormat: '{model}',
+    formats: [
+      { label: 'Sonnet 4.6',           fmt: '{model}' },
+      { label: '◆ Sonnet 4.6',         fmt: '◆ {model}' },
+      { label: '[Sonnet 4.6]',         fmt: '[{model}]' },
+      { label: 'model: Sonnet 4.6',    fmt: 'model:{model}' },
+    ],
+  },
+  {
+    type: 'cwd',
+    label: { ko: '디렉터리', en: 'Directory' },
+    defaultFormat: '{cwd}',
+    formats: [
+      { label: '~/GitHub/project',     fmt: '{cwd}' },
+      { label: '📁 ~/GitHub/project',  fmt: '📁 {cwd}' },
+      { label: 'dir:~/GitHub/project', fmt: 'dir:{cwd}' },
+    ],
+  },
+  {
+    type: 'cost',
+    label: { ko: '비용', en: 'Cost' },
+    defaultFormat: '${total_cost:.4f}',
+    formats: [
+      { label: '$0.0234',              fmt: '${total_cost:.4f}' },
+      { label: '$0.02',               fmt: '${total_cost:.2f}' },
+      { label: 'cost:$0.0234',        fmt: 'cost:${total_cost:.4f}' },
+      { label: '💰 $0.0234',          fmt: '💰 ${total_cost:.4f}' },
+    ],
+  },
+  {
+    type: 'tokens',
+    label: { ko: '토큰', en: 'Tokens' },
+    defaultFormat: '{input_tokens}+{output_tokens}',
+    formats: [
+      { label: '12400+3215',           fmt: '{input_tokens}+{output_tokens}' },
+      { label: 'in:12400 out:3215',    fmt: 'in:{input_tokens} out:{output_tokens}' },
+      { label: '15615tok',             fmt: '{total_tokens}tok' },
+      { label: 'tok:15.6k',           fmt: 'tok:{total_tokens}' },
+    ],
+  },
+  {
+    type: 'cache',
+    label: { ko: '캐시', en: 'Cache' },
+    defaultFormat: 'C:{cache_hit_rate:.0f}%',
+    formats: [
+      { label: 'C:87%',               fmt: 'C:{cache_hit_rate:.0f}%' },
+      { label: 'cache:87.3%',         fmt: 'cache:{cache_hit_rate:.1f}%' },
+      { label: 'CACHE 87%',           fmt: 'CACHE {cache_hit_rate:.0f}%' },
+      { label: 'saved:8912',          fmt: 'saved:{cache_saved_tokens}' },
+    ],
+  },
+  {
+    type: 'git',
+    label: { ko: 'Git 브랜치', en: 'Git Branch' },
+    defaultFormat: ' {branch}',
+    formats: [
+      { label: ' main',              fmt: ' {branch}' },
+      { label: 'git:main',            fmt: 'git:{branch}' },
+      { label: 'main ↑0 ↓0',        fmt: '{branch} ↑{ahead} ↓{behind}' },
+      { label: '(main)',              fmt: '({branch})' },
+    ],
+  },
+  {
+    type: 'git_changes',
+    label: { ko: '변경 파일', en: 'Changes' },
+    defaultFormat: '{changed} changed',
+    formats: [
+      { label: '3 changed',           fmt: '{changed} changed' },
+      { label: '~3',                  fmt: '~{changed}' },
+      { label: 'Δ3',                  fmt: 'Δ{changed}' },
+    ],
+  },
+  {
+    type: 'session_time',
+    label: { ko: '세션 시간', en: 'Session' },
+    defaultFormat: '{duration}',
+    formats: [
+      { label: '1h 23m',              fmt: '{duration}' },
+      { label: '⏱ 1h 23m',           fmt: '⏱ {duration}' },
+      { label: 'session:1h 23m',      fmt: 'session:{duration}' },
+    ],
+  },
 ];
 
 const sampleValuesJson = JSON.stringify(SAMPLE_VALUES);
@@ -186,30 +263,57 @@ function renderActiveList() {
     el.innerHTML = `<div class="empty-hint">${lang === 'ko' ? '왼쪽에서 세그먼트를 추가하세요' : 'Add segments from the left'}</div>`;
     return;
   }
-  el.innerHTML = activeSegments.map((s, i) => `
+  el.innerHTML = activeSegments.map((s, i) => {
+    const def = SEG_TYPES.find(d => d.type === s.type);
+    const formats = def?.formats ?? [];
+    const fmtOptions = formats.map(f => `
+      <button class="fmt-opt ${s.format === f.fmt ? 'fmt-opt-active' : ''}"
+              data-idx="${i}" data-fmt="${f.fmt.replace(/"/g, '&quot;')}">
+        ${renderFmt(f.fmt)}
+      </button>
+    `).join('');
+    return `
     <div class="active-item" data-idx="${i}">
-      <div class="active-info">
+      <div class="active-header">
         <span class="active-type">${s.label}</span>
-        <input class="fmt-input" data-idx="${i}" value="${s.format.replace(/"/g, '&quot;')}" />
+        <div class="active-btns">
+          <button class="icon-btn" data-action="up" data-idx="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
+          <button class="icon-btn" data-action="down" data-idx="${i}" ${i === activeSegments.length - 1 ? 'disabled' : ''}>↓</button>
+          <button class="icon-btn rm" data-action="rm" data-idx="${i}">×</button>
+        </div>
       </div>
-      <div class="active-btns">
-        <button class="icon-btn" data-action="up" data-idx="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
-        <button class="icon-btn" data-action="down" data-idx="${i}" ${i === activeSegments.length - 1 ? 'disabled' : ''}>↓</button>
-        <button class="icon-btn rm" data-action="rm" data-idx="${i}">×</button>
-      </div>
+      ${formats.length > 0 ? `<div class="fmt-opts">${fmtOptions}</div>` : ''}
+      <input class="fmt-input" data-idx="${i}" value="${s.format.replace(/"/g, '&quot;')}" placeholder="직접 입력..." />
+      <span class="fmt-preview">${renderFmt(s.format)}</span>
     </div>
-  `).join('');
+  `;
+  }).join('');
 
+  el.querySelectorAll('.fmt-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      const fmt = btn.dataset.fmt;
+      activeSegments[idx].format = fmt;
+      renderActiveList();
+      updatePreview();
+      updateOutput();
+    });
+  });
   el.querySelectorAll('.fmt-input').forEach(inp => {
     inp.addEventListener('input', e => {
       const idx = parseInt(e.target.dataset.idx);
       activeSegments[idx].format = e.target.value;
+      // update preview span without full re-render
+      const previewEl = inp.closest('.active-item')?.querySelector('.fmt-preview');
+      if (previewEl) previewEl.textContent = renderFmt(e.target.value);
+      // deactivate all fmt-opt buttons for this item
+      inp.closest('.active-item')?.querySelectorAll('.fmt-opt').forEach(b => b.classList.remove('fmt-opt-active'));
       updatePreview();
       updateOutput();
     });
   });
   el.querySelectorAll('.icon-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
+    btn.addEventListener('click', () => {
       const idx = parseInt(btn.dataset.idx);
       const action = btn.dataset.action;
       if (action === 'up' && idx > 0) {
@@ -375,18 +479,48 @@ updateOutput();
 .sep-input { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: var(--font-mono); font-size: 0.8125rem; padding: 0.25rem 0.5rem; width: 80px; outline: none; }
 .sep-input:focus { border-color: var(--accent); }
 
-.active-list { display: flex; flex-direction: column; gap: 0.375rem; min-height: 120px; }
+.active-list { display: flex; flex-direction: column; gap: 0.5rem; min-height: 120px; }
 .empty-hint { font-size: 0.8125rem; color: var(--text-muted); padding: 1rem 0; text-align: center; }
-.active-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.625rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); }
-.active-info { flex: 1; display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
-.active-type { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); }
-.fmt-input { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text-dim); font-family: var(--font-mono); font-size: 0.75rem; outline: none; width: 100%; padding: 0.1rem 0; }
+.active-item {
+  display: flex; flex-direction: column; gap: 0.375rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg);
+}
+.active-header { display: flex; align-items: center; justify-content: space-between; }
+.active-type { font-size: 0.75rem; font-weight: 600; color: var(--text-dim); }
+/* 포맷 옵션 버튼들 */
+.fmt-opts {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  padding: 0.25rem 0;
+}
+.fmt-opt {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #1e1e1e;
+  background: #111;
+  color: #555;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.fmt-opt:hover { border-color: #2e2e2e; color: var(--text-dim); }
+.fmt-opt-active { border-color: var(--accent) !important; color: var(--accent) !important; background: var(--accent-dim) !important; }
+/* 직접 입력 + 미리보기 */
+.fmt-input {
+  background: transparent; border: none; border-bottom: 1px solid #1e1e1e;
+  color: var(--text-dim); font-family: var(--font-mono); font-size: 0.75rem;
+  outline: none; width: 100%; padding: 0.15rem 0;
+}
 .fmt-input:focus { border-bottom-color: var(--accent); color: var(--text); }
+.fmt-input::placeholder { color: #333; }
+.fmt-preview { font-size: 0.7rem; font-family: var(--font-mono); color: var(--accent); opacity: 0.7; }
 .active-btns { display: flex; gap: 0.25rem; flex-shrink: 0; }
-.icon-btn { width: 24px; height: 24px; border-radius: 4px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.icon-btn { width: 22px; height: 22px; border-radius: 4px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
 .icon-btn:hover:not(:disabled) { border-color: var(--border-hover); color: var(--text); }
 .icon-btn:disabled { opacity: 0.3; cursor: default; }
-.icon-btn.rm { color: #666; }
 .icon-btn.rm:hover { color: #ff5f57; border-color: #ff5f57; }
 
 .preview-section { margin-bottom: 1.5rem; }
