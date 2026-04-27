@@ -34,7 +34,9 @@ export function useTranslations(lang: Lang) {
 }
 
 export function getLangFromUrl(url: URL): Lang {
-  const [, lang] = url.pathname.split('/');
-  if (lang in languages) return lang as Lang;
+  const segments = url.pathname.split('/').filter(Boolean);
+  for (const seg of segments) {
+    if (seg in languages) return seg as Lang;
+  }
   return defaultLang;
 }
