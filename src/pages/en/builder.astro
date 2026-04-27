@@ -10,248 +10,92 @@ const presets = await getAllPresets();
 const rawBase = import.meta.env.BASE_URL as string;
 const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
-/* ─────────────────────────────────────────────────────────────
-   세그먼트 정의: 공식 문서 기반 전체 필드
-   각 style: { emoji, symbol, plain }
-───────────────────────────────────────────────────────────── */
 const SEGMENT_GROUPS = [
   {
     group: lang === 'ko' ? '모델 / 세션' : 'Model / Session',
     segments: [
-      {
-        type: 'model', label: { ko: '모델명', en: 'Model' },
-        styles: {
-          emoji:   { label: '◆ Sonnet 4.6',  fmt: '◆ {model}' },
-          symbol:  { label: '▶ Sonnet 4.6',  fmt: '▶ {model}' },
-          plain:   { label: 'Sonnet 4.6',    fmt: '{model}' },
-        },
-        extras: [
-          { label: '[Sonnet 4.6]',    fmt: '[{model}]' },
-          { label: 'model:Sonnet 4.6', fmt: 'model:{model}' },
-        ],
-      },
-      {
-        type: 'version', label: { ko: 'CC 버전', en: 'CC Version' },
-        styles: {
-          emoji:   { label: '🔖 v2.1.90', fmt: '🔖 v{version}' },
-          symbol:  { label: '◇ v2.1.90',  fmt: '◇ v{version}' },
-          plain:   { label: 'v2.1.90',     fmt: 'v{version}' },
-        },
-        extras: [],
-      },
-      {
-        type: 'session_id', label: { ko: '세션 ID', en: 'Session ID' },
-        styles: {
-          emoji:   { label: '🆔 abc123de', fmt: '🆔 {session_id}' },
-          symbol:  { label: '# abc123de',  fmt: '#{session_id}' },
-          plain:   { label: 'abc123de',    fmt: '{session_id}' },
-        },
-        extras: [
-          { label: 'sid:abc123de', fmt: 'sid:{session_id}' },
-        ],
-      },
-      {
-        type: 'session_name', label: { ko: '세션명', en: 'Session Name' },
-        styles: {
-          emoji:   { label: '📌 my-session', fmt: '📌 {session_name}' },
-          symbol:  { label: '▪ my-session',  fmt: '▪ {session_name}' },
-          plain:   { label: 'my-session',    fmt: '{session_name}' },
-        },
-        extras: [],
-      },
-      {
-        type: 'effort', label: { ko: '추론 수준', en: 'Effort' },
-        styles: {
-          emoji:   { label: '🧠 high',    fmt: '🧠 {effort_level}' },
-          symbol:  { label: '● high',    fmt: '● {effort_level}' },
-          plain:   { label: 'effort:high', fmt: 'effort:{effort_level}' },
-        },
-        extras: [
-          { label: 'E:high', fmt: 'E:{effort_level}' },
-        ],
-      },
+      { type: 'model',        label: { ko: '모델명', en: 'Model' },           defaultFmt: '◆ {model}',        defaultStyle: 'cyan bold' },
+      { type: 'version',      label: { ko: 'CC 버전', en: 'CC Version' },     defaultFmt: 'v{version}',       defaultStyle: 'dim' },
+      { type: 'session_id',   label: { ko: '세션 ID', en: 'Session ID' },     defaultFmt: '#{session_id}',    defaultStyle: 'dim' },
+      { type: 'session_name', label: { ko: '세션명', en: 'Session Name' },    defaultFmt: '▪ {session_name}', defaultStyle: 'white' },
+      { type: 'effort',       label: { ko: '추론 수준', en: 'Effort' },       defaultFmt: '● {effort_level}', defaultStyle: 'magenta' },
     ],
   },
   {
     group: lang === 'ko' ? '작업 공간' : 'Workspace',
     segments: [
-      {
-        type: 'cwd', label: { ko: '현재 디렉터리', en: 'Current Dir' },
-        styles: {
-          emoji:   { label: '📁 ~/GitHub/my-project', fmt: '📁 {cwd}' },
-          symbol:  { label: '◆ ~/GitHub/my-project',  fmt: '◆ {cwd}' },
-          plain:   { label: '~/GitHub/my-project',     fmt: '{cwd}' },
-        },
-        extras: [
-          { label: 'my-project',         fmt: '{dir_name}' },
-          { label: 'dir:~/GitHub/my-project', fmt: 'dir:{cwd}' },
-        ],
-      },
-      {
-        type: 'git_branch', label: { ko: 'Git 브랜치', en: 'Git Branch' },
-        styles: {
-          emoji:   { label: '🌿 main',    fmt: '🌿 {branch}' },
-          symbol:  { label: '⎇ main',    fmt: '⎇ {branch}' },
-          plain:   { label: 'main',      fmt: '{branch}' },
-        },
-        extras: [
-          { label: '(main)',             fmt: '({branch})' },
-          { label: 'main ↑0 ↓0',       fmt: '{branch} ↑{ahead} ↓{behind}' },
-          { label: 'git:main',           fmt: 'git:{branch}' },
-        ],
-      },
-      {
-        type: 'git_changes', label: { ko: '변경 파일', en: 'Changes' },
-        styles: {
-          emoji:   { label: '✏️ 3 changed',  fmt: '✏️ {changed} changed' },
-          symbol:  { label: '~ 3 changed',   fmt: '~{changed}' },
-          plain:   { label: '3 changed',     fmt: '{changed} changed' },
-        },
-        extras: [
-          { label: 'Δ3',                fmt: 'Δ{changed}' },
-          { label: '+156 -23',           fmt: '+{total_lines_added} -{total_lines_removed}' },
-        ],
-      },
+      { type: 'cwd',          label: { ko: '현재 디렉터리', en: 'Directory' }, defaultFmt: '{dir_name}',       defaultStyle: 'blue' },
+      { type: 'git_branch',   label: { ko: 'Git 브랜치', en: 'Git Branch' }, defaultFmt: '⎇ {branch}',       defaultStyle: 'green' },
+      { type: 'git_changes',  label: { ko: '변경 파일', en: 'Changes' },      defaultFmt: '~{changed}',       defaultStyle: 'yellow' },
+      { type: 'lines_changed',label: { ko: '코드 변경', en: 'Lines' },        defaultFmt: '+{total_lines_added} -{total_lines_removed}', defaultStyle: 'cyan' },
     ],
   },
   {
     group: lang === 'ko' ? '컨텍스트 창' : 'Context Window',
     segments: [
-      {
-        type: 'context_pct', label: { ko: '컨텍스트 %', en: 'Context %' },
-        styles: {
-          emoji:   { label: '📊 12%',    fmt: '📊 {used_percentage}%' },
-          symbol:  { label: '◉ 12%',    fmt: '◉ {used_percentage}%' },
-          plain:   { label: '12% ctx',   fmt: '{used_percentage}% ctx' },
-        },
-        extras: [
-          { label: 'used:12% rem:88%',   fmt: 'used:{used_percentage}% rem:{remaining_percentage}%' },
-          { label: '12%/200k',           fmt: '{used_percentage}%/{context_window_size}' },
-        ],
-      },
-      {
-        type: 'context_bar', label: { ko: '컨텍스트 바', en: 'Context Bar' },
-        styles: {
-          emoji:   { label: '▓▓░░░░░░░░ 12%', fmt: '[CTX:{used_percentage}%]' },
-          symbol:  { label: '▓▓░░░░░░░░ 12%', fmt: '[CTX:{used_percentage}%]' },
-          plain:   { label: 'ctx:12%',          fmt: 'ctx:{used_percentage}%' },
-        },
-        extras: [],
-      },
-      {
-        type: 'tokens_in_out', label: { ko: '입출력 토큰', en: 'In/Out Tokens' },
-        styles: {
-          emoji:   { label: '🔢 in:15234 out:4521', fmt: '🔢 in:{total_input_tokens} out:{total_output_tokens}' },
-          symbol:  { label: '↕ 15234/4521',          fmt: '↕{total_input_tokens}/{total_output_tokens}' },
-          plain:   { label: 'in:15234 out:4521',      fmt: 'in:{total_input_tokens} out:{total_output_tokens}' },
-        },
-        extras: [
-          { label: '15234+4521',   fmt: '{total_input_tokens}+{total_output_tokens}' },
-          { label: '19755tok',     fmt: '{total_tokens}tok' },
-        ],
-      },
-      {
-        type: 'cache_tokens', label: { ko: '캐시 토큰', en: 'Cache Tokens' },
-        styles: {
-          emoji:   { label: '⚡ saved:8912',    fmt: '⚡ saved:{cache_saved_tokens}' },
-          symbol:  { label: '◈ saved:8912',     fmt: '◈ saved:{cache_saved_tokens}' },
-          plain:   { label: 'saved:8912',        fmt: 'saved:{cache_saved_tokens}' },
-        },
-        extras: [
-          { label: 'C:87%',                fmt: 'C:{cache_hit_rate:.0f}%' },
-          { label: 'CACHE 87%',            fmt: 'CACHE {cache_hit_rate:.0f}%' },
-          { label: 'cache:87.3%',          fmt: 'cache:{cache_hit_rate:.1f}%' },
-        ],
-      },
+      { type: 'context_pct',    label: { ko: '컨텍스트 %', en: 'Context %' },    defaultFmt: '{used_percentage}%',   defaultStyle: 'yellow' },
+      { type: 'context_bar',    label: { ko: '컨텍스트 바', en: 'Ctx Bar' },     defaultFmt: '[{used_percentage}%]', defaultStyle: 'green' },
+      { type: 'tokens_in_out',  label: { ko: '입출력 토큰', en: 'Tokens' },      defaultFmt: '↑{total_input_tokens} ↓{total_output_tokens}', defaultStyle: 'dim' },
+      { type: 'cache_tokens',   label: { ko: '캐시', en: 'Cache' },             defaultFmt: '⚡{cache_saved_tokens}', defaultStyle: 'cyan' },
     ],
   },
   {
     group: lang === 'ko' ? '비용 / 시간' : 'Cost / Time',
     segments: [
-      {
-        type: 'cost', label: { ko: '세션 비용', en: 'Session Cost' },
-        styles: {
-          emoji:   { label: '💰 $0.0234',    fmt: '💰 ${total_cost_usd:.4f}' },
-          symbol:  { label: '$ $0.0234',     fmt: '$ ${total_cost_usd:.4f}' },
-          plain:   { label: '$0.0234',        fmt: '${total_cost_usd:.4f}' },
-        },
-        extras: [
-          { label: '$0.02',           fmt: '${total_cost_usd:.2f}' },
-          { label: 'cost:$0.0234',    fmt: 'cost:${total_cost_usd:.4f}' },
-        ],
-      },
-      {
-        type: 'duration', label: { ko: '세션 시간', en: 'Duration' },
-        styles: {
-          emoji:   { label: '⏱ 1h 23m',        fmt: '⏱ {duration}' },
-          symbol:  { label: '◷ 1h 23m',         fmt: '◷ {duration}' },
-          plain:   { label: '1h 23m',            fmt: '{duration}' },
-        },
-        extras: [
-          { label: 'session:1h 23m',   fmt: 'session:{duration}' },
-        ],
-      },
-      {
-        type: 'lines_changed', label: { ko: '코드 변경', en: 'Lines Changed' },
-        styles: {
-          emoji:   { label: '📝 +156 -23',   fmt: '📝 +{total_lines_added} -{total_lines_removed}' },
-          symbol:  { label: '+156 -23',       fmt: '+{total_lines_added} -{total_lines_removed}' },
-          plain:   { label: '+156 -23',       fmt: '+{total_lines_added} -{total_lines_removed}' },
-        },
-        extras: [],
-      },
+      { type: 'cost',         label: { ko: '비용', en: 'Cost' },              defaultFmt: '${total_cost_usd:.4f}', defaultStyle: 'yellow' },
+      { type: 'duration',     label: { ko: '세션 시간', en: 'Duration' },     defaultFmt: '◷ {duration}',         defaultStyle: 'cyan' },
+      { type: 'api_time',     label: { ko: 'API 시간', en: 'API Time' },      defaultFmt: 'api:{total_api_duration_ms}ms', defaultStyle: 'dim' },
     ],
   },
   {
     group: lang === 'ko' ? '한도 / 시스템' : 'Limits / System',
     segments: [
-      {
-        type: 'rate_5h', label: { ko: '5h 한도', en: '5h Rate' },
-        styles: {
-          emoji:   { label: '🕐 5h:23%',    fmt: '🕐 5h:{rate_limit_5h}%' },
-          symbol:  { label: '◷ 5h:23%',     fmt: '◷ 5h:{rate_limit_5h}%' },
-          plain:   { label: '5h:23%',        fmt: '5h:{rate_limit_5h}%' },
-        },
-        extras: [],
-      },
-      {
-        type: 'rate_7d', label: { ko: '7d 한도', en: '7d Rate' },
-        styles: {
-          emoji:   { label: '📅 7d:41%',    fmt: '📅 7d:{rate_limit_7d}%' },
-          symbol:  { label: '◻ 7d:41%',     fmt: '◻ 7d:{rate_limit_7d}%' },
-          plain:   { label: '7d:41%',        fmt: '7d:{rate_limit_7d}%' },
-        },
-        extras: [],
-      },
-      {
-        type: 'vim_mode', label: { ko: 'Vim 모드', en: 'Vim Mode' },
-        styles: {
-          emoji:   { label: '⌨️ NORMAL',    fmt: '⌨️ {vim_mode}' },
-          symbol:  { label: '▸ NORMAL',     fmt: '▸ {vim_mode}' },
-          plain:   { label: 'NORMAL',        fmt: '{vim_mode}' },
-        },
-        extras: [{ label: '[NORMAL]', fmt: '[{vim_mode}]' }],
-      },
+      { type: 'rate_5h',      label: { ko: '5h 한도', en: '5h Rate' },       defaultFmt: '5h:{rate_limit_5h}%',  defaultStyle: 'orange' },
+      { type: 'rate_7d',      label: { ko: '7d 한도', en: '7d Rate' },       defaultFmt: '7d:{rate_limit_7d}%',  defaultStyle: 'red' },
+      { type: 'vim_mode',     label: { ko: 'Vim 모드', en: 'Vim Mode' },     defaultFmt: '[{vim_mode}]',          defaultStyle: 'blue' },
+    ],
+  },
+  {
+    group: lang === 'ko' ? '런타임 / 환경' : 'Runtime / Env',
+    segments: [
+      { type: 'node_ver',     label: { ko: 'Node 버전', en: 'Node' },        defaultFmt: 'node {node_version}',   defaultStyle: 'green bold' },
+      { type: 'python_ver',   label: { ko: 'Python 버전', en: 'Python' },    defaultFmt: 'py{python_version}',    defaultStyle: 'blue bold' },
+      { type: 'venv',         label: { ko: '가상환경', en: 'Venv' },         defaultFmt: '({venv_name})',          defaultStyle: 'yellow' },
+      { type: 'conda',        label: { ko: 'Conda 환경', en: 'Conda' },      defaultFmt: 'conda:{conda_env}',     defaultStyle: 'yellow' },
+      { type: 'docker_ctx',   label: { ko: 'Docker', en: 'Docker' },         defaultFmt: '🐳 {docker_context}',  defaultStyle: 'blue' },
+      { type: 'k8s',          label: { ko: 'K8s', en: 'K8s' },              defaultFmt: '☸ {k8s_context}',       defaultStyle: 'cyan' },
+      { type: 'aws',          label: { ko: 'AWS 프로파일', en: 'AWS' },      defaultFmt: 'AWS:{aws_profile}',     defaultStyle: 'orange' },
+      { type: 'terraform',    label: { ko: 'TF 워크스페이스', en: 'Terraform' }, defaultFmt: 'TF:{tf_workspace}', defaultStyle: 'magenta' },
     ],
   },
 ];
 
+const COLORS = ['green','cyan','blue','yellow','orange','red','magenta','pink','white','dim','bold'];
+const COLOR_HEX: Record<string, string> = {
+  green:'#00d97e', cyan:'#22d3ee', blue:'#60a5fa', yellow:'#fbbf24',
+  orange:'#fb923c', red:'#f87171', magenta:'#c084fc', pink:'#f472b6',
+  white:'#d0d0d0', dim:'#4b5563', bold:'#ffffff',
+};
+
 const sampleValuesJson = JSON.stringify(SAMPLE_VALUES);
 const segmentGroupsJson = JSON.stringify(SEGMENT_GROUPS);
+const colorsJson = JSON.stringify(COLORS);
+const colorHexJson = JSON.stringify(COLOR_HEX);
 const presetsJson = JSON.stringify(presets.map(p => ({
-  id: p.id,
-  title: p.title,
-  category: p.category,
+  id: p.id, title: p.title, category: p.category,
   segments: p.settings.statusline.segments,
   separator: p.settings.statusline.separator ?? '  ',
 })));
 ---
-<Base title={lang === 'ko' ? '커스텀 빌더' : 'Custom Builder'}>
-<div class="builder-layout">
 
+<Base title={lang === 'ko' ? '커스텀 빌더' : 'Custom Builder'}>
+<!-- xterm.js CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css" />
+
+<div class="builder-layout">
   <div class="builder-header">
     <h1>{lang === 'ko' ? '커스텀 빌더' : 'Custom Builder'}</h1>
-    <p>{lang === 'ko' ? '공식 필드 전체를 조합해 나만의 상태바를 만드세요.' : 'Combine all official fields to build your own statusbar.'}</p>
+    <p>{lang === 'ko' ? '드래그로 순서 변경 · 색상 선택 · 실제 터미널 미리보기' : 'Drag to reorder · pick colors · real terminal preview'}</p>
   </div>
 
   <!-- 프리셋 기반 시작 -->
@@ -260,25 +104,10 @@ const presetsJson = JSON.stringify(presets.map(p => ({
     <div class="preset-chips" id="presetChips"></div>
   </div>
 
-  <!-- 스타일 토글 -->
-  <div class="style-toggle">
-    <span class="start-label">{lang === 'ko' ? '아이콘 스타일:' : 'Icon style:'}</span>
-    <div class="style-btns">
-      <button class="style-btn active" data-style="emoji">{lang === 'ko' ? '이모지 🌿' : 'Emoji 🌿'}</button>
-      <button class="style-btn" data-style="symbol">{lang === 'ko' ? '유니코드 ⎇' : 'Unicode ⎇'}</button>
-      <button class="style-btn" data-style="plain">{lang === 'ko' ? '텍스트만' : 'Plain text'}</button>
-    </div>
-    <span class="style-hint">
-      {lang === 'ko'
-        ? '유니코드는 이모지 없이도 구분감을 줍니다 (◆ ▶ ⎇ ◷)'
-        : 'Unicode gives visual rhythm without emoji (◆ ▶ ⎇ ◷)'}
-    </span>
-  </div>
-
   <div class="builder-main">
     <!-- 왼쪽: 세그먼트 팔레트 -->
     <div class="panel panel-left">
-      <h2 class="panel-title">{lang === 'ko' ? '세그먼트 선택' : 'Select Segments'}</h2>
+      <h2 class="panel-title">{lang === 'ko' ? '세그먼트 선택' : 'Segments'}</h2>
       <div id="segmentPalette"></div>
       <div class="separator-row">
         <label class="sep-label">{lang === 'ko' ? '구분자' : 'Separator'}</label>
@@ -286,32 +115,26 @@ const presetsJson = JSON.stringify(presets.map(p => ({
       </div>
     </div>
 
-    <!-- 오른쪽: 활성 세그먼트 -->
+    <!-- 오른쪽: 활성 세그먼트 (드래그 앤 드롭) -->
     <div class="panel panel-right">
-      <h2 class="panel-title">{lang === 'ko' ? '활성 세그먼트' : 'Active Segments'}</h2>
+      <h2 class="panel-title">
+        {lang === 'ko' ? '활성 세그먼트' : 'Active Segments'}
+        <span class="drag-hint">{lang === 'ko' ? '드래그로 순서 변경' : 'drag to reorder'}</span>
+      </h2>
       <div class="active-list" id="activeList">
         <div class="empty-hint">{lang === 'ko' ? '왼쪽에서 세그먼트를 추가하세요' : 'Add segments from the left'}</div>
       </div>
     </div>
   </div>
 
-  <!-- 터미널 미리보기 -->
-  <div class="preview-section">
-    <h2 class="panel-title">{lang === 'ko' ? '미리보기' : 'Preview'}</h2>
-    <div class="preview-terminal">
-      <div class="term-chrome">
-        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-        <span class="term-path">~/GitHub/my-project — bash</span>
-      </div>
-      <div class="term-body">
-        <div class="term-line"><span class="term-acc">~/GitHub/my-project</span> <span class="term-dim">$</span> claude</div>
-        <div class="term-line term-dim">▶ Analyzing changes...</div>
-        <div class="term-line">&nbsp;</div>
-        <div class="term-line term-dim">  3 files changed, 156 insertions(+), 23 deletions(-)</div>
-      </div>
-      <div class="term-status" id="livePreview">
-        <span class="status-placeholder">{lang === 'ko' ? '세그먼트를 추가하면 여기 표시됩니다' : 'Add segments to see preview'}</span>
-      </div>
+  <!-- xterm.js 실제 터미널 미리보기 -->
+  <div class="xterm-section">
+    <div class="xterm-header">
+      <h2 class="panel-title">{lang === 'ko' ? '실제 터미널 미리보기 (ANSI 색상)' : 'Live Terminal Preview (ANSI colors)'}</h2>
+      <span class="xterm-badge">xterm.js</span>
+    </div>
+    <div class="xterm-wrapper">
+      <div id="xterm-container"></div>
     </div>
   </div>
 
@@ -331,69 +154,150 @@ const presetsJson = JSON.stringify(presets.map(p => ({
       <div class="code-row json-row"><pre class="code-block json-pre" id="jsonOutput"></pre><button class="copy-btn" id="copyJson">{lang === 'ko' ? '복사' : 'Copy'}</button></div>
     </div>
   </div>
-
 </div>
 </Base>
 
-<script define:vars={{ sampleValuesJson, segmentGroupsJson, presetsJson, lang }}>
+<!-- xterm.js 초기화 (is:inline — CDN global 접근) -->
+<script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js" is:inline></script>
+<script is:inline>
+let _xterm = null;
+let _xtermReady = false;
+
+const ANSI = {
+  reset:'\x1b[0m', bold:'\x1b[1m', dim:'\x1b[2m',
+  green:'\x1b[32m', accent:'\x1b[32m', cyan:'\x1b[36m',
+  blue:'\x1b[34m', yellow:'\x1b[33m', orange:'\x1b[38;5;173m',
+  red:'\x1b[31m', magenta:'\x1b[35m', pink:'\x1b[38;5;213m',
+  white:'\x1b[37m', gray:'\x1b[90m',
+};
+
+function styleToAnsi(style) {
+  if (!style) return '';
+  const parts = (style || '').toLowerCase().split(/\s+/);
+  return parts.map(p => ANSI[p] || '').join('');
+}
+
+function initXterm() {
+  const container = document.getElementById('xterm-container');
+  if (!container || !window.Terminal) return;
+  const term = new window.Terminal({
+    theme: {
+      background: '#080808',
+      foreground: '#555',
+      cursor: '#00d97e',
+      black: '#1a1a1a', brightBlack: '#333',
+      green: '#00d97e', brightGreen: '#00d97e',
+      cyan: '#22d3ee', brightCyan: '#22d3ee',
+      blue: '#60a5fa', brightBlue: '#60a5fa',
+      yellow: '#fbbf24', brightYellow: '#fbbf24',
+      red: '#f87171', brightRed: '#f87171',
+      magenta: '#c084fc', brightMagenta: '#c084fc',
+      white: '#d0d0d0', brightWhite: '#ededed',
+    },
+    fontFamily: "'Geist Mono','Cascadia Code','Fira Code','SF Mono','Menlo',monospace",
+    fontSize: 13,
+    lineHeight: 1.4,
+    rows: 9,
+    cols: 90,
+    disableStdin: true,
+    cursorBlink: false,
+    scrollback: 0,
+  });
+  term.open(container);
+  _xterm = term;
+  _xtermReady = true;
+  writeXterm(null);
+}
+
+function writeXterm(segments, separator) {
+  if (!_xterm) return;
+  _xterm.reset();
+  _xterm.write('\x1b[90m~/GitHub/my-project\x1b[0m \x1b[2m$\x1b[0m claude\r\n');
+  _xterm.write('\x1b[2m▶ Analyzing recent changes...\x1b[0m\r\n');
+  _xterm.write('\r\n');
+  _xterm.write('\x1b[2m  3 files changed, 156 insertions(+), 23 deletions(-)\x1b[0m\r\n');
+  _xterm.write('\r\n');
+  _xterm.write('\x1b[2m' + '─'.repeat(88) + '\x1b[0m\r\n');
+
+  if (!segments || segments.length === 0) {
+    _xterm.write('\x1b[2m(세그먼트를 추가하면 여기 표시됩니다)\x1b[0m');
+    return;
+  }
+
+  const sep = (separator || '  ');
+  const line = segments.map((s, i) => {
+    const ansi = styleToAnsi(s.style);
+    return (i > 0 ? '\x1b[2m' + (sep.trim() ? sep : ' ') + '\x1b[0m' : '') + ansi + s.text + ANSI.reset;
+  }).join('');
+
+  _xterm.write(line);
+}
+
+window.addEventListener('xterm:update', (e) => {
+  if (_xtermReady) writeXterm(e.detail.segments, e.detail.separator);
+});
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => setTimeout(initXterm, 100));
+} else {
+  setTimeout(initXterm, 100);
+}
+</script>
+
+<!-- 빌더 로직 -->
+<script define:vars={{ sampleValuesJson, segmentGroupsJson, colorsJson, colorHexJson, presetsJson, lang }}>
 const VALS = JSON.parse(sampleValuesJson);
 const GROUPS = JSON.parse(segmentGroupsJson);
+const COLORS = JSON.parse(colorsJson);
+const COLOR_HEX = JSON.parse(colorHexJson);
 const PRESETS = JSON.parse(presetsJson);
 
 let activeSegments = [];
 let separator = '  ';
-let iconStyle = 'emoji'; // 'emoji' | 'symbol' | 'plain'
+let dragSrcIdx = null;
 
 /* ── render ── */
 function renderFmt(fmt) {
   return fmt.replace(/\{([a-zA-Z_.]+)(?::([^}]+))?\}/g, (_, key, spec) => {
     const v = VALS[key];
     if (v === undefined) return `{${key}}`;
-    if (spec) {
-      const m = spec.match(/\.(\d+)f/);
-      if (m) return Number(v).toFixed(parseInt(m[1]));
-    }
+    if (spec) { const m = spec.match(/\.(\d+)f/); if (m) return Number(v).toFixed(parseInt(m[1])); }
     return String(v);
   });
+}
+
+function styleToCSS(style) {
+  if (!style) return 'color:#00d97e';
+  const CSS_COLOR = { green:'#00d97e', accent:'#00d97e', cyan:'#22d3ee', blue:'#60a5fa', yellow:'#fbbf24', orange:'#fb923c', red:'#f87171', magenta:'#c084fc', pink:'#f472b6', white:'#d0d0d0', dim:'#4b5563', bold:'#ededed' };
+  const parts = style.toLowerCase().split(/\s+/);
+  const css = [];
+  for (const p of parts) {
+    if (p === 'bold') css.push('font-weight:700');
+    else if (p === 'dim') css.push('color:#4b5563');
+    else if (CSS_COLOR[p]) css.push(`color:${CSS_COLOR[p]}`);
+  }
+  return css.join(';') || 'color:#00d97e';
 }
 
 function getStatusline() {
   return activeSegments.map(s => renderFmt(s.format)).join(separator);
 }
 
-function tokenBar(pct, w = 12) {
-  const f = Math.round((pct / 100) * w);
-  return '▓'.repeat(f) + '░'.repeat(w - f);
+/* ── dispatch to xterm ── */
+function dispatchXterm() {
+  const segs = activeSegments.map(s => ({ text: renderFmt(s.format), style: s.style }));
+  window.dispatchEvent(new CustomEvent('xterm:update', { detail: { segments: segs, separator } }));
 }
 
-/* ── live preview ── */
-function updatePreview() {
-  const el = document.getElementById('livePreview');
-  if (!el) return;
-  if (activeSegments.length === 0) {
-    el.innerHTML = `<span class="status-placeholder">${lang === 'ko' ? '세그먼트를 추가하면 여기 표시됩니다' : 'Add segments to see preview'}</span>`;
-    return;
-  }
-  const sl = getStatusline();
-  const hasPct = activeSegments.some(s => s.type === 'context_bar' || s.type === 'context_pct');
-  const bar = hasPct ? `<span class="preview-bar">${tokenBar(VALS.used_percentage, 10)}</span>` : '';
-  el.innerHTML = `<span class="sline">${sl}</span>${bar}`;
+/* ── web preview ── */
+function updateWebPreview() {
+  // not used — xterm handles preview now
 }
 
 /* ── output ── */
 function buildJson() {
-  return JSON.stringify({
-    settings: {
-      statusline: {
-        enabled: true,
-        position: 'bottom',
-        separator,
-        segments: activeSegments.map(s => ({ type: s.type, format: s.format })),
-      },
-    },
-  }, null, 2);
+  return JSON.stringify({ settings: { statusline: { enabled: true, position: 'bottom', separator, segments: activeSegments.map(s => ({ type: s.type, format: s.format, style: s.style })) } } }, null, 2);
 }
-
 function updateOutput() {
   const BASE = 'https://raw.githubusercontent.com/NeTrioGit/claude-statusline-market/main';
   const id = 'custom-' + Date.now().toString(36);
@@ -402,77 +306,108 @@ function updateOutput() {
   document.getElementById('jsonOutput').textContent = buildJson();
 }
 
-/* ── active list ── */
+function refresh() { renderActiveList(); renderPalette(); dispatchXterm(); updateOutput(); }
+
+/* ── active list (drag + color picker) ── */
 function renderActiveList() {
   const el = document.getElementById('activeList');
+  if (!el) return;
   if (activeSegments.length === 0) {
     el.innerHTML = `<div class="empty-hint">${lang === 'ko' ? '왼쪽에서 세그먼트를 추가하세요' : 'Add segments from the left'}</div>`;
     return;
   }
   el.innerHTML = activeSegments.map((s, i) => {
-    // find extras from groups
-    let extras = [];
-    for (const g of GROUPS) {
-      const def = g.segments.find(d => d.type === s.type);
-      if (def) {
-        // style options + extras
-        extras = [
-          { label: def.styles.emoji.label,  fmt: def.styles.emoji.fmt },
-          { label: def.styles.symbol.label, fmt: def.styles.symbol.fmt },
-          { label: def.styles.plain.label,  fmt: def.styles.plain.fmt },
-          ...(def.extras || []),
-        ];
-        break;
-      }
-    }
-    const fmtOpts = extras.map(f => `
-      <button class="fmt-opt ${s.format === f.fmt ? 'fmt-opt-active' : ''}"
-              data-idx="${i}" data-fmt="${f.fmt.replace(/"/g, '&quot;')}">
-        ${renderFmt(f.fmt)}
-      </button>`).join('');
+    const swatches = COLORS.map(c => {
+      const isActive = s.style?.includes(c);
+      return `<span class="swatch ${isActive ? 'swatch-on' : ''}" data-idx="${i}" data-color="${c}" style="background:${COLOR_HEX[c]};" title="${c}"></span>`;
+    }).join('');
     return `
-    <div class="active-item">
+    <div class="active-item" draggable="true" data-idx="${i}">
       <div class="active-header">
+        <span class="drag-handle" title="drag">⠿</span>
         <span class="active-type">${s.label}</span>
+        <span class="active-preview" style="${styleToCSS(s.style)}">${renderFmt(s.format)}</span>
         <div class="active-btns">
-          <button class="icon-btn" data-action="up" data-idx="${i}" ${i === 0 ? 'disabled' : ''}>↑</button>
-          <button class="icon-btn" data-action="down" data-idx="${i}" ${i === activeSegments.length - 1 ? 'disabled' : ''}>↓</button>
-          <button class="icon-btn rm" data-action="rm" data-idx="${i}">×</button>
+          <button class="icon-btn rm" data-action="rm" data-idx="${i}" title="remove">×</button>
         </div>
       </div>
-      <div class="fmt-opts">${fmtOpts}</div>
+      <div class="swatch-row">${swatches}
+        <label class="bold-toggle">
+          <input type="checkbox" class="bold-check" data-idx="${i}" ${s.style?.includes('bold') ? 'checked' : ''}> bold
+        </label>
+      </div>
       <div class="fmt-row">
-        <input class="fmt-input" data-idx="${i}" value="${s.format.replace(/"/g, '&quot;')}" placeholder="포맷 직접 입력..." />
-        <span class="fmt-preview">${renderFmt(s.format)}</span>
+        <input class="fmt-input" data-idx="${i}" value="${s.format.replace(/"/g, '&quot;')}" />
       </div>
     </div>`;
   }).join('');
 
-  el.querySelectorAll('.fmt-opt').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      activeSegments[idx].format = btn.dataset.fmt;
-      renderActiveList(); updatePreview(); updateOutput();
+  /* swatches */
+  el.querySelectorAll('.swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      const idx = parseInt(sw.dataset.idx);
+      const color = sw.dataset.color;
+      const cur = activeSegments[idx].style || '';
+      const parts = cur.split(/\s+/).filter(p => !COLOR_HEX[p] && p !== 'dim');
+      parts.push(color);
+      activeSegments[idx].style = parts.join(' ').trim();
+      refresh();
     });
   });
+
+  /* bold toggle */
+  el.querySelectorAll('.bold-check').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const idx = parseInt(cb.dataset.idx);
+      const parts = (activeSegments[idx].style || '').split(/\s+/).filter(p => p !== 'bold');
+      if (cb.checked) parts.push('bold');
+      activeSegments[idx].style = parts.join(' ').trim();
+      refresh();
+    });
+  });
+
+  /* format input */
   el.querySelectorAll('.fmt-input').forEach(inp => {
     inp.addEventListener('input', e => {
       const idx = parseInt(e.target.dataset.idx);
       activeSegments[idx].format = e.target.value;
-      const prev = inp.closest('.active-item')?.querySelector('.fmt-preview');
-      if (prev) prev.textContent = renderFmt(e.target.value);
-      inp.closest('.active-item')?.querySelectorAll('.fmt-opt').forEach(b => b.classList.remove('fmt-opt-active'));
-      updatePreview(); updateOutput();
+      refresh();
     });
   });
-  el.querySelectorAll('.icon-btn').forEach(btn => {
+
+  /* remove */
+  el.querySelectorAll('.icon-btn.rm').forEach(btn => {
     btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      const action = btn.dataset.action;
-      if (action === 'up' && idx > 0) [activeSegments[idx-1], activeSegments[idx]] = [activeSegments[idx], activeSegments[idx-1]];
-      else if (action === 'down' && idx < activeSegments.length - 1) [activeSegments[idx], activeSegments[idx+1]] = [activeSegments[idx+1], activeSegments[idx]];
-      else if (action === 'rm') activeSegments.splice(idx, 1);
-      renderActiveList(); renderPalette(); updatePreview(); updateOutput();
+      activeSegments.splice(parseInt(btn.dataset.idx), 1);
+      refresh();
+    });
+  });
+
+  /* drag and drop */
+  el.querySelectorAll('.active-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragSrcIdx = parseInt(item.dataset.idx);
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      el.querySelectorAll('.active-item').forEach(i => i.classList.remove('drag-over'));
+    });
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      el.querySelectorAll('.active-item').forEach(i => i.classList.remove('drag-over'));
+      if (parseInt(item.dataset.idx) !== dragSrcIdx) item.classList.add('drag-over');
+    });
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      const targetIdx = parseInt(item.dataset.idx);
+      if (dragSrcIdx !== null && dragSrcIdx !== targetIdx) {
+        const [moved] = activeSegments.splice(dragSrcIdx, 1);
+        activeSegments.splice(targetIdx, 0, moved);
+        refresh();
+      }
     });
   });
 }
@@ -480,42 +415,34 @@ function renderActiveList() {
 /* ── palette ── */
 function renderPalette() {
   const el = document.getElementById('segmentPalette');
+  if (!el) return;
   el.innerHTML = GROUPS.map(g => `
     <div class="seg-group">
       <div class="seg-group-label">${g.group}</div>
       <div class="seg-group-items">
         ${g.segments.map(seg => {
           const active = activeSegments.some(s => s.type === seg.type);
-          const preview = renderFmt(seg.styles[iconStyle]?.fmt ?? seg.styles.plain.fmt);
-          return `
-          <button class="seg-btn ${active ? 'seg-active' : ''}" data-type="${seg.type}">
+          return `<button class="seg-btn ${active ? 'seg-active' : ''}" data-type="${seg.type}">
             <span class="seg-lbl">${seg.label[lang] ?? seg.label.ko}</span>
-            <span class="seg-sample">${preview}</span>
+            <span class="seg-sample" style="${active ? `color:${COLOR_HEX[seg.defaultStyle?.split(' ')[0]] || '#00d97e'}` : ''}">${renderFmt(seg.defaultFmt)}</span>
             <span class="seg-toggle">${active ? '✓' : '+'}</span>
           </button>`;
         }).join('')}
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 
   el.querySelectorAll('.seg-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const type = btn.dataset.type;
-      const alreadyIdx = activeSegments.findIndex(s => s.type === type);
-      if (alreadyIdx !== -1) {
-        activeSegments.splice(alreadyIdx, 1);
-      } else {
+      const idx = activeSegments.findIndex(s => s.type === type);
+      if (idx !== -1) { activeSegments.splice(idx, 1); }
+      else {
         let def = null;
         for (const g of GROUPS) { def = g.segments.find(s => s.type === type); if (def) break; }
         if (!def) return;
-        const styleFmt = def.styles[iconStyle]?.fmt ?? def.styles.plain.fmt;
-        activeSegments.push({
-          type,
-          format: styleFmt,
-          label: def.label[lang] ?? def.label.ko,
-        });
+        activeSegments.push({ type, format: def.defaultFmt, style: def.defaultStyle, label: def.label[lang] ?? def.label.ko });
       }
-      renderActiveList(); renderPalette(); updatePreview(); updateOutput();
+      refresh();
     });
   });
 }
@@ -523,9 +450,8 @@ function renderPalette() {
 /* ── preset chips ── */
 function renderPresetChips() {
   const el = document.getElementById('presetChips');
-  el.innerHTML = PRESETS.map(p => `
-    <button class="preset-chip" data-id="${p.id}">${p.title[lang] ?? p.title.ko}</button>
-  `).join('');
+  if (!el) return;
+  el.innerHTML = PRESETS.map(p => `<button class="preset-chip" data-id="${p.id}">${p.title[lang] ?? p.title.ko}</button>`).join('');
   el.querySelectorAll('.preset-chip').forEach(btn => {
     btn.addEventListener('click', () => {
       const p = PRESETS.find(x => x.id === btn.dataset.id);
@@ -535,41 +461,17 @@ function renderPresetChips() {
       activeSegments = p.segments.map(s => {
         let def = null;
         for (const g of GROUPS) { def = g.segments.find(d => d.type === s.type); if (def) break; }
-        return {
-          type: s.type,
-          format: s.format ?? def?.styles[iconStyle]?.fmt ?? def?.styles?.plain?.fmt ?? s.type,
-          label: def?.label?.[lang] ?? def?.label?.ko ?? s.type,
-        };
+        return { type: s.type, format: s.format ?? def?.defaultFmt ?? s.type, style: s.style ?? def?.defaultStyle ?? 'green', label: def?.label?.[lang] ?? def?.label?.ko ?? s.type };
       });
-      renderActiveList(); renderPalette(); updatePreview(); updateOutput();
       el.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
       btn.classList.add('active');
+      refresh();
     });
   });
 }
 
-/* ── style toggle ── */
-document.querySelectorAll('.style-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    iconStyle = btn.dataset.style;
-    // 활성 세그먼트의 포맷도 같은 style로 업데이트
-    activeSegments = activeSegments.map(s => {
-      let def = null;
-      for (const g of GROUPS) { def = g.segments.find(d => d.type === s.type); if (def) break; }
-      if (!def) return s;
-      return { ...s, format: def.styles[iconStyle]?.fmt ?? def.styles.plain.fmt };
-    });
-    renderActiveList(); renderPalette(); updatePreview(); updateOutput();
-  });
-});
-
 /* ── separator ── */
-document.getElementById('separatorInput')?.addEventListener('input', e => {
-  separator = e.target.value;
-  updatePreview(); updateOutput();
-});
+document.getElementById('separatorInput')?.addEventListener('input', e => { separator = e.target.value; refresh(); });
 
 /* ── output tabs ── */
 document.querySelectorAll('.out-tab').forEach(tab => {
@@ -583,27 +485,21 @@ document.querySelectorAll('.out-tab').forEach(tab => {
 });
 
 /* ── copy ── */
-function setupCopy(btnId, srcId) {
+['copyInstallSh:installSh','copyInstallPs:installPs','copyJson:jsonOutput'].forEach(pair => {
+  const [btnId, srcId] = pair.split(':');
   document.getElementById(btnId)?.addEventListener('click', async () => {
     const text = document.getElementById(srcId)?.textContent ?? '';
     try {
       await navigator.clipboard.writeText(text);
       const btn = document.getElementById(btnId);
-      const orig = btn.textContent;
-      btn.textContent = '✓'; btn.classList.add('copied');
+      const orig = btn.textContent; btn.textContent = '✓'; btn.classList.add('copied');
       setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
     } catch {}
   });
-}
-setupCopy('copyInstallSh','installSh');
-setupCopy('copyInstallPs','installPs');
-setupCopy('copyJson','jsonOutput');
+});
 
 /* ── init ── */
-renderPresetChips();
-renderPalette();
-renderActiveList();
-updateOutput();
+renderPresetChips(); renderPalette(); renderActiveList(); updateOutput();
 </script>
 
 <style>
@@ -612,90 +508,80 @@ updateOutput();
 .builder-header h1 { font-size: 1.625rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
 .builder-header p { color: #555; font-size: 0.875rem; }
 
-/* preset chips */
-.preset-start { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; padding: 0.875rem 1.125rem; background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 8px; }
+.preset-start { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding: 0.75rem 1rem; background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 8px; }
 .start-label { font-size: 0.75rem; color: #444; white-space: nowrap; }
-.preset-chips { display: flex; flex-wrap: wrap; gap: 0.375rem; }
-.preset-chip { padding: 0.2rem 0.65rem; border-radius: 999px; border: 1px solid #1e1e1e; background: transparent; color: #555; font-size: 0.75rem; font-family: inherit; cursor: pointer; transition: all 0.12s; }
-.preset-chip:hover { border-color: #2e2e2e; color: var(--text-dim); }
+.preset-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.preset-chip { padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid #1e1e1e; background: transparent; color: #555; font-size: 0.75rem; font-family: inherit; cursor: pointer; transition: all 0.12s; }
+.preset-chip:hover { border-color: #2e2e2e; color: #888; }
 .preset-chip.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
 
-/* style toggle */
-.style-toggle { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; padding: 0.75rem 1.125rem; background: #0a0a0a; border: 1px solid #181818; border-radius: 8px; }
-.style-btns { display: flex; gap: 0.25rem; }
-.style-btn { padding: 0.25rem 0.75rem; border-radius: 6px; border: 1px solid #1e1e1e; background: transparent; color: #555; font-size: 0.8125rem; font-family: inherit; cursor: pointer; transition: all 0.12s; }
-.style-btn:hover { border-color: #2e2e2e; color: var(--text-dim); }
-.style-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-.style-hint { font-size: 0.7rem; color: #333; font-family: var(--font-mono); }
-
-/* main grid */
 .builder-main { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
 @media (max-width: 720px) { .builder-main { grid-template-columns: 1fr; } }
 .panel { background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 10px; padding: 1.125rem; }
-.panel-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #333; margin-bottom: 0.875rem; }
+.panel-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #333; margin-bottom: 0.875rem; display: flex; align-items: center; gap: 0.5rem; }
+.drag-hint { font-size: 0.6rem; color: #252525; font-weight: 400; text-transform: none; letter-spacing: 0; }
 
 /* palette */
 .seg-group { margin-bottom: 0.875rem; }
-.seg-group-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: #2a2a2a; margin-bottom: 0.375rem; }
-.seg-group-items { display: flex; flex-direction: column; gap: 0.25rem; }
-.seg-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.375rem 0.625rem; border-radius: 6px; border: 1px solid #181818; background: transparent; color: #555; font-family: inherit; cursor: pointer; text-align: left; transition: all 0.12s; }
-.seg-btn:hover { border-color: #252525; color: var(--text-dim); }
-.seg-btn.seg-active { border-color: #1a3d2b; background: #0d1f15; color: #2a7a50; }
+.seg-group-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #252525; margin-bottom: 0.3rem; }
+.seg-group-items { display: flex; flex-direction: column; gap: 0.2rem; }
+.seg-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.625rem; border-radius: 5px; border: 1px solid #161616; background: transparent; color: #444; font-family: inherit; cursor: pointer; text-align: left; transition: all 0.1s; }
+.seg-btn:hover { border-color: #222; color: #666; }
+.seg-btn.seg-active { border-color: #1a3d2b; background: #0a1810; }
 .seg-lbl { font-size: 0.75rem; font-weight: 500; min-width: 90px; flex-shrink: 0; }
-.seg-sample { font-size: 0.7rem; font-family: var(--font-mono); color: #2a2a2a; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.seg-btn.seg-active .seg-sample { color: #1e5c3a; }
-.seg-toggle { font-size: 0.75rem; color: #2a2a2a; margin-left: auto; flex-shrink: 0; }
+.seg-sample { font-size: 0.7rem; font-family: var(--font-mono); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #2a2a2a; }
+.seg-btn.seg-active .seg-sample { color: inherit; }
+.seg-toggle { font-size: 0.7rem; color: #2a2a2a; margin-left: auto; flex-shrink: 0; }
 .seg-btn.seg-active .seg-toggle { color: var(--accent); }
 
-.separator-row { display: flex; align-items: center; gap: 0.625rem; padding-top: 0.75rem; border-top: 1px solid #181818; margin-top: 0.5rem; }
+.separator-row { display: flex; align-items: center; gap: 0.625rem; padding-top: 0.75rem; border-top: 1px solid #161616; margin-top: 0.5rem; }
 .sep-label { font-size: 0.75rem; color: #333; }
-.sep-input { background: #111; border: 1px solid #1e1e1e; border-radius: 4px; color: var(--text-dim); font-family: var(--font-mono); font-size: 0.8125rem; padding: 0.2rem 0.5rem; width: 72px; outline: none; }
+.sep-input { background: #111; border: 1px solid #1e1e1e; border-radius: 4px; color: #888; font-family: var(--font-mono); font-size: 0.8125rem; padding: 0.2rem 0.5rem; width: 72px; outline: none; }
 .sep-input:focus { border-color: #2e2e2e; }
 
 /* active list */
-.active-list { display: flex; flex-direction: column; gap: 0.5rem; min-height: 80px; }
-.empty-hint { font-size: 0.8125rem; color: #2a2a2a; padding: 1.5rem 0; text-align: center; }
-.active-item { background: #111; border: 1px solid #1e1e1e; border-radius: 6px; padding: 0.625rem 0.75rem; display: flex; flex-direction: column; gap: 0.375rem; }
-.active-header { display: flex; align-items: center; justify-content: space-between; }
-.active-type { font-size: 0.7rem; font-weight: 600; color: #444; }
-.active-btns { display: flex; gap: 0.25rem; }
-.icon-btn { width: 20px; height: 20px; border-radius: 4px; border: 1px solid #1e1e1e; background: transparent; color: #333; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
-.icon-btn:hover:not(:disabled) { border-color: #2e2e2e; color: var(--text-dim); }
-.icon-btn:disabled { opacity: 0.2; cursor: default; }
-.icon-btn.rm:hover { color: #ff5f57; border-color: #ff5f57; }
-.fmt-opts { display: flex; flex-wrap: wrap; gap: 0.25rem; }
-.fmt-opt { padding: 0.175rem 0.45rem; border-radius: 4px; border: 1px solid #1a1a1a; background: #0d0d0d; color: #3a3a3a; font-size: 0.65rem; font-family: var(--font-mono); cursor: pointer; transition: all 0.1s; white-space: nowrap; }
-.fmt-opt:hover { border-color: #252525; color: #555; }
-.fmt-opt-active { border-color: #1a3d2b !important; color: var(--accent) !important; background: #0d1f15 !important; }
-.fmt-row { display: flex; align-items: center; gap: 0.5rem; }
-.fmt-input { background: transparent; border: none; border-bottom: 1px solid #1e1e1e; color: #555; font-family: var(--font-mono); font-size: 0.7rem; outline: none; flex: 1; padding: 0.1rem 0; }
-.fmt-input:focus { border-bottom-color: #2e2e2e; color: var(--text-dim); }
-.fmt-input::placeholder { color: #222; }
-.fmt-preview { font-size: 0.65rem; font-family: var(--font-mono); color: #1e5c3a; white-space: nowrap; flex-shrink: 0; }
+.active-list { display: flex; flex-direction: column; gap: 0.4rem; min-height: 80px; }
+.empty-hint { font-size: 0.8rem; color: #252525; padding: 1.5rem 0; text-align: center; }
+.active-item { background: #0d0d0d; border: 1px solid #1c1c1c; border-radius: 6px; padding: 0.5rem 0.625rem; display: flex; flex-direction: column; gap: 0.35rem; cursor: default; transition: border-color 0.15s; }
+.active-item.drag-over { border-color: var(--accent); background: #0a1810; }
+.active-item.dragging { opacity: 0.4; }
+.active-header { display: flex; align-items: center; gap: 0.4rem; }
+.drag-handle { font-size: 0.85rem; color: #252525; cursor: grab; flex-shrink: 0; user-select: none; }
+.drag-handle:active { cursor: grabbing; }
+.active-type { font-size: 0.7rem; font-weight: 600; color: #333; flex-shrink: 0; }
+.active-preview { font-size: 0.75rem; font-family: var(--font-mono); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.active-btns { margin-left: auto; }
+.icon-btn { width: 18px; height: 18px; border-radius: 3px; border: 1px solid #1e1e1e; background: transparent; color: #2a2a2a; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
+.icon-btn.rm:hover { color: #f87171; border-color: #f87171; }
 
-/* preview terminal */
-.preview-section { margin-bottom: 1.25rem; }
-.preview-terminal { background: #080808; border: 1px solid #1a1a1a; border-radius: 10px; overflow: hidden; font-family: var(--font-mono); font-size: 0.8125rem; }
-.term-chrome { display: flex; align-items: center; gap: 5px; padding: 8px 12px; border-bottom: 1px solid #141414; }
-.dot { width: 9px; height: 9px; border-radius: 50%; }
-.dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
-.term-path { margin-left: 8px; font-size: 0.65rem; color: #242424; }
-.term-body { padding: 0.875rem 1.125rem; }
-.term-line { color: #333; line-height: 1.75; }
-.term-dim { color: #1e1e1e; }
-.term-acc { color: var(--accent); }
-.term-status { padding: 5px 12px; background: #0d0d0d; border-top: 1px solid #141414; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; min-height: 26px; }
-.sline { font-size: 0.75rem; color: var(--accent); flex: 1; }
-.preview-bar { font-size: 0.7rem; color: #1e5c3a; white-space: nowrap; }
-.status-placeholder { font-size: 0.7rem; color: #202020; }
+/* color swatches */
+.swatch-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; }
+.swatch { width: 18px; height: 18px; border-radius: 4px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.1s, transform 0.1s; flex-shrink: 0; }
+.swatch:hover { transform: scale(1.2); border-color: rgba(255,255,255,0.3); }
+.swatch.swatch-on { border-color: #fff; box-shadow: 0 0 0 1px #000; }
+.bold-toggle { font-size: 0.65rem; color: #444; display: flex; align-items: center; gap: 0.2rem; cursor: pointer; margin-left: 0.375rem; border-left: 1px solid #1c1c1c; padding-left: 0.375rem; }
+.bold-check { width: 11px; height: 11px; accent-color: var(--accent); }
+
+.fmt-row { display: flex; }
+.fmt-input { background: transparent; border: none; border-bottom: 1px solid #1c1c1c; color: #555; font-family: var(--font-mono); font-size: 0.7rem; outline: none; width: 100%; padding: 0.1rem 0; }
+.fmt-input:focus { border-bottom-color: #2e2e2e; color: #888; }
+
+/* xterm section */
+.xterm-section { margin-bottom: 1.25rem; }
+.xterm-header { display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem; }
+.xterm-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; color: #00d97e; background: rgba(0,217,126,0.1); padding: 0.1rem 0.45rem; border-radius: 3px; border: 1px solid rgba(0,217,126,0.2); }
+.xterm-wrapper { border: 1px solid #1a1a1a; border-radius: 10px; overflow: hidden; background: #080808; }
+#xterm-container { padding: 10px 14px; }
+/* override xterm defaults */
+.xterm-viewport { background: transparent !important; }
 
 /* output */
 .output-section { background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 10px; overflow: hidden; }
 .output-tabs { display: flex; border-bottom: 1px solid #1a1a1a; }
-.out-tab { padding: 0.5rem 1.125rem; background: transparent; border: none; color: #333; font-size: 0.8125rem; font-family: inherit; cursor: pointer; transition: all 0.12s; border-bottom: 2px solid transparent; }
-.out-tab:hover { color: var(--text-dim); }
+.out-tab { padding: 0.5rem 1rem; background: transparent; border: none; color: #333; font-size: 0.8125rem; font-family: inherit; cursor: pointer; transition: all 0.12s; border-bottom: 2px solid transparent; }
+.out-tab:hover { color: #555; }
 .out-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-.out-panel { padding: 1rem 1.125rem; }
+.out-panel { padding: 1rem; }
 .out-panel.hidden { display: none; }
 .install-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #333; margin-bottom: 0.3rem; }
 .code-row { display: flex; gap: 0.5rem; align-items: center; background: #090909; border: 1px solid #181818; border-radius: 6px; padding: 0.5rem 0.75rem; }
@@ -703,6 +589,6 @@ updateOutput();
 .json-row { align-items: flex-start; }
 .json-pre { white-space: pre; flex: 1; font-size: 0.75rem; color: #555; font-family: var(--font-mono); overflow: auto; margin: 0; max-height: 220px; }
 .copy-btn { flex-shrink: 0; padding: 0.2rem 0.55rem; background: transparent; border: 1px solid #1e1e1e; border-radius: 4px; color: #333; font-size: 0.7rem; cursor: pointer; font-family: inherit; transition: all 0.12s; }
-.copy-btn:hover { border-color: #2e2e2e; color: var(--text-dim); }
+.copy-btn:hover { border-color: #2e2e2e; color: #555; }
 .copy-btn.copied { color: var(--accent); border-color: var(--accent); }
 </style>
