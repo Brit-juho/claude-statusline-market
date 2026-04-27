@@ -1,0 +1,289 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/index.ts';
+import { getAllPresets, getInstallCommand } from '../../lib/presets.ts';
+
+export async function getStaticPaths() {
+  const presets = await getAllPresets();
+  return presets.map(preset => ({ params: { id: preset.id }, props: { preset } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const { preset } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const installSh = getInstallCommand(preset, 'sh');
+const installPs = getInstallCommand(preset, 'ps1');
+const settingsJson = JSON.stringify(preset.settings, null, 2);
+
+const categoryLabel: Record<string, { ko: string; en: string }> = {
+  minimal:      { ko: '미니멀', en: 'Minimal' },
+  productivity: { ko: '생산성', en: 'Productivity' },
+  cost:         { ko: '비용 추적', en: 'Cost Tracking' },
+  git:          { ko: 'Git', en: 'Git' },
+  powerline:    { ko: '파워라인', en: 'Powerline' },
+  custom:       { ko: '커스텀', en: 'Custom' },
+};
+const catLabel = categoryLabel[preset.category]?.[lang] ?? preset.category;
+const backHref = lang === 'en' ? `${base}en/` : base || '/';
+---
+<Base title={preset.title[lang]} description={preset.description[lang]}>
+  <div class="detail-layout">
+    <div class="detail-inner">
+
+      <!-- Back -->
+      <a href={backHref} class="back-link">
+        &larr; {t('preset.back')}
+      </a>
+
+      <!-- Header -->
+      <div class="preset-header">
+        <div class="header-meta">
+          <span class="badge">{catLabel}</span>
+          <span class="tool-badge">{preset.tool}</span>
+        </div>
+        <h1 class="preset-title">{preset.title[lang]}</h1>
+        <p class="preset-desc">{preset.description[lang]}</p>
+
+        <div class="meta-row">
+          <span class="meta-item">
+            <span class="meta-label">{t('preset.version')}</span>
+            <code>{preset.version}</code>
+          </span>
+          <span class="meta-item">
+            <span class="meta-label">{t('preset.author')}</span>
+            {preset.author.github
+              ? <a href={`https://github.com/${preset.author.github}`} target="_blank" rel="noopener">@{preset.author.name}</a>
+              : <span>{preset.author.name}</span>
+            }
+          </span>
+          {(preset.tags ?? []).length > 0 && (
+            <span class="meta-item tags-wrap">
+              <span class="meta-label">{t('preset.tags')}</span>
+              <span class="tags">
+                {preset.tags.map(tag => <span class="tag">#{tag}</span>)}
+              </span>
+            </span>
+          )}
+        </div>
+      </div>
+
+      <!-- Screenshot / Mock Terminal -->
+      <div class="mock-section">
+        <div class="mock-terminal">
+          <div class="mock-bar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="mock-title">bash — {preset.id}</span>
+          </div>
+          <div class="mock-content">
+            <div class="mock-line"><span class="prompt">~ $</span> claude</div>
+            <div class="mock-line dim">&nbsp;</div>
+            <div class="mock-line">Claude Code <span class="accent">v1.0.0</span></div>
+            <div class="mock-line dim">&nbsp;</div>
+            {preset.settings.statusline.segments.slice(0, 4).map(seg => (
+              <div class="mock-line dim">&nbsp;&nbsp;{seg.type}: <span class="accent">{seg.format ?? seg.type}</span></div>
+            ))}
+          </div>
+          <div class="mock-statusline">
+            {preset.settings.statusline.segments.map((seg, i) => (
+              <span class:list={['seg', i === 0 && 'seg-accent']}>{seg.format ?? seg.type}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Install -->
+      <div class="install-section">
+        <h2 class="section-title">{t('preset.install_title')}</h2>
+
+        <div class="install-block">
+          <div class="install-label">{t('preset.install_macos')}</div>
+          <div class="code-row">
+            <code class="code-block">{installSh}</code>
+            <button class="copy-btn" data-copy={installSh} aria-label="copy">
+              {t('preset.install_copy')}
+            </button>
+          </div>
+        </div>
+
+        <div class="install-block">
+          <div class="install-label">{t('preset.install_windows')}</div>
+          <div class="code-row">
+            <code class="code-block">{installPs}</code>
+            <button class="copy-btn" data-copy={installPs} aria-label="copy">
+              {t('preset.install_copy')}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Preview -->
+      <details class="settings-section">
+        <summary class="settings-summary">{t('preset.settings_preview')}</summary>
+        <pre class="settings-pre"><code>{settingsJson}</code></pre>
+      </details>
+
+    </div>
+  </div>
+</Base>
+
+<script>
+document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const text = btn.dataset.copy ?? '';
+    try {
+      await navigator.clipboard.writeText(text);
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.classList.remove('copied');
+      }, 2000);
+    } catch {}
+  });
+});
+</script>
+
+<style>
+.detail-layout { padding: 2rem 1.5rem 4rem; }
+.detail-inner { max-width: 760px; margin: 0 auto; }
+.back-link {
+  display: inline-block;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+  transition: color 0.15s;
+}
+.back-link:hover { color: var(--text); }
+.preset-header { margin-bottom: 2.5rem; }
+.header-meta { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.badge {
+  font-size: 0.6875rem; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--accent); background: var(--accent-dim);
+  padding: 0.2rem 0.5rem; border-radius: 4px;
+}
+.tool-badge {
+  font-size: 0.6875rem; font-weight: 500;
+  color: var(--text-muted); background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 0.2rem 0.5rem; border-radius: 4px;
+  font-family: var(--font-mono);
+}
+.preset-title {
+  font-size: 2rem; font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.preset-desc {
+  font-size: 1rem; color: var(--text-dim);
+  line-height: 1.6; margin-bottom: 1.5rem;
+}
+.meta-row {
+  display: flex; flex-wrap: wrap;
+  gap: 1.25rem; font-size: 0.8125rem;
+}
+.meta-item { display: flex; align-items: center; gap: 0.375rem; }
+.meta-label { color: var(--text-muted); }
+.meta-item code { font-family: var(--font-mono); color: var(--text-dim); }
+.meta-item a { color: var(--accent); }
+.meta-item a:hover { text-decoration: underline; }
+.tags-wrap { align-items: flex-start; }
+.tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+.tag { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+.mock-section { margin-bottom: 3rem; }
+.mock-terminal {
+  background: #0d0d0d;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+.mock-bar {
+  display: flex; align-items: center;
+  gap: 6px; padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.red { background: #ff5f57; }
+.dot.yellow { background: #febc2e; }
+.dot.green { background: #28c840; }
+.mock-title { margin-left: 8px; font-size: 0.75rem; color: var(--text-muted); }
+.mock-content { padding: 1rem 1.25rem; min-height: 120px; }
+.mock-line { color: var(--text-dim); line-height: 1.7; }
+.mock-line.dim { color: var(--text-muted); }
+.prompt { color: var(--accent); }
+.accent { color: var(--accent); }
+.mock-statusline {
+  padding: 6px 14px;
+  background: #141414;
+  border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 1.25rem;
+}
+.seg { font-size: 0.75rem; color: var(--text-muted); }
+.seg-accent { color: var(--accent); }
+.install-section { margin-bottom: 2.5rem; }
+.section-title {
+  font-size: 1rem; font-weight: 600;
+  margin-bottom: 1rem; letter-spacing: -0.01em;
+}
+.install-block { margin-bottom: 1rem; }
+.install-label {
+  font-size: 0.75rem; font-weight: 500;
+  color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.04em; margin-bottom: 0.375rem;
+}
+.code-row {
+  display: flex; gap: 0.5rem; align-items: center;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 0.625rem 0.875rem;
+  overflow: hidden;
+}
+.code-block {
+  flex: 1; font-size: 0.8125rem; color: var(--text-dim);
+  white-space: nowrap; overflow: auto;
+  font-family: var(--font-mono);
+}
+.copy-btn {
+  flex-shrink: 0;
+  padding: 0.25rem 0.625rem;
+  background: transparent; border: 1px solid var(--border);
+  border-radius: 4px; color: var(--text-dim);
+  font-size: 0.75rem; cursor: pointer; font-family: inherit;
+  transition: all 0.15s;
+}
+.copy-btn:hover { border-color: var(--border-hover); color: var(--text); }
+.copy-btn.copied { color: var(--accent); border-color: var(--accent); }
+.settings-section {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.settings-summary {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem; font-weight: 500;
+  cursor: pointer; color: var(--text-dim);
+  background: var(--bg-card);
+  list-style: none;
+  transition: color 0.15s;
+}
+.settings-summary::-webkit-details-marker { display: none; }
+.settings-summary::before { content: '+ '; }
+details[open] .settings-summary::before { content: '- '; }
+.settings-summary:hover { color: var(--text); }
+.settings-pre {
+  background: #0d0d0d;
+  padding: 1rem;
+  overflow: auto;
+  border-top: 1px solid var(--border);
+}
+.settings-pre code {
+  font-size: 0.8125rem; color: var(--text-dim);
+  white-space: pre; display: block;
+}
+</style>

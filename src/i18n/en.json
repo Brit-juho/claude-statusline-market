@@ -1,0 +1,63 @@
+{
+  "site": {
+    "title": "Claude Statusline Market",
+    "description": "Preset gallery for ccstatusline — install in one command, apply instantly"
+  },
+  "nav": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "about": "About",
+    "github": "GitHub"
+  },
+  "hero": {
+    "badge": "ccstatusline preset gallery",
+    "title": "Your statusbar, \nyour way",
+    "subtitle": "Browse Claude Code statusbar presets and apply them instantly with a single command.",
+    "cta_browse": "Browse Gallery",
+    "cta_github": "GitHub"
+  },
+  "gallery": {
+    "search_placeholder": "Search presets...",
+    "all_categories": "All",
+    "no_results": "No results found",
+    "no_results_hint": "Try a different keyword or category",
+    "count": "{count} presets",
+    "install": "Install",
+    "details": "Details"
+  },
+  "categories": {
+    "minimal": "Minimal",
+    "productivity": "Productivity",
+    "cost": "Cost Tracking",
+    "git": "Git",
+    "powerline": "Powerline",
+    "custom": "Custom"
+  },
+  "preset": {
+    "install_title": "Install",
+    "install_macos": "macOS / Linux",
+    "install_windows": "Windows (PowerShell)",
+    "install_copied": "Copied!",
+    "install_copy": "Copy",
+    "sha256": "SHA256",
+    "settings_preview": "Settings Preview",
+    "tags": "Tags",
+    "version": "Version",
+    "author": "Author",
+    "tool": "Tool",
+    "back": "Back to Gallery"
+  },
+  "footer": {
+    "made_with": "Made with",
+    "by": "by",
+    "license": "MIT License",
+    "description": "Preset gallery on top of ccstatusline"
+  },
+  "about": {
+    "title": "About",
+    "what": "What is Claude Statusline Market?",
+    "what_desc": "A community preset gallery for Claude Code statusbar tools (ccstatusline, etc.). Pick a style and install it in one line.",
+    "contribute": "Contribute a Preset",
+    "contribute_desc": "Submit a JSON file as a PR and it will appear in the gallery. CI auto-generates screenshots."
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "en-token-saver",
+  "version": "0.1.0",
+  "title": {
+    "ko": "토큰 절약 모드",
+    "en": "Token Saver Mode"
+  },
+  "description": {
+    "ko": "캐시 히트율을 최대화하는 설정 — 캐시 절약량과 효율을 실시간으로 표시",
+    "en": "Maximize cache hit rate — shows savings and efficiency in real time"
+  },
+  "tool": "ccstatusline",
+  "category": "cost",
+  "tags": ["cache", "tokens", "efficiency", "savings"],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "settings": {
+    "statusline": {
+      "enabled": true,
+      "position": "bottom",
+      "separator": "  ",
+      "segments": [
+        {
+          "type": "model",
+          "enabled": true,
+          "format": "{model}",
+          "style": "dim"
+        },
+        {
+          "type": "cache",
+          "enabled": true,
+          "format": "CACHE {cache_hit_rate:.1f}%",
+          "style": "bold green"
+        },
+        {
+          "type": "tokens",
+          "enabled": true,
+          "format": "saved:{cache_saved_tokens}",
+          "style": "green"
+        },
+        {
+          "type": "cost",
+          "enabled": true,
+          "format": "actual:${total_cost:.6f}",
+          "style": "yellow"
+        }
+      ]
+    }
+  }
+}

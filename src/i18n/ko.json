@@ -1,0 +1,63 @@
+{
+  "site": {
+    "title": "Claude Statusline Market",
+    "description": "ccstatusline 프리셋 갤러리 — 한 줄로 설치, 즉시 적용"
+  },
+  "nav": {
+    "home": "홈",
+    "gallery": "갤러리",
+    "about": "소개",
+    "github": "GitHub"
+  },
+  "hero": {
+    "badge": "ccstatusline 프리셋 갤러리",
+    "title": "상태바를 \n나답게",
+    "subtitle": "Claude Code 상태바 프리셋을 탐색하고, 한 줄 명령으로 즉시 적용하세요.",
+    "cta_browse": "갤러리 보기",
+    "cta_github": "GitHub"
+  },
+  "gallery": {
+    "search_placeholder": "프리셋 검색...",
+    "all_categories": "전체",
+    "no_results": "검색 결과가 없습니다",
+    "no_results_hint": "다른 키워드나 카테고리를 시도해보세요",
+    "count": "{count}개의 프리셋",
+    "install": "설치",
+    "details": "상세보기"
+  },
+  "categories": {
+    "minimal": "미니멀",
+    "productivity": "생산성",
+    "cost": "비용 추적",
+    "git": "Git",
+    "powerline": "파워라인",
+    "custom": "커스텀"
+  },
+  "preset": {
+    "install_title": "설치",
+    "install_macos": "macOS / Linux",
+    "install_windows": "Windows (PowerShell)",
+    "install_copied": "복사됨!",
+    "install_copy": "복사",
+    "sha256": "SHA256",
+    "settings_preview": "설정 미리보기",
+    "tags": "태그",
+    "version": "버전",
+    "author": "작성자",
+    "tool": "도구",
+    "back": "갤러리로 돌아가기"
+  },
+  "footer": {
+    "made_with": "Made with",
+    "by": "by",
+    "license": "MIT License",
+    "description": "ccstatusline 위에 얹는 프리셋 갤러리"
+  },
+  "about": {
+    "title": "소개",
+    "what": "Claude Statusline Market이란?",
+    "what_desc": "Claude Code의 상태바 도구(ccstatusline 등)를 위한 커뮤니티 프리셋 갤러리입니다. 원하는 스타일을 골라 한 줄로 설치하세요.",
+    "contribute": "프리셋 기여하기",
+    "contribute_desc": "JSON 파일 하나를 PR로 올리면 갤러리에 추가됩니다. 스크린샷은 CI가 자동으로 생성합니다."
+  }
+}

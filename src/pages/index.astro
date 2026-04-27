@@ -1,0 +1,260 @@
+---
+import Base from '../layouts/Base.astro';
+import PresetCard from '../components/PresetCard.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/index.ts';
+import { getAllPresets } from '../lib/presets.ts';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const presets = await getAllPresets();
+const base = import.meta.env.BASE_URL;
+
+const categories = ['minimal', 'productivity', 'cost', 'git', 'powerline', 'custom'];
+---
+<Base>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">{t('hero.badge')}</div>
+      <h1 class="hero-title" set:html={t('hero.title').replace('\n', '<br />')} />
+      <p class="hero-subtitle">{t('hero.subtitle')}</p>
+      <div class="hero-actions">
+        <a href="#gallery" class="btn btn-primary">{t('hero.cta_browse')}</a>
+        <a href="https://github.com/NeTrioGit/claude-statusline-market" target="_blank" rel="noopener" class="btn btn-ghost">
+          {t('hero.cta_github')}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery" class="gallery-section">
+    <div class="gallery-inner">
+      <div class="gallery-controls">
+        <input
+          type="search"
+          id="search"
+          class="search-input"
+          placeholder={t('gallery.search_placeholder')}
+          autocomplete="off"
+        />
+        <div class="category-pills">
+          <button class="pill active" data-category="all">{t('gallery.all_categories')}</button>
+          {categories.map(cat => (
+            <button class="pill" data-category={cat}>{t(`categories.${cat}`)}</button>
+          ))}
+        </div>
+      </div>
+
+      <div class="gallery-count" id="count">
+        {t('gallery.count').replace('{count}', String(presets.length))}
+      </div>
+
+      <div class="grid" id="grid">
+        {presets.map(preset => (
+          <PresetCard
+            id={preset.id}
+            title={preset.title}
+            description={preset.description}
+            category={preset.category}
+            tags={preset.tags ?? []}
+            tool={preset.tool}
+            lang={lang}
+            base={base}
+          />
+        ))}
+      </div>
+
+      <div class="empty" id="empty" style="display:none">
+        <p>{t('gallery.no_results')}</p>
+        <p class="empty-hint">{t('gallery.no_results_hint')}</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+const searchEl = document.getElementById('search') as HTMLInputElement;
+const pills = document.querySelectorAll<HTMLElement>('.pill');
+const cards = document.querySelectorAll<HTMLElement>('.card');
+const countEl = document.getElementById('count')!;
+const emptyEl = document.getElementById('empty')!;
+
+let activeCategory = 'all';
+let query = '';
+
+function filterCards() {
+  let visible = 0;
+  cards.forEach(card => {
+    const a = card as HTMLAnchorElement;
+    const href = a.href;
+    const id = href.split('/').pop() ?? '';
+    const title = card.querySelector('.card-title')?.textContent?.toLowerCase() ?? '';
+    const desc = card.querySelector('.card-desc')?.textContent?.toLowerCase() ?? '';
+    const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent?.toLowerCase() ?? '').join(' ');
+    const badge = card.querySelector('.badge')?.textContent?.toLowerCase() ?? '';
+
+    const matchesQuery = !query || title.includes(query) || desc.includes(query) || tags.includes(query) || id.includes(query);
+    const matchesCat = activeCategory === 'all' || badge.includes(getCatLabel(activeCategory).toLowerCase());
+
+    const show = matchesQuery && matchesCat;
+    (card as HTMLElement).style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  const countText = countEl.getAttribute('data-template') ?? '';
+  countEl.textContent = countText.replace('{count}', String(visible));
+  emptyEl.style.display = visible === 0 ? '' : 'none';
+}
+
+function getCatLabel(cat: string): string {
+  const map: Record<string, string> = {
+    minimal: '미니멀', productivity: '생산성', cost: '비용', git: 'Git',
+    powerline: '파워라인', custom: '커스텀',
+  };
+  return map[cat] ?? cat;
+}
+
+// store template
+const rawCount = countEl.textContent ?? '';
+countEl.setAttribute('data-template', rawCount.replace(/\d+/, '{count}'));
+
+searchEl?.addEventListener('input', e => {
+  query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+  filterCards();
+});
+
+pills.forEach(pill => {
+  pill.addEventListener('click', () => {
+    pills.forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeCategory = pill.dataset.category ?? 'all';
+    filterCards();
+  });
+});
+</script>
+
+<style>
+.hero {
+  padding: 6rem 1.5rem 4rem;
+  text-align: center;
+}
+.hero-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.hero-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+}
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+.hero-subtitle {
+  font-size: 1rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.15s;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-ghost {
+  border-color: var(--border);
+  color: var(--text-dim);
+}
+.btn-ghost:hover { border-color: var(--border-hover); color: var(--text); background: var(--bg-hover); }
+.gallery-section { padding: 0 1.5rem 4rem; }
+.gallery-inner { max-width: 1200px; margin: 0 auto; }
+.gallery-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.625rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text-muted); }
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+.pill {
+  padding: 0.3125rem 0.875rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 0.8125rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.pill:hover { border-color: var(--border-hover); color: var(--text); }
+.pill.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.gallery-count {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+.empty {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+.empty p { color: var(--text-dim); margin-bottom: 0.5rem; }
+.empty-hint { font-size: 0.875rem; color: var(--text-muted); }
+</style>

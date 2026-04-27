@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useTranslations } from '../../i18n/index.ts';
+
+const lang = 'en' as const;
+const t = useTranslations(lang);
+---
+<Base title={t('about.title')}>
+  <div class="about-layout">
+    <div class="about-inner">
+      <h1 class="about-title">{t('about.title')}</h1>
+      <section class="about-section">
+        <h2>{t('about.what')}</h2>
+        <p>{t('about.what_desc')}</p>
+      </section>
+      <section class="about-section">
+        <h2>{t('about.contribute')}</h2>
+        <p>{t('about.contribute_desc')}</p>
+        <div class="steps">
+          <div class="step"><span class="step-num">1</span><div><strong>Fork &amp; write a preset</strong><p>Add a JSON file to the presets/ folder. Fill in fields following schema.json.</p></div></div>
+          <div class="step"><span class="step-num">2</span><div><strong>Open a PR</strong><p>CI auto-validates the schema and generates screenshots.</p></div></div>
+          <div class="step"><span class="step-num">3</span><div><strong>Published to Gallery</strong><p>Once merged, it appears in the gallery immediately.</p></div></div>
+        </div>
+        <a href="https://github.com/NeTrioGit/claude-statusline-market" target="_blank" rel="noopener" class="gh-btn">GitHub — Contribute</a>
+      </section>
+    </div>
+  </div>
+</Base>
+<style>
+.about-layout { padding: 4rem 1.5rem; }
+.about-inner { max-width: 680px; margin: 0 auto; }
+.about-title { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 2.5rem; }
+.about-section { margin-bottom: 3rem; }
+.about-section h2 { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem; }
+.about-section p { color: var(--text-dim); line-height: 1.7; font-size: 0.9375rem; }
+.steps { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.step { display: flex; gap: 1rem; align-items: flex-start; }
+.step-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-dim); color: var(--accent); font-size: 0.8125rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.step strong { display: block; font-size: 0.9375rem; margin-bottom: 0.25rem; }
+.step p { font-size: 0.875rem; color: var(--text-dim); }
+.gh-btn { display: inline-block; margin-top: 1.5rem; padding: 0.625rem 1.25rem; background: var(--accent); color: #000; border-radius: var(--radius); font-size: 0.875rem; font-weight: 600; transition: opacity 0.15s; }
+.gh-btn:hover { opacity: 0.88; }
+</style>
