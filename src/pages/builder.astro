@@ -11,76 +11,58 @@ const rawBase = import.meta.env.BASE_URL as string;
 const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
 const SEGMENT_GROUPS = [
-  {
-    group: lang === 'ko' ? '모델 / 세션' : 'Model / Session',
-    segments: [
-      { type: 'model',        label: { ko: '모델명', en: 'Model' },           defaultFmt: '◆ {model}',        defaultStyle: 'cyan bold' },
-      { type: 'version',      label: { ko: 'CC 버전', en: 'CC Version' },     defaultFmt: 'v{version}',       defaultStyle: 'dim' },
-      { type: 'session_id',   label: { ko: '세션 ID', en: 'Session ID' },     defaultFmt: '#{session_id}',    defaultStyle: 'dim' },
-      { type: 'session_name', label: { ko: '세션명', en: 'Session Name' },    defaultFmt: '▪ {session_name}', defaultStyle: 'white' },
-      { type: 'effort',       label: { ko: '추론 수준', en: 'Effort' },       defaultFmt: '● {effort_level}', defaultStyle: 'magenta' },
-    ],
-  },
-  {
-    group: lang === 'ko' ? '작업 공간' : 'Workspace',
-    segments: [
-      { type: 'cwd',          label: { ko: '현재 디렉터리', en: 'Directory' }, defaultFmt: '{dir_name}',       defaultStyle: 'blue' },
-      { type: 'git_branch',   label: { ko: 'Git 브랜치', en: 'Git Branch' }, defaultFmt: '⎇ {branch}',       defaultStyle: 'green' },
-      { type: 'git_changes',  label: { ko: '변경 파일', en: 'Changes' },      defaultFmt: '~{changed}',       defaultStyle: 'yellow' },
-      { type: 'lines_changed',label: { ko: '코드 변경', en: 'Lines' },        defaultFmt: '+{total_lines_added} -{total_lines_removed}', defaultStyle: 'cyan' },
-    ],
-  },
-  {
-    group: lang === 'ko' ? '컨텍스트 창' : 'Context Window',
-    segments: [
-      { type: 'context_pct',    label: { ko: '컨텍스트 %', en: 'Context %' },    defaultFmt: '{used_percentage}%',   defaultStyle: 'yellow' },
-      { type: 'context_bar',    label: { ko: '컨텍스트 바', en: 'Ctx Bar' },     defaultFmt: '[{used_percentage}%]', defaultStyle: 'green' },
-      { type: 'tokens_in_out',  label: { ko: '입출력 토큰', en: 'Tokens' },      defaultFmt: '↑{total_input_tokens} ↓{total_output_tokens}', defaultStyle: 'dim' },
-      { type: 'cache_tokens',   label: { ko: '캐시', en: 'Cache' },             defaultFmt: '⚡{cache_saved_tokens}', defaultStyle: 'cyan' },
-    ],
-  },
-  {
-    group: lang === 'ko' ? '비용 / 시간' : 'Cost / Time',
-    segments: [
-      { type: 'cost',         label: { ko: '비용', en: 'Cost' },              defaultFmt: '${total_cost_usd:.4f}', defaultStyle: 'yellow' },
-      { type: 'duration',     label: { ko: '세션 시간', en: 'Duration' },     defaultFmt: '◷ {duration}',         defaultStyle: 'cyan' },
-      { type: 'api_time',     label: { ko: 'API 시간', en: 'API Time' },      defaultFmt: 'api:{total_api_duration_ms}ms', defaultStyle: 'dim' },
-    ],
-  },
-  {
-    group: lang === 'ko' ? '한도 / 시스템' : 'Limits / System',
-    segments: [
-      { type: 'rate_5h',      label: { ko: '5h 한도', en: '5h Rate' },       defaultFmt: '5h:{rate_limit_5h}%',  defaultStyle: 'orange' },
-      { type: 'rate_7d',      label: { ko: '7d 한도', en: '7d Rate' },       defaultFmt: '7d:{rate_limit_7d}%',  defaultStyle: 'red' },
-      { type: 'vim_mode',     label: { ko: 'Vim 모드', en: 'Vim Mode' },     defaultFmt: '[{vim_mode}]',          defaultStyle: 'blue' },
-    ],
-  },
-  {
-    group: lang === 'ko' ? '런타임 / 환경' : 'Runtime / Env',
-    segments: [
-      { type: 'node_ver',     label: { ko: 'Node 버전', en: 'Node' },        defaultFmt: 'node {node_version}',   defaultStyle: 'green bold' },
-      { type: 'python_ver',   label: { ko: 'Python 버전', en: 'Python' },    defaultFmt: 'py{python_version}',    defaultStyle: 'blue bold' },
-      { type: 'venv',         label: { ko: '가상환경', en: 'Venv' },         defaultFmt: '({venv_name})',          defaultStyle: 'yellow' },
-      { type: 'conda',        label: { ko: 'Conda 환경', en: 'Conda' },      defaultFmt: 'conda:{conda_env}',     defaultStyle: 'yellow' },
-      { type: 'docker_ctx',   label: { ko: 'Docker', en: 'Docker' },         defaultFmt: '🐳 {docker_context}',  defaultStyle: 'blue' },
-      { type: 'k8s',          label: { ko: 'K8s', en: 'K8s' },              defaultFmt: '☸ {k8s_context}',       defaultStyle: 'cyan' },
-      { type: 'aws',          label: { ko: 'AWS 프로파일', en: 'AWS' },      defaultFmt: 'AWS:{aws_profile}',     defaultStyle: 'orange' },
-      { type: 'terraform',    label: { ko: 'TF 워크스페이스', en: 'Terraform' }, defaultFmt: 'TF:{tf_workspace}', defaultStyle: 'magenta' },
-    ],
-  },
+  { group: lang==='ko'?'모델 / 세션':'Model / Session', segments: [
+    { type:'model',         label:{ko:'모델명',       en:'Model'},        defaultFmt:'◆ {model}',               defaultStyle:'#22d3ee bold' },
+    { type:'version',       label:{ko:'CC 버전',      en:'CC Version'},   defaultFmt:'v{version}',               defaultStyle:'#4b5563' },
+    { type:'session_id',    label:{ko:'세션 ID',      en:'Session ID'},   defaultFmt:'#{session_id}',            defaultStyle:'#4b5563' },
+    { type:'session_name',  label:{ko:'세션명',       en:'Session Name'}, defaultFmt:'▪ {session_name}',        defaultStyle:'#d0d0d0' },
+    { type:'effort',        label:{ko:'추론 수준',    en:'Effort'},       defaultFmt:'● {effort_level}',        defaultStyle:'#c084fc' },
+  ]},
+  { group: lang==='ko'?'작업 공간':'Workspace', segments: [
+    { type:'cwd',           label:{ko:'디렉터리',     en:'Directory'},    defaultFmt:'{dir_name}',               defaultStyle:'#60a5fa' },
+    { type:'git_branch',    label:{ko:'Git 브랜치',   en:'Git Branch'},   defaultFmt:'⎇ {branch}',              defaultStyle:'#00d97e' },
+    { type:'git_changes',   label:{ko:'변경 파일',    en:'Changes'},      defaultFmt:'~{changed}',               defaultStyle:'#fbbf24' },
+    { type:'lines_changed', label:{ko:'코드 변경',    en:'Lines'},        defaultFmt:'+{total_lines_added} -{total_lines_removed}', defaultStyle:'#22d3ee' },
+  ]},
+  { group: lang==='ko'?'컨텍스트 창':'Context Window', segments: [
+    { type:'context_pct',   label:{ko:'컨텍스트 %',  en:'Context %'},    defaultFmt:'{used_percentage}%',       defaultStyle:'#fbbf24' },
+    { type:'context_bar',   label:{ko:'컨텍스트 바', en:'Ctx Bar'},      defaultFmt:'[{used_percentage}%]',    defaultStyle:'#00d97e' },
+    { type:'tokens_in_out', label:{ko:'입출력 토큰', en:'Tokens'},       defaultFmt:'↑{total_input_tokens} ↓{total_output_tokens}', defaultStyle:'#4b5563' },
+    { type:'cache_tokens',  label:{ko:'캐시',         en:'Cache'},        defaultFmt:'⚡{cache_saved_tokens}',  defaultStyle:'#22d3ee' },
+  ]},
+  { group: lang==='ko'?'비용 / 시간':'Cost / Time', segments: [
+    { type:'cost',          label:{ko:'비용',         en:'Cost'},         defaultFmt:'${total_cost_usd:.4f}',   defaultStyle:'#fbbf24' },
+    { type:'duration',      label:{ko:'세션 시간',    en:'Duration'},     defaultFmt:'◷ {duration}',            defaultStyle:'#22d3ee' },
+    { type:'api_time',      label:{ko:'API 시간',     en:'API Time'},     defaultFmt:'api:{total_api_duration_ms}ms', defaultStyle:'#4b5563' },
+  ]},
+  { group: lang==='ko'?'한도 / 시스템':'Limits / System', segments: [
+    { type:'rate_5h',       label:{ko:'5h 한도',      en:'5h Rate'},      defaultFmt:'5h:{rate_limit_5h}%',    defaultStyle:'#fb923c' },
+    { type:'rate_7d',       label:{ko:'7d 한도',      en:'7d Rate'},      defaultFmt:'7d:{rate_limit_7d}%',    defaultStyle:'#f87171' },
+    { type:'vim_mode',      label:{ko:'Vim 모드',     en:'Vim Mode'},     defaultFmt:'[{vim_mode}]',            defaultStyle:'#60a5fa' },
+  ]},
+  { group: lang==='ko'?'런타임 / 환경':'Runtime / Env', segments: [
+    { type:'node_ver',      label:{ko:'Node 버전',    en:'Node'},         defaultFmt:'node {node_version}',     defaultStyle:'#00d97e bold' },
+    { type:'python_ver',    label:{ko:'Python 버전',  en:'Python'},       defaultFmt:'py{python_version}',      defaultStyle:'#60a5fa bold' },
+    { type:'venv',          label:{ko:'가상환경',     en:'Venv'},         defaultFmt:'({venv_name})',            defaultStyle:'#fbbf24' },
+    { type:'conda',         label:{ko:'Conda',         en:'Conda'},        defaultFmt:'conda:{conda_env}',       defaultStyle:'#fbbf24' },
+    { type:'docker_ctx',    label:{ko:'Docker',        en:'Docker'},       defaultFmt:'🐳 {docker_context}',    defaultStyle:'#60a5fa' },
+    { type:'k8s',           label:{ko:'K8s',           en:'K8s'},          defaultFmt:'☸ {k8s_context}',        defaultStyle:'#22d3ee' },
+    { type:'aws',           label:{ko:'AWS 프로파일',  en:'AWS'},          defaultFmt:'AWS:{aws_profile}',       defaultStyle:'#fb923c' },
+    { type:'terraform',     label:{ko:'Terraform',     en:'Terraform'},    defaultFmt:'TF:{tf_workspace}',       defaultStyle:'#c084fc' },
+  ]},
 ];
 
-const COLORS = ['green','cyan','blue','yellow','orange','red','magenta','pink','white','dim','bold'];
-const COLOR_HEX: Record<string, string> = {
-  green:'#00d97e', cyan:'#22d3ee', blue:'#60a5fa', yellow:'#fbbf24',
-  orange:'#fb923c', red:'#f87171', magenta:'#c084fc', pink:'#f472b6',
-  white:'#d0d0d0', dim:'#4b5563', bold:'#ffffff',
-};
+const ICON_GROUPS = [
+  { name: lang==='ko'?'심볼':'Symbols',  icons: ['◆','▶','▸','●','◉','◎','▪','◇','◈','⊕','✦','★','✓','✗','≡','∞','◐','◑'] },
+  { name: 'Git',                          icons: ['⎇','⊞','⊟','∓','±','↑','↓','↕','⟳','⊗','⊘','↑↓'] },
+  { name: lang==='ko'?'방향':'Arrows',   icons: ['→','←','↑','↓','⇒','⇐','⟶','≫','≪','▸','◂','▴','▾'] },
+  { name: lang==='ko'?'시간':'Time',     icons: ['◷','⏱','⌚','⏳','⌛','🕐'] },
+  { name: lang==='ko'?'이모지':'Emoji',  icons: ['🌿','💰','⚡','🔖','☸','🐳','🧠','🎯','📁','🔥','💡','🚀','⚙️','🎨','🐍','🦀','🟢'] },
+];
 
 const sampleValuesJson = JSON.stringify(SAMPLE_VALUES);
 const segmentGroupsJson = JSON.stringify(SEGMENT_GROUPS);
-const colorsJson = JSON.stringify(COLORS);
-const colorHexJson = JSON.stringify(COLOR_HEX);
+const iconGroupsJson = JSON.stringify(ICON_GROUPS);
 const presetsJson = JSON.stringify(presets.map(p => ({
   id: p.id, title: p.title, category: p.category,
   segments: p.settings.statusline.segments,
@@ -89,13 +71,12 @@ const presetsJson = JSON.stringify(presets.map(p => ({
 ---
 
 <Base title={lang === 'ko' ? '커스텀 빌더' : 'Custom Builder'}>
-<!-- xterm.js CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css" />
 
 <div class="builder-layout">
   <div class="builder-header">
     <h1>{lang === 'ko' ? '커스텀 빌더' : 'Custom Builder'}</h1>
-    <p>{lang === 'ko' ? '드래그로 순서 변경 · 색상 선택 · 실제 터미널 미리보기' : 'Drag to reorder · pick colors · real terminal preview'}</p>
+    <p>{lang === 'ko' ? '색상 직접 지정 · 아이콘 선택 · 드래그 순서 변경 · 로컬 저장' : 'Custom colors · icon picker · drag reorder · local saves'}</p>
   </div>
 
   <!-- 프리셋 기반 시작 -->
@@ -105,7 +86,7 @@ const presetsJson = JSON.stringify(presets.map(p => ({
   </div>
 
   <div class="builder-main">
-    <!-- 왼쪽: 세그먼트 팔레트 -->
+    <!-- 왼쪽: 팔레트 -->
     <div class="panel panel-left">
       <h2 class="panel-title">{lang === 'ko' ? '세그먼트 선택' : 'Segments'}</h2>
       <div id="segmentPalette"></div>
@@ -115,7 +96,7 @@ const presetsJson = JSON.stringify(presets.map(p => ({
       </div>
     </div>
 
-    <!-- 오른쪽: 활성 세그먼트 (드래그 앤 드롭) -->
+    <!-- 오른쪽: 활성 세그먼트 -->
     <div class="panel panel-right">
       <h2 class="panel-title">
         {lang === 'ko' ? '활성 세그먼트' : 'Active Segments'}
@@ -127,14 +108,38 @@ const presetsJson = JSON.stringify(presets.map(p => ({
     </div>
   </div>
 
-  <!-- xterm.js 실제 터미널 미리보기 -->
+  <!-- xterm.js 실제 터미널 -->
   <div class="xterm-section">
     <div class="xterm-header">
-      <h2 class="panel-title">{lang === 'ko' ? '실제 터미널 미리보기 (ANSI 색상)' : 'Live Terminal Preview (ANSI colors)'}</h2>
-      <span class="xterm-badge">xterm.js</span>
+      <h2 class="panel-title">{lang === 'ko' ? '실제 터미널 미리보기' : 'Live Terminal Preview'}</h2>
+      <span class="xterm-badge">xterm.js · ANSI</span>
     </div>
     <div class="xterm-wrapper">
       <div id="xterm-container"></div>
+    </div>
+  </div>
+
+  <!-- 로컬 저장 -->
+  <div class="saves-section" id="savesSection">
+    <div class="saves-header">
+      <h2 class="panel-title">{lang === 'ko' ? '내 저장소' : 'My Saves'}</h2>
+      <div class="save-form">
+        <input id="saveNameInput" class="save-name-input" type="text"
+          placeholder={lang === 'ko' ? '레이아웃 이름...' : 'Layout name...'} maxlength="30" />
+        <button class="save-btn" id="saveLayoutBtn">
+          {lang === 'ko' ? '현재 저장' : 'Save current'}
+        </button>
+      </div>
+    </div>
+    <div class="saves-body">
+      <div class="saves-col">
+        <div class="saves-col-title">{lang === 'ko' ? '저장된 레이아웃' : 'Saved Layouts'}</div>
+        <div id="savedLayouts"><span class="save-empty">{lang === 'ko' ? '없음' : 'None'}</span></div>
+      </div>
+      <div class="saves-col">
+        <div class="saves-col-title">{lang === 'ko' ? '즐겨찾기 세그먼트' : 'Favorite Segments'}</div>
+        <div id="savedSegments"><span class="save-empty">{lang === 'ko' ? '없음' : 'None'}</span></div>
+      </div>
     </div>
   </div>
 
@@ -147,7 +152,7 @@ const presetsJson = JSON.stringify(presets.map(p => ({
     <div class="out-panel" id="panelInstall">
       <div class="install-label">macOS / Linux</div>
       <div class="code-row"><code class="code-block" id="installSh"></code><button class="copy-btn" id="copyInstallSh">{lang === 'ko' ? '복사' : 'Copy'}</button></div>
-      <div class="install-label" style="margin-top:0.75rem">Windows (PowerShell)</div>
+      <div class="install-label mt">Windows (PowerShell)</div>
       <div class="code-row"><code class="code-block" id="installPs"></code><button class="copy-btn" id="copyInstallPs">{lang === 'ko' ? '복사' : 'Copy'}</button></div>
     </div>
     <div class="out-panel hidden" id="panelJson">
@@ -157,56 +162,38 @@ const presetsJson = JSON.stringify(presets.map(p => ({
 </div>
 </Base>
 
-<!-- xterm.js 초기화 (is:inline — CDN global 접근) -->
 <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js" is:inline></script>
 <script is:inline>
+/* ── xterm setup ── */
 let _xterm = null;
-let _xtermReady = false;
+const ANSI = { reset:'\x1b[0m', bold:'\x1b[1m', dim:'\x1b[2m' };
+const ANSI_NAMED = { green:'\x1b[32m', cyan:'\x1b[36m', blue:'\x1b[34m', yellow:'\x1b[33m', orange:'\x1b[38;5;173m', red:'\x1b[31m', magenta:'\x1b[35m', pink:'\x1b[38;5;213m', white:'\x1b[37m', dim:'\x1b[2m', accent:'\x1b[32m' };
 
-const ANSI = {
-  reset:'\x1b[0m', bold:'\x1b[1m', dim:'\x1b[2m',
-  green:'\x1b[32m', accent:'\x1b[32m', cyan:'\x1b[36m',
-  blue:'\x1b[34m', yellow:'\x1b[33m', orange:'\x1b[38;5;173m',
-  red:'\x1b[31m', magenta:'\x1b[35m', pink:'\x1b[38;5;213m',
-  white:'\x1b[37m', gray:'\x1b[90m',
-};
+function hexToAnsi(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `\x1b[38;2;${r};${g};${b}m`;
+}
 
 function styleToAnsi(style) {
   if (!style) return '';
-  const parts = (style || '').toLowerCase().split(/\s+/);
-  return parts.map(p => ANSI[p] || '').join('');
+  return style.split(/\s+/).map(p => {
+    if (p === 'bold') return ANSI.bold;
+    if (p === 'dim') return ANSI.dim;
+    if (/^#[0-9a-fA-F]{6}$/.test(p)) return hexToAnsi(p);
+    return ANSI_NAMED[p] || '';
+  }).join('');
 }
 
 function initXterm() {
   const container = document.getElementById('xterm-container');
   if (!container || !window.Terminal) return;
-  const term = new window.Terminal({
-    theme: {
-      background: '#080808',
-      foreground: '#555',
-      cursor: '#00d97e',
-      black: '#1a1a1a', brightBlack: '#333',
-      green: '#00d97e', brightGreen: '#00d97e',
-      cyan: '#22d3ee', brightCyan: '#22d3ee',
-      blue: '#60a5fa', brightBlue: '#60a5fa',
-      yellow: '#fbbf24', brightYellow: '#fbbf24',
-      red: '#f87171', brightRed: '#f87171',
-      magenta: '#c084fc', brightMagenta: '#c084fc',
-      white: '#d0d0d0', brightWhite: '#ededed',
-    },
-    fontFamily: "'Geist Mono','Cascadia Code','Fira Code','SF Mono','Menlo',monospace",
-    fontSize: 13,
-    lineHeight: 1.4,
-    rows: 9,
-    cols: 90,
-    disableStdin: true,
-    cursorBlink: false,
-    scrollback: 0,
+  _xterm = new window.Terminal({
+    theme: { background:'#080808', foreground:'#555', cursor:'#00d97e', green:'#00d97e', cyan:'#22d3ee', blue:'#60a5fa', yellow:'#fbbf24', red:'#f87171', magenta:'#c084fc', white:'#d0d0d0' },
+    fontFamily:"'Geist Mono','Cascadia Code','Fira Code','SF Mono',monospace",
+    fontSize:13, lineHeight:1.4, rows:9, cols:92, disableStdin:true, cursorBlink:false, scrollback:0,
   });
-  term.open(container);
-  _xterm = term;
-  _xtermReady = true;
-  writeXterm(null);
+  _xterm.open(container);
+  writeXterm(null, '  ');
 }
 
 function writeXterm(segments, separator) {
@@ -217,50 +204,39 @@ function writeXterm(segments, separator) {
   _xterm.write('\r\n');
   _xterm.write('\x1b[2m  3 files changed, 156 insertions(+), 23 deletions(-)\x1b[0m\r\n');
   _xterm.write('\r\n');
-  _xterm.write('\x1b[2m' + '─'.repeat(88) + '\x1b[0m\r\n');
-
-  if (!segments || segments.length === 0) {
-    _xterm.write('\x1b[2m(세그먼트를 추가하면 여기 표시됩니다)\x1b[0m');
-    return;
+  _xterm.write('\x1b[2m' + '─'.repeat(90) + '\x1b[0m\r\n');
+  if (!segments || !segments.length) {
+    _xterm.write('\x1b[2m(세그먼트를 추가하면 여기 표시됩니다)\x1b[0m'); return;
   }
-
-  const sep = (separator || '  ');
   const line = segments.map((s, i) => {
-    const ansi = styleToAnsi(s.style);
-    return (i > 0 ? '\x1b[2m' + (sep.trim() ? sep : ' ') + '\x1b[0m' : '') + ansi + s.text + ANSI.reset;
+    const sep = i > 0 ? '\x1b[2m' + (separator||'  ') + '\x1b[0m' : '';
+    return sep + styleToAnsi(s.style) + s.text + ANSI.reset;
   }).join('');
-
   _xterm.write(line);
 }
 
-window.addEventListener('xterm:update', (e) => {
-  if (_xtermReady) writeXterm(e.detail.segments, e.detail.separator);
-});
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => setTimeout(initXterm, 100));
-} else {
-  setTimeout(initXterm, 100);
-}
+window.addEventListener('xterm:update', e => writeXterm(e.detail.segments, e.detail.separator));
+setTimeout(initXterm, 150);
 </script>
 
-<!-- 빌더 로직 -->
-<script define:vars={{ sampleValuesJson, segmentGroupsJson, colorsJson, colorHexJson, presetsJson, lang }}>
+<script define:vars={{ sampleValuesJson, segmentGroupsJson, iconGroupsJson, presetsJson, lang }}>
 const VALS = JSON.parse(sampleValuesJson);
 const GROUPS = JSON.parse(segmentGroupsJson);
-const COLORS = JSON.parse(colorsJson);
-const COLOR_HEX = JSON.parse(colorHexJson);
+const ICON_GROUPS = JSON.parse(iconGroupsJson);
 const PRESETS = JSON.parse(presetsJson);
+const STORAGE_KEY = 'statusline-market-v1';
 
 let activeSegments = [];
 let separator = '  ';
 let dragSrcIdx = null;
+let openIconPicker = null; // idx of open icon picker
 
-/* ── render ── */
+/* ── helpers ── */
+const CSS_NAMED = { green:'#00d97e', accent:'#00d97e', cyan:'#22d3ee', blue:'#60a5fa', yellow:'#fbbf24', orange:'#fb923c', red:'#f87171', magenta:'#c084fc', pink:'#f472b6', white:'#d0d0d0', dim:'#4b5563', bold:'#ededed' };
+
 function renderFmt(fmt) {
   return fmt.replace(/\{([a-zA-Z_.]+)(?::([^}]+))?\}/g, (_, key, spec) => {
-    const v = VALS[key];
-    if (v === undefined) return `{${key}}`;
+    const v = VALS[key]; if (v === undefined) return `{${key}}`;
     if (spec) { const m = spec.match(/\.(\d+)f/); if (m) return Number(v).toFixed(parseInt(m[1])); }
     return String(v);
   });
@@ -268,19 +244,93 @@ function renderFmt(fmt) {
 
 function styleToCSS(style) {
   if (!style) return 'color:#00d97e';
-  const CSS_COLOR = { green:'#00d97e', accent:'#00d97e', cyan:'#22d3ee', blue:'#60a5fa', yellow:'#fbbf24', orange:'#fb923c', red:'#f87171', magenta:'#c084fc', pink:'#f472b6', white:'#d0d0d0', dim:'#4b5563', bold:'#ededed' };
-  const parts = style.toLowerCase().split(/\s+/);
   const css = [];
-  for (const p of parts) {
+  for (const p of style.split(/\s+/)) {
     if (p === 'bold') css.push('font-weight:700');
     else if (p === 'dim') css.push('color:#4b5563');
-    else if (CSS_COLOR[p]) css.push(`color:${CSS_COLOR[p]}`);
+    else if (/^#[0-9a-fA-F]{6}$/.test(p)) css.push(`color:${p}`);
+    else if (CSS_NAMED[p]) css.push(`color:${CSS_NAMED[p]}`);
   }
   return css.join(';') || 'color:#00d97e';
 }
 
-function getStatusline() {
-  return activeSegments.map(s => renderFmt(s.format)).join(separator);
+function getHexFromStyle(style) {
+  if (!style) return '#00d97e';
+  const hex = style.match(/#[0-9a-fA-F]{6}/);
+  if (hex) return hex[0];
+  const named = style.split(/\s+/).find(p => CSS_NAMED[p]);
+  return named ? CSS_NAMED[named] : '#00d97e';
+}
+
+function replaceColorInStyle(style, newHex) {
+  const parts = (style || '').split(/\s+/).filter(p => p !== 'dim' && !CSS_NAMED[p] && !/^#/.test(p));
+  parts.unshift(newHex);
+  return parts.join(' ').trim();
+}
+
+/* ── local storage ── */
+function getStore() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"layouts":[],"segments":[]}'); }
+  catch { return { layouts:[], segments:[] }; }
+}
+function putStore(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+function saveLayout(name) {
+  if (!name.trim()) return;
+  const store = getStore();
+  const existing = store.layouts.findIndex(l => l.name === name);
+  const entry = { name, separator, segments: JSON.parse(JSON.stringify(activeSegments)), savedAt: Date.now() };
+  if (existing !== -1) store.layouts[existing] = entry; else store.layouts.push(entry);
+  putStore(store); renderSavedLayouts();
+}
+
+function saveSegment(idx) {
+  const s = activeSegments[idx]; if (!s) return;
+  const store = getStore();
+  const name = `${s.label}: ${renderFmt(s.format)}`.slice(0, 40);
+  const existing = store.segments.findIndex(x => x.name === name);
+  const entry = { name, type: s.type, format: s.format, style: s.style, label: s.label, savedAt: Date.now() };
+  if (existing !== -1) store.segments[existing] = entry; else store.segments.push(entry);
+  putStore(store); renderSavedSegments();
+}
+
+function deleteLayout(name) { const s = getStore(); s.layouts = s.layouts.filter(l => l.name !== name); putStore(s); renderSavedLayouts(); }
+function deleteSegment(name) { const s = getStore(); s.segments = s.segments.filter(l => l.name !== name); putStore(s); renderSavedSegments(); }
+
+function renderSavedLayouts() {
+  const el = document.getElementById('savedLayouts'); if (!el) return;
+  const { layouts } = getStore();
+  if (!layouts.length) { el.innerHTML = `<span class="save-empty">${lang==='ko'?'없음':'None'}</span>`; return; }
+  el.innerHTML = layouts.map(l => `
+    <div class="save-item">
+      <span class="save-name">${l.name}</span>
+      <span class="save-meta">${l.segments.length}seg</span>
+      <button class="save-action load" data-name="${l.name}">${lang==='ko'?'불러오기':'Load'}</button>
+      <button class="save-action del" data-name="${l.name}">×</button>
+    </div>`).join('');
+  el.querySelectorAll('.save-action.load').forEach(b => b.addEventListener('click', () => {
+    const l = getStore().layouts.find(x => x.name === b.dataset.name); if (!l) return;
+    separator = l.separator; activeSegments = JSON.parse(JSON.stringify(l.segments));
+    document.getElementById('separatorInput').value = separator; refresh();
+  }));
+  el.querySelectorAll('.save-action.del').forEach(b => b.addEventListener('click', () => deleteLayout(b.dataset.name)));
+}
+
+function renderSavedSegments() {
+  const el = document.getElementById('savedSegments'); if (!el) return;
+  const { segments } = getStore();
+  if (!segments.length) { el.innerHTML = `<span class="save-empty">${lang==='ko'?'없음':'None'}</span>`; return; }
+  el.innerHTML = segments.map(s => `
+    <div class="save-item">
+      <span class="save-preview" style="${styleToCSS(s.style)}">${renderFmt(s.format)}</span>
+      <button class="save-action load" data-name="${s.name}">${lang==='ko'?'추가':'Add'}</button>
+      <button class="save-action del" data-name="${s.name}">×</button>
+    </div>`).join('');
+  el.querySelectorAll('.save-action.load').forEach(b => b.addEventListener('click', () => {
+    const s = getStore().segments.find(x => x.name === b.dataset.name); if (!s) return;
+    activeSegments.push({ type: s.type, format: s.format, style: s.style, label: s.label }); refresh();
+  }));
+  el.querySelectorAll('.save-action.del').forEach(b => b.addEventListener('click', () => deleteSegment(b.dataset.name)));
 }
 
 /* ── dispatch to xterm ── */
@@ -289,14 +339,8 @@ function dispatchXterm() {
   window.dispatchEvent(new CustomEvent('xterm:update', { detail: { segments: segs, separator } }));
 }
 
-/* ── web preview ── */
-function updateWebPreview() {
-  // not used — xterm handles preview now
-}
-
-/* ── output ── */
 function buildJson() {
-  return JSON.stringify({ settings: { statusline: { enabled: true, position: 'bottom', separator, segments: activeSegments.map(s => ({ type: s.type, format: s.format, style: s.style })) } } }, null, 2);
+  return JSON.stringify({ settings: { statusline: { enabled:true, position:'bottom', separator, segments: activeSegments.map(s => ({ type:s.type, format:s.format, style:s.style })) } } }, null, 2);
 }
 function updateOutput() {
   const BASE = 'https://raw.githubusercontent.com/NeTrioGit/claude-statusline-market/main';
@@ -308,51 +352,71 @@ function updateOutput() {
 
 function refresh() { renderActiveList(); renderPalette(); dispatchXterm(); updateOutput(); }
 
-/* ── active list (drag + color picker) ── */
+/* ── icon picker popup ── */
+function buildIconPickerHtml(idx) {
+  return `<div class="icon-picker" id="ipanel-${idx}">
+    ${ICON_GROUPS.map(g => `
+      <div class="icon-cat-label">${g.name}</div>
+      <div class="icon-cat-items">
+        ${g.icons.map(ic => `<button class="ic-btn" data-idx="${idx}" data-icon="${ic}">${ic}</button>`).join('')}
+      </div>`).join('')}
+  </div>`;
+}
+
+/* ── active list ── */
 function renderActiveList() {
-  const el = document.getElementById('activeList');
-  if (!el) return;
-  if (activeSegments.length === 0) {
-    el.innerHTML = `<div class="empty-hint">${lang === 'ko' ? '왼쪽에서 세그먼트를 추가하세요' : 'Add segments from the left'}</div>`;
-    return;
+  const el = document.getElementById('activeList'); if (!el) return;
+  if (!activeSegments.length) {
+    el.innerHTML = `<div class="empty-hint">${lang==='ko'?'왼쪽에서 세그먼트를 추가하세요':'Add segments from the left'}</div>`; return;
   }
   el.innerHTML = activeSegments.map((s, i) => {
-    const swatches = COLORS.map(c => {
-      const isActive = s.style?.includes(c);
-      return `<span class="swatch ${isActive ? 'swatch-on' : ''}" data-idx="${i}" data-color="${c}" style="background:${COLOR_HEX[c]};" title="${c}"></span>`;
-    }).join('');
+    const hex = getHexFromStyle(s.style);
+    const isBold = s.style?.includes('bold');
     return `
     <div class="active-item" draggable="true" data-idx="${i}">
       <div class="active-header">
         <span class="drag-handle" title="drag">⠿</span>
         <span class="active-type">${s.label}</span>
         <span class="active-preview" style="${styleToCSS(s.style)}">${renderFmt(s.format)}</span>
-        <div class="active-btns">
-          <button class="icon-btn rm" data-action="rm" data-idx="${i}" title="remove">×</button>
+        <div class="ah-actions">
+          <button class="icon-btn star" data-action="star" data-idx="${i}" title="${lang==='ko'?'즐겨찾기':'Favorite'}">★</button>
+          <button class="icon-btn rm" data-action="rm" data-idx="${i}">×</button>
         </div>
       </div>
-      <div class="swatch-row">${swatches}
+
+      <!-- 색상 직접 지정 -->
+      <div class="color-row">
+        <label class="color-pick-label">${lang==='ko'?'색상':'Color'}</label>
+        <input type="color" class="color-hex-input" data-idx="${i}" value="${hex}" />
+        <span class="color-hex-val">${hex}</span>
         <label class="bold-toggle">
-          <input type="checkbox" class="bold-check" data-idx="${i}" ${s.style?.includes('bold') ? 'checked' : ''}> bold
+          <input type="checkbox" class="bold-check" data-idx="${i}" ${isBold?'checked':''}>
+          bold
         </label>
       </div>
+
+      <!-- 포맷 + 아이콘 피커 -->
       <div class="fmt-row">
-        <input class="fmt-input" data-idx="${i}" value="${s.format.replace(/"/g, '&quot;')}" />
+        <input class="fmt-input" data-idx="${i}" value="${s.format.replace(/"/g,'&quot;')}" />
+        <button class="icon-pick-open" data-idx="${i}" title="${lang==='ko'?'아이콘 삽입':'Insert icon'}">⊕</button>
       </div>
+      ${openIconPicker === i ? buildIconPickerHtml(i) : ''}
     </div>`;
   }).join('');
 
-  /* swatches */
-  el.querySelectorAll('.swatch').forEach(sw => {
-    sw.addEventListener('click', () => {
-      const idx = parseInt(sw.dataset.idx);
-      const color = sw.dataset.color;
-      const cur = activeSegments[idx].style || '';
-      const parts = cur.split(/\s+/).filter(p => !COLOR_HEX[p] && p !== 'dim');
-      parts.push(color);
-      activeSegments[idx].style = parts.join(' ').trim();
-      refresh();
+  /* color hex input */
+  el.querySelectorAll('.color-hex-input').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const idx = parseInt(e.target.dataset.idx);
+      const hex = e.target.value;
+      e.target.nextElementSibling.textContent = hex;
+      activeSegments[idx].style = replaceColorInStyle(activeSegments[idx].style, hex);
+      // update preview live without full re-render
+      const prev = e.target.closest('.active-item')?.querySelector('.active-preview');
+      if (prev) { prev.style.cssText = styleToCSS(activeSegments[idx].style); }
+      dispatchXterm(); updateOutput();
     });
+    inp.addEventListener('change', () => refresh());
   });
 
   /* bold toggle */
@@ -369,118 +433,124 @@ function renderActiveList() {
   /* format input */
   el.querySelectorAll('.fmt-input').forEach(inp => {
     inp.addEventListener('input', e => {
-      const idx = parseInt(e.target.dataset.idx);
-      activeSegments[idx].format = e.target.value;
-      refresh();
+      activeSegments[parseInt(e.target.dataset.idx)].format = e.target.value;
+      dispatchXterm(); updateOutput();
+      const prev = e.target.closest('.active-item')?.querySelector('.active-preview');
+      if (prev) prev.textContent = renderFmt(e.target.value);
     });
+  });
+
+  /* icon picker toggle */
+  el.querySelectorAll('.icon-pick-open').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      openIconPicker = openIconPicker === idx ? null : idx;
+      renderActiveList();
+    });
+  });
+
+  /* icon insert */
+  el.querySelectorAll('.ic-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx);
+      const icon = btn.dataset.icon;
+      const input = el.querySelector(`.fmt-input[data-idx="${idx}"]`);
+      if (input) {
+        const pos = input.selectionStart ?? input.value.length;
+        const v = input.value;
+        input.value = v.slice(0, pos) + icon + v.slice(pos);
+        activeSegments[idx].format = input.value;
+        openIconPicker = null;
+        refresh();
+      }
+    });
+  });
+
+  /* star (save segment) */
+  el.querySelectorAll('.icon-btn.star').forEach(btn => {
+    btn.addEventListener('click', () => { saveSegment(parseInt(btn.dataset.idx)); btn.classList.add('starred'); setTimeout(() => btn.classList.remove('starred'), 1000); });
   });
 
   /* remove */
   el.querySelectorAll('.icon-btn.rm').forEach(btn => {
-    btn.addEventListener('click', () => {
-      activeSegments.splice(parseInt(btn.dataset.idx), 1);
-      refresh();
-    });
+    btn.addEventListener('click', () => { activeSegments.splice(parseInt(btn.dataset.idx), 1); openIconPicker = null; refresh(); });
   });
 
-  /* drag and drop */
-  el.querySelectorAll('.active-item').forEach(item => {
-    item.addEventListener('dragstart', e => {
-      dragSrcIdx = parseInt(item.dataset.idx);
-      item.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-    });
-    item.addEventListener('dragend', () => {
-      item.classList.remove('dragging');
-      el.querySelectorAll('.active-item').forEach(i => i.classList.remove('drag-over'));
-    });
-    item.addEventListener('dragover', e => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      el.querySelectorAll('.active-item').forEach(i => i.classList.remove('drag-over'));
-      if (parseInt(item.dataset.idx) !== dragSrcIdx) item.classList.add('drag-over');
-    });
+  /* drag & drop */
+  el.querySelectorAll('.active-item[draggable]').forEach(item => {
+    item.addEventListener('dragstart', e => { dragSrcIdx = parseInt(item.dataset.idx); item.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+    item.addEventListener('dragend', () => { item.classList.remove('dragging'); el.querySelectorAll('.active-item').forEach(i => i.classList.remove('drag-over')); });
+    item.addEventListener('dragover', e => { e.preventDefault(); el.querySelectorAll('.active-item').forEach(i => i.classList.remove('drag-over')); if (parseInt(item.dataset.idx) !== dragSrcIdx) item.classList.add('drag-over'); });
     item.addEventListener('drop', e => {
       e.preventDefault();
-      const targetIdx = parseInt(item.dataset.idx);
-      if (dragSrcIdx !== null && dragSrcIdx !== targetIdx) {
-        const [moved] = activeSegments.splice(dragSrcIdx, 1);
-        activeSegments.splice(targetIdx, 0, moved);
-        refresh();
-      }
+      const t = parseInt(item.dataset.idx);
+      if (dragSrcIdx !== null && dragSrcIdx !== t) { const [m] = activeSegments.splice(dragSrcIdx, 1); activeSegments.splice(t, 0, m); refresh(); }
     });
   });
 }
 
 /* ── palette ── */
 function renderPalette() {
-  const el = document.getElementById('segmentPalette');
-  if (!el) return;
+  const el = document.getElementById('segmentPalette'); if (!el) return;
   el.innerHTML = GROUPS.map(g => `
     <div class="seg-group">
       <div class="seg-group-label">${g.group}</div>
       <div class="seg-group-items">
         ${g.segments.map(seg => {
           const active = activeSegments.some(s => s.type === seg.type);
-          return `<button class="seg-btn ${active ? 'seg-active' : ''}" data-type="${seg.type}">
-            <span class="seg-lbl">${seg.label[lang] ?? seg.label.ko}</span>
-            <span class="seg-sample" style="${active ? `color:${COLOR_HEX[seg.defaultStyle?.split(' ')[0]] || '#00d97e'}` : ''}">${renderFmt(seg.defaultFmt)}</span>
-            <span class="seg-toggle">${active ? '✓' : '+'}</span>
+          return `<button class="seg-btn ${active?'seg-active':''}" data-type="${seg.type}">
+            <span class="seg-lbl">${seg.label[lang]??seg.label.ko}</span>
+            <span class="seg-sample" style="${active?styleToCSS(seg.defaultStyle):''}">${renderFmt(seg.defaultFmt)}</span>
+            <span class="seg-toggle">${active?'✓':'+'}</span>
           </button>`;
         }).join('')}
       </div>
     </div>`).join('');
-
   el.querySelectorAll('.seg-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const type = btn.dataset.type;
-      const idx = activeSegments.findIndex(s => s.type === type);
+      const type = btn.dataset.type, idx = activeSegments.findIndex(s => s.type === type);
       if (idx !== -1) { activeSegments.splice(idx, 1); }
       else {
-        let def = null;
-        for (const g of GROUPS) { def = g.segments.find(s => s.type === type); if (def) break; }
+        let def = null; for (const g of GROUPS) { def = g.segments.find(s => s.type === type); if (def) break; }
         if (!def) return;
-        activeSegments.push({ type, format: def.defaultFmt, style: def.defaultStyle, label: def.label[lang] ?? def.label.ko });
+        activeSegments.push({ type, format: def.defaultFmt, style: def.defaultStyle, label: def.label[lang]??def.label.ko });
       }
-      refresh();
+      openIconPicker = null; refresh();
     });
   });
 }
 
 /* ── preset chips ── */
 function renderPresetChips() {
-  const el = document.getElementById('presetChips');
-  if (!el) return;
-  el.innerHTML = PRESETS.map(p => `<button class="preset-chip" data-id="${p.id}">${p.title[lang] ?? p.title.ko}</button>`).join('');
+  const el = document.getElementById('presetChips'); if (!el) return;
+  el.innerHTML = PRESETS.map(p => `<button class="preset-chip" data-id="${p.id}">${p.title[lang]??p.title.ko}</button>`).join('');
   el.querySelectorAll('.preset-chip').forEach(btn => {
     btn.addEventListener('click', () => {
-      const p = PRESETS.find(x => x.id === btn.dataset.id);
-      if (!p) return;
-      separator = p.separator ?? '  ';
-      document.getElementById('separatorInput').value = separator;
+      const p = PRESETS.find(x => x.id === btn.dataset.id); if (!p) return;
+      separator = p.separator ?? '  '; document.getElementById('separatorInput').value = separator;
       activeSegments = p.segments.map(s => {
-        let def = null;
-        for (const g of GROUPS) { def = g.segments.find(d => d.type === s.type); if (def) break; }
-        return { type: s.type, format: s.format ?? def?.defaultFmt ?? s.type, style: s.style ?? def?.defaultStyle ?? 'green', label: def?.label?.[lang] ?? def?.label?.ko ?? s.type };
+        let def = null; for (const g of GROUPS) { def = g.segments.find(d => d.type === s.type); if (def) break; }
+        return { type: s.type, format: s.format??def?.defaultFmt??s.type, style: s.style??def?.defaultStyle??'#00d97e', label: def?.label?.[lang]??def?.label?.ko??s.type };
       });
-      el.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
-      refresh();
+      openIconPicker = null; el.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active')); btn.classList.add('active'); refresh();
     });
   });
 }
 
 /* ── separator ── */
-document.getElementById('separatorInput')?.addEventListener('input', e => { separator = e.target.value; refresh(); });
+document.getElementById('separatorInput')?.addEventListener('input', e => { separator = e.target.value; dispatchXterm(); updateOutput(); });
+
+/* ── save layout btn ── */
+document.getElementById('saveLayoutBtn')?.addEventListener('click', () => {
+  const name = document.getElementById('saveNameInput')?.value?.trim();
+  if (name && activeSegments.length) { saveLayout(name); document.getElementById('saveNameInput').value = ''; }
+});
 
 /* ── output tabs ── */
 document.querySelectorAll('.out-tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.out-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    const which = tab.dataset.tab;
-    document.getElementById('panelInstall').classList.toggle('hidden', which !== 'install');
-    document.getElementById('panelJson').classList.toggle('hidden', which !== 'json');
+    document.querySelectorAll('.out-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active');
+    const w = tab.dataset.tab; document.getElementById('panelInstall').classList.toggle('hidden', w!=='install'); document.getElementById('panelJson').classList.toggle('hidden', w!=='json');
   });
 });
 
@@ -488,107 +558,136 @@ document.querySelectorAll('.out-tab').forEach(tab => {
 ['copyInstallSh:installSh','copyInstallPs:installPs','copyJson:jsonOutput'].forEach(pair => {
   const [btnId, srcId] = pair.split(':');
   document.getElementById(btnId)?.addEventListener('click', async () => {
-    const text = document.getElementById(srcId)?.textContent ?? '';
-    try {
-      await navigator.clipboard.writeText(text);
-      const btn = document.getElementById(btnId);
-      const orig = btn.textContent; btn.textContent = '✓'; btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
-    } catch {}
+    try { await navigator.clipboard.writeText(document.getElementById(srcId)?.textContent??'');
+      const b = document.getElementById(btnId), o = b.textContent; b.textContent='✓'; b.classList.add('copied');
+      setTimeout(() => { b.textContent=o; b.classList.remove('copied'); }, 1800); } catch {}
   });
 });
 
 /* ── init ── */
-renderPresetChips(); renderPalette(); renderActiveList(); updateOutput();
+renderPresetChips(); renderPalette(); renderActiveList(); updateOutput(); renderSavedLayouts(); renderSavedSegments();
 </script>
 
 <style>
-.builder-layout { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
-.builder-header { margin-bottom: 1.75rem; }
-.builder-header h1 { font-size: 1.625rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.3rem; }
-.builder-header p { color: #555; font-size: 0.875rem; }
+.builder-layout { max-width:1100px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
+.builder-header { margin-bottom:1.75rem; }
+.builder-header h1 { font-size:1.625rem; font-weight:700; letter-spacing:-0.03em; margin-bottom:0.3rem; }
+.builder-header p { color:#555; font-size:0.875rem; }
 
-.preset-start { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding: 0.75rem 1rem; background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 8px; }
-.start-label { font-size: 0.75rem; color: #444; white-space: nowrap; }
-.preset-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-.preset-chip { padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid #1e1e1e; background: transparent; color: #555; font-size: 0.75rem; font-family: inherit; cursor: pointer; transition: all 0.12s; }
-.preset-chip:hover { border-color: #2e2e2e; color: #888; }
-.preset-chip.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+.preset-start { display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap; margin-bottom:1.25rem; padding:0.75rem 1rem; background:#0e0e0e; border:1px solid #1c1c1c; border-radius:8px; }
+.start-label { font-size:0.75rem; color:#444; white-space:nowrap; }
+.preset-chips { display:flex; flex-wrap:wrap; gap:0.3rem; }
+.preset-chip { padding:0.2rem 0.6rem; border-radius:999px; border:1px solid #1e1e1e; background:transparent; color:#555; font-size:0.75rem; font-family:inherit; cursor:pointer; transition:all 0.12s; }
+.preset-chip:hover { border-color:#2e2e2e; color:#888; }
+.preset-chip.active { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
 
-.builder-main { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
-@media (max-width: 720px) { .builder-main { grid-template-columns: 1fr; } }
-.panel { background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 10px; padding: 1.125rem; }
-.panel-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #333; margin-bottom: 0.875rem; display: flex; align-items: center; gap: 0.5rem; }
-.drag-hint { font-size: 0.6rem; color: #252525; font-weight: 400; text-transform: none; letter-spacing: 0; }
+.builder-main { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem; }
+@media (max-width:720px) { .builder-main { grid-template-columns:1fr; } }
+.panel { background:#0e0e0e; border:1px solid #1c1c1c; border-radius:10px; padding:1.125rem; }
+.panel-title { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#333; margin-bottom:0.875rem; display:flex; align-items:center; gap:0.5rem; }
+.drag-hint { font-size:0.6rem; color:#222; font-weight:400; text-transform:none; letter-spacing:0; }
 
 /* palette */
-.seg-group { margin-bottom: 0.875rem; }
-.seg-group-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #252525; margin-bottom: 0.3rem; }
-.seg-group-items { display: flex; flex-direction: column; gap: 0.2rem; }
-.seg-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.625rem; border-radius: 5px; border: 1px solid #161616; background: transparent; color: #444; font-family: inherit; cursor: pointer; text-align: left; transition: all 0.1s; }
-.seg-btn:hover { border-color: #222; color: #666; }
-.seg-btn.seg-active { border-color: #1a3d2b; background: #0a1810; }
-.seg-lbl { font-size: 0.75rem; font-weight: 500; min-width: 90px; flex-shrink: 0; }
-.seg-sample { font-size: 0.7rem; font-family: var(--font-mono); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #2a2a2a; }
-.seg-btn.seg-active .seg-sample { color: inherit; }
-.seg-toggle { font-size: 0.7rem; color: #2a2a2a; margin-left: auto; flex-shrink: 0; }
-.seg-btn.seg-active .seg-toggle { color: var(--accent); }
+.seg-group { margin-bottom:0.875rem; }
+.seg-group-label { font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#252525; margin-bottom:0.3rem; }
+.seg-group-items { display:flex; flex-direction:column; gap:0.2rem; }
+.seg-btn { display:flex; align-items:center; gap:0.5rem; padding:0.3rem 0.625rem; border-radius:5px; border:1px solid #161616; background:transparent; color:#444; font-family:inherit; cursor:pointer; text-align:left; transition:all 0.1s; }
+.seg-btn:hover { border-color:#222; color:#666; }
+.seg-btn.seg-active { border-color:#1a3d2b; background:#0a1810; }
+.seg-lbl { font-size:0.75rem; font-weight:500; min-width:90px; flex-shrink:0; }
+.seg-sample { font-size:0.7rem; font-family:var(--font-mono); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#2a2a2a; }
+.seg-btn.seg-active .seg-sample { color:inherit; }
+.seg-toggle { font-size:0.7rem; color:#2a2a2a; margin-left:auto; flex-shrink:0; }
+.seg-btn.seg-active .seg-toggle { color:var(--accent); }
 
-.separator-row { display: flex; align-items: center; gap: 0.625rem; padding-top: 0.75rem; border-top: 1px solid #161616; margin-top: 0.5rem; }
-.sep-label { font-size: 0.75rem; color: #333; }
-.sep-input { background: #111; border: 1px solid #1e1e1e; border-radius: 4px; color: #888; font-family: var(--font-mono); font-size: 0.8125rem; padding: 0.2rem 0.5rem; width: 72px; outline: none; }
-.sep-input:focus { border-color: #2e2e2e; }
+.separator-row { display:flex; align-items:center; gap:0.625rem; padding-top:0.75rem; border-top:1px solid #161616; margin-top:0.5rem; }
+.sep-label { font-size:0.75rem; color:#333; }
+.sep-input { background:#111; border:1px solid #1e1e1e; border-radius:4px; color:#888; font-family:var(--font-mono); font-size:0.8125rem; padding:0.2rem 0.5rem; width:72px; outline:none; }
 
 /* active list */
-.active-list { display: flex; flex-direction: column; gap: 0.4rem; min-height: 80px; }
-.empty-hint { font-size: 0.8rem; color: #252525; padding: 1.5rem 0; text-align: center; }
-.active-item { background: #0d0d0d; border: 1px solid #1c1c1c; border-radius: 6px; padding: 0.5rem 0.625rem; display: flex; flex-direction: column; gap: 0.35rem; cursor: default; transition: border-color 0.15s; }
-.active-item.drag-over { border-color: var(--accent); background: #0a1810; }
-.active-item.dragging { opacity: 0.4; }
-.active-header { display: flex; align-items: center; gap: 0.4rem; }
-.drag-handle { font-size: 0.85rem; color: #252525; cursor: grab; flex-shrink: 0; user-select: none; }
-.drag-handle:active { cursor: grabbing; }
-.active-type { font-size: 0.7rem; font-weight: 600; color: #333; flex-shrink: 0; }
-.active-preview { font-size: 0.75rem; font-family: var(--font-mono); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.active-btns { margin-left: auto; }
-.icon-btn { width: 18px; height: 18px; border-radius: 3px; border: 1px solid #1e1e1e; background: transparent; color: #2a2a2a; font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
-.icon-btn.rm:hover { color: #f87171; border-color: #f87171; }
+.active-list { display:flex; flex-direction:column; gap:0.4rem; min-height:80px; }
+.empty-hint { font-size:0.8rem; color:#252525; padding:1.5rem 0; text-align:center; }
+.active-item { background:#0d0d0d; border:1px solid #1c1c1c; border-radius:7px; padding:0.6rem 0.75rem; display:flex; flex-direction:column; gap:0.4rem; transition:border-color 0.15s; }
+.active-item.drag-over { border-color:var(--accent); background:#0a1810; }
+.active-item.dragging { opacity:0.35; }
+.active-header { display:flex; align-items:center; gap:0.4rem; }
+.drag-handle { font-size:0.9rem; color:#252525; cursor:grab; flex-shrink:0; user-select:none; }
+.drag-handle:active { cursor:grabbing; }
+.active-type { font-size:0.7rem; font-weight:600; color:#333; flex-shrink:0; min-width:60px; }
+.active-preview { font-size:0.75rem; font-family:var(--font-mono); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ah-actions { display:flex; gap:0.25rem; margin-left:auto; }
+.icon-btn { width:20px; height:20px; border-radius:3px; border:1px solid #1e1e1e; background:transparent; color:#2a2a2a; font-size:0.7rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.12s; }
+.icon-btn.star:hover { color:#fbbf24; border-color:#fbbf24; }
+.icon-btn.star.starred { color:#fbbf24; border-color:#fbbf24; }
+.icon-btn.rm:hover { color:#f87171; border-color:#f87171; }
 
-/* color swatches */
-.swatch-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem; }
-.swatch { width: 18px; height: 18px; border-radius: 4px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.1s, transform 0.1s; flex-shrink: 0; }
-.swatch:hover { transform: scale(1.2); border-color: rgba(255,255,255,0.3); }
-.swatch.swatch-on { border-color: #fff; box-shadow: 0 0 0 1px #000; }
-.bold-toggle { font-size: 0.65rem; color: #444; display: flex; align-items: center; gap: 0.2rem; cursor: pointer; margin-left: 0.375rem; border-left: 1px solid #1c1c1c; padding-left: 0.375rem; }
-.bold-check { width: 11px; height: 11px; accent-color: var(--accent); }
+/* color row */
+.color-row { display:flex; align-items:center; gap:0.5rem; }
+.color-pick-label { font-size:0.65rem; color:#333; flex-shrink:0; }
+.color-hex-input { width:28px; height:22px; border:1px solid #222; border-radius:3px; padding:1px; background:#111; cursor:pointer; flex-shrink:0; }
+.color-hex-input::-webkit-color-swatch-wrapper { padding:0; }
+.color-hex-input::-webkit-color-swatch { border:none; border-radius:2px; }
+.color-hex-val { font-size:0.65rem; font-family:var(--font-mono); color:#333; flex-shrink:0; }
+.bold-toggle { font-size:0.65rem; color:#444; display:flex; align-items:center; gap:0.2rem; cursor:pointer; margin-left:auto; }
+.bold-check { width:11px; height:11px; accent-color:var(--accent); }
 
-.fmt-row { display: flex; }
-.fmt-input { background: transparent; border: none; border-bottom: 1px solid #1c1c1c; color: #555; font-family: var(--font-mono); font-size: 0.7rem; outline: none; width: 100%; padding: 0.1rem 0; }
-.fmt-input:focus { border-bottom-color: #2e2e2e; color: #888; }
+/* fmt row */
+.fmt-row { display:flex; align-items:center; gap:0.375rem; }
+.fmt-input { flex:1; background:transparent; border:none; border-bottom:1px solid #1c1c1c; color:#555; font-family:var(--font-mono); font-size:0.7rem; outline:none; padding:0.1rem 0; }
+.fmt-input:focus { border-bottom-color:#2e2e2e; color:#888; }
+.icon-pick-open { flex-shrink:0; width:20px; height:20px; border-radius:3px; border:1px solid #1c1c1c; background:transparent; color:#333; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.12s; }
+.icon-pick-open:hover { color:var(--accent); border-color:var(--accent); }
 
-/* xterm section */
-.xterm-section { margin-bottom: 1.25rem; }
-.xterm-header { display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem; }
-.xterm-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; color: #00d97e; background: rgba(0,217,126,0.1); padding: 0.1rem 0.45rem; border-radius: 3px; border: 1px solid rgba(0,217,126,0.2); }
-.xterm-wrapper { border: 1px solid #1a1a1a; border-radius: 10px; overflow: hidden; background: #080808; }
-#xterm-container { padding: 10px 14px; }
-/* override xterm defaults */
-.xterm-viewport { background: transparent !important; }
+/* icon picker panel */
+.icon-picker { background:#0a0a0a; border:1px solid #1a1a1a; border-radius:6px; padding:0.625rem; margin-top:0.125rem; display:flex; flex-direction:column; gap:0.375rem; }
+.icon-cat-label { font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#2a2a2a; }
+.icon-cat-items { display:flex; flex-wrap:wrap; gap:0.25rem; }
+.ic-btn { width:26px; height:26px; border-radius:4px; border:1px solid #1a1a1a; background:transparent; color:#555; font-size:0.875rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.1s; }
+.ic-btn:hover { border-color:#2a2a2a; color:#d0d0d0; background:#141414; }
+
+/* xterm */
+.xterm-section { margin-bottom:1.25rem; }
+.xterm-header { display:flex; align-items:center; gap:0.625rem; margin-bottom:0.625rem; }
+.xterm-badge { font-size:0.6rem; font-weight:700; color:#00d97e; background:rgba(0,217,126,0.08); padding:0.1rem 0.45rem; border-radius:3px; border:1px solid rgba(0,217,126,0.15); }
+.xterm-wrapper { border:1px solid #1a1a1a; border-radius:10px; overflow:hidden; background:#080808; }
+#xterm-container { padding:10px 14px; }
+
+/* saves section */
+.saves-section { background:#0e0e0e; border:1px solid #1c1c1c; border-radius:10px; padding:1.125rem; margin-bottom:1.25rem; }
+.saves-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.875rem; }
+.save-form { display:flex; gap:0.5rem; align-items:center; }
+.save-name-input { background:#111; border:1px solid #1e1e1e; border-radius:5px; color:#888; font-size:0.8rem; padding:0.3rem 0.625rem; outline:none; width:160px; font-family:inherit; }
+.save-name-input:focus { border-color:#2e2e2e; }
+.save-btn { padding:0.3rem 0.75rem; background:var(--accent-dim); border:1px solid var(--accent); border-radius:5px; color:var(--accent); font-size:0.75rem; font-family:inherit; cursor:pointer; transition:all 0.12s; }
+.save-btn:hover { background:var(--accent); color:#000; }
+.saves-body { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+@media (max-width:600px) { .saves-body { grid-template-columns:1fr; } }
+.saves-col-title { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#2a2a2a; margin-bottom:0.5rem; }
+.save-empty { font-size:0.75rem; color:#222; }
+.save-item { display:flex; align-items:center; gap:0.375rem; padding:0.375rem 0.5rem; border:1px solid #1a1a1a; border-radius:5px; background:#0a0a0a; margin-bottom:0.3rem; }
+.save-name { font-size:0.75rem; color:#555; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.save-preview { font-size:0.75rem; font-family:var(--font-mono); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.save-meta { font-size:0.65rem; color:#2a2a2a; flex-shrink:0; }
+.save-action { padding:0.15rem 0.5rem; border-radius:3px; border:1px solid #1e1e1e; background:transparent; font-size:0.7rem; font-family:inherit; cursor:pointer; transition:all 0.1s; color:#333; }
+.save-action.load { color:var(--accent); border-color:#1a3d2b; }
+.save-action.load:hover { background:var(--accent-dim); }
+.save-action.del:hover { color:#f87171; border-color:#f87171; }
 
 /* output */
-.output-section { background: #0e0e0e; border: 1px solid #1c1c1c; border-radius: 10px; overflow: hidden; }
-.output-tabs { display: flex; border-bottom: 1px solid #1a1a1a; }
-.out-tab { padding: 0.5rem 1rem; background: transparent; border: none; color: #333; font-size: 0.8125rem; font-family: inherit; cursor: pointer; transition: all 0.12s; border-bottom: 2px solid transparent; }
-.out-tab:hover { color: #555; }
-.out-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-.out-panel { padding: 1rem; }
-.out-panel.hidden { display: none; }
-.install-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #333; margin-bottom: 0.3rem; }
-.code-row { display: flex; gap: 0.5rem; align-items: center; background: #090909; border: 1px solid #181818; border-radius: 6px; padding: 0.5rem 0.75rem; }
-.code-block { flex: 1; font-size: 0.75rem; color: #555; white-space: nowrap; overflow: auto; font-family: var(--font-mono); }
-.json-row { align-items: flex-start; }
-.json-pre { white-space: pre; flex: 1; font-size: 0.75rem; color: #555; font-family: var(--font-mono); overflow: auto; margin: 0; max-height: 220px; }
-.copy-btn { flex-shrink: 0; padding: 0.2rem 0.55rem; background: transparent; border: 1px solid #1e1e1e; border-radius: 4px; color: #333; font-size: 0.7rem; cursor: pointer; font-family: inherit; transition: all 0.12s; }
-.copy-btn:hover { border-color: #2e2e2e; color: #555; }
-.copy-btn.copied { color: var(--accent); border-color: var(--accent); }
+.output-section { background:#0e0e0e; border:1px solid #1c1c1c; border-radius:10px; overflow:hidden; }
+.output-tabs { display:flex; border-bottom:1px solid #1a1a1a; }
+.out-tab { padding:0.5rem 1rem; background:transparent; border:none; color:#333; font-size:0.8125rem; font-family:inherit; cursor:pointer; transition:all 0.12s; border-bottom:2px solid transparent; }
+.out-tab:hover { color:#555; }
+.out-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+.out-panel { padding:1rem; }
+.out-panel.hidden { display:none; }
+.install-label { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#333; margin-bottom:0.3rem; }
+.mt { margin-top:0.75rem; }
+.code-row { display:flex; gap:0.5rem; align-items:center; background:#090909; border:1px solid #181818; border-radius:6px; padding:0.5rem 0.75rem; }
+.code-block { flex:1; font-size:0.75rem; color:#555; white-space:nowrap; overflow:auto; font-family:var(--font-mono); }
+.json-row { align-items:flex-start; }
+.json-pre { white-space:pre; flex:1; font-size:0.75rem; color:#555; font-family:var(--font-mono); overflow:auto; margin:0; max-height:220px; }
+.copy-btn { flex-shrink:0; padding:0.2rem 0.55rem; background:transparent; border:1px solid #1e1e1e; border-radius:4px; color:#333; font-size:0.7rem; cursor:pointer; font-family:inherit; transition:all 0.12s; }
+.copy-btn:hover { border-color:#2e2e2e; color:#555; }
+.copy-btn.copied { color:var(--accent); border-color:var(--accent); }
 </style>
