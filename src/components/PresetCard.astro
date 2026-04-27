@@ -20,11 +20,10 @@ const t_title = title[lang] ?? title.ko;
 const t_desc = description[lang] ?? description.ko;
 const href = lang === 'en' ? `${base}en/presets/${id}` : `${base}presets/${id}`;
 
+// 실제 렌더링된 세그먼트
 const rendered = renderSegments(segments);
-const statusline = rendered.join(separator);
-
-const hasCache = segments.some(s => s.type === 'cache');
 const cachePct = SAMPLE_VALUES.cache_hit_rate as number;
+const hasCache = segments.some(s => s.type === 'cache');
 const bar = hasCache ? tokenBar(cachePct) : null;
 
 const categoryLabel: Record<string, { ko: string; en: string }> = {
@@ -38,20 +37,37 @@ const categoryLabel: Record<string, { ko: string; en: string }> = {
 const catLabel = categoryLabel[category]?.[lang] ?? category;
 ---
 <a href={href} class="card">
-  <div class="card-terminal">
-    <div class="term-bar">
+  <!-- 터미널 미리보기: statusline이 주인공 -->
+  <div class="card-preview">
+    <div class="term-chrome">
       <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-      <span class="term-title">{id}</span>
+      <span class="term-id">{id}</span>
     </div>
-    <div class="term-body">
-      <div class="term-line"><span class="term-prompt">~/project</span> <span class="term-dim">$</span> claude</div>
-      <div class="term-line term-dim">▶ Analyzing changes...</div>
+    <!-- 실제 statusline을 크게 보여줌 -->
+    <div class="term-statusline">
+      <div class="sl-segments">
+        {rendered.map((seg, i) => (
+          <span class:list={['sl-seg', i === 0 && 'sl-first']}>
+            {i > 0 && <span class="sl-sep">{separator.trim() || '|'}</span>}
+            {seg}
+          </span>
+        ))}
+      </div>
+      {bar && (
+        <div class="sl-bar-row">
+          <span class="sl-bar">{bar}</span>
+          <span class="sl-bar-pct">{cachePct.toFixed(0)}%</span>
+        </div>
+      )}
     </div>
-    <div class="term-status">
-      <span class="status-text">{statusline}</span>
-      {bar && <span class="status-bar">{bar} {cachePct.toFixed(0)}%</span>}
+    <!-- 미니 프롬프트 힌트 -->
+    <div class="term-prompt-line">
+      <span class="prompt-text">~/project</span>
+      <span class="prompt-dim"> $ claude ▌</span>
     </div>
   </div>
+
+  <!-- 카드 정보 -->
   <div class="card-body">
     <div class="card-meta">
       <span class="badge">{catLabel}</span>
@@ -67,105 +83,113 @@ const catLabel = categoryLabel[category]?.[lang] ?? category;
   display: flex;
   flex-direction: column;
   background: #0f0f0f;
-  border: 1px solid #1a1a1a;
+  border: 1px solid #1c1c1c;
   border-radius: 10px;
   overflow: hidden;
-  transition: border-color 0.2s, transform 0.18s;
+  transition: border-color 0.2s, transform 0.18s, box-shadow 0.2s;
   cursor: pointer;
   text-decoration: none;
 }
 .card:hover {
-  border-color: #2a2a2a;
+  border-color: #2e2e2e;
   transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
-.card-terminal {
+/* ─── 터미널 미리보기 ─── */
+.card-preview {
   background: #0d0d0d;
+  border-bottom: 1px solid #1c1c1c;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  border-bottom: 1px solid #1a1a1a;
 }
-.term-bar {
+.term-chrome {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 7px 10px;
-  border-bottom: 1px solid #1a1a1a;
+  padding: 7px 11px;
+  border-bottom: 1px solid #181818;
 }
-.dot {
-  width: 9px; height: 9px;
-  border-radius: 50%;
-}
+.dot { width: 8px; height: 8px; border-radius: 50%; }
 .dot.r { background: #ff5f57; }
 .dot.y { background: #febc2e; }
 .dot.g { background: #28c840; }
-.term-title {
+.term-id {
   margin-left: 6px;
-  color: #444;
-  font-size: 0.6875rem;
-  flex: 1;
+  font-size: 0.65rem;
+  color: #333;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.term-body {
-  padding: 8px 12px 6px;
-  min-height: 42px;
+/* ─── statusline 메인 표시 영역 ─── */
+.term-statusline {
+  padding: 0.875rem 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
-.term-line {
-  line-height: 1.65;
-  color: #888;
+.sl-segments {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
 }
-.term-dim { color: #444; }
-.term-prompt { color: var(--accent); }
-.term-status {
+.sl-seg {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.sl-first {
+  font-weight: 500;
+}
+.sl-sep {
+  color: #2e2e2e;
+  margin: 0 0.4rem;
+  font-size: 0.75rem;
+}
+.sl-bar-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 4px 12px 5px;
-  background: #111;
-  border-top: 1px solid #1a1a1a;
-  gap: 0.75rem;
-  min-height: 24px;
+  gap: 0.375rem;
 }
-.status-text {
-  color: var(--accent);
+.sl-bar {
   font-size: 0.7rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
+  color: #2a6645;
+  letter-spacing: -0.5px;
 }
-.status-bar {
-  color: #555;
-  font-size: 0.65rem;
-  white-space: nowrap;
-  flex-shrink: 0;
+.sl-bar-pct {
+  font-size: 0.7rem;
+  color: #3a8a5a;
 }
-.card-body {
-  padding: 0.875rem 1rem 1rem;
+/* ─── 하단 프롬프트 힌트 ─── */
+.term-prompt-line {
+  padding: 0.25rem 1rem 0.625rem;
+  font-size: 0.7rem;
 }
+.prompt-text { color: #2a6645; }
+.prompt-dim { color: #282828; }
+/* ─── 카드 본문 ─── */
+.card-body { padding: 0.875rem 1rem 1rem; }
 .card-meta {
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.45rem;
   flex-wrap: wrap;
 }
 .badge {
-  font-size: 0.625rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--accent);
   background: var(--accent-dim);
   padding: 0.15rem 0.45rem;
   border-radius: 3px;
 }
-.tag {
-  font-size: 0.65rem;
-  color: #444;
-  font-family: var(--font-mono);
-}
+.tag { font-size: 0.65rem; color: #383838; font-family: var(--font-mono); }
 .card-title {
   font-size: 0.9375rem;
   font-weight: 600;
