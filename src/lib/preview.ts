@@ -66,11 +66,6 @@ export const SAMPLE_VALUES: Record<string, number | string | boolean> = {
   // ── Sub-agents ───────────────────────────────────────────
   sub_agents: 3,
 
-  // ── Update Check ─────────────────────────────────────────
-  latest_version: '2.2.0',
-  update_available: true,
-  update_channel: 'latest',
-
   // ── Runtime / Language ───────────────────────────────────
   node_version: '22.15.1',
   python_version: '3.13.2',

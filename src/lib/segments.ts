@@ -10,8 +10,7 @@ export type SegmentCondition =
   | 'thinking'  // 확장 사고 활성화 시
   | 'docker'    // Docker 실행 중
   | 'tmux'      // tmux 세션 안
-  | 'cloud'     // AWS/K8s/GCP 환경변수 있을 때
-  | 'update';   // 새 버전 사용 가능 시
+  | 'cloud';    // AWS/K8s/GCP 환경변수 있을 때
 
 export interface SegmentDef {
   type: string;
@@ -39,7 +38,6 @@ export const WHEN_LABELS: Record<SegmentCondition, { ko: string; en: string }> =
   docker:   { ko: 'Docker 실행 중',en: 'docker running' },
   tmux:     { ko: 'tmux 세션',     en: 'in tmux' },
   cloud:    { ko: '클라우드 환경', en: 'cloud env' },
-  update:   { ko: '업데이트 가능', en: 'update available' },
 };
 
 // 조건별 bash 스크립트 가드 코드 (설치 스크립트 생성용)
@@ -56,7 +54,6 @@ export const WHEN_BASH_GUARD: Record<SegmentCondition, string> = {
   docker:   'command -v docker > /dev/null 2>&1 && [ "$(docker ps -q 2>/dev/null | wc -l)" -gt 0 ] &&',
   tmux:     '[ -n "$TMUX" ] &&',
   cloud:    '[ -n "${AWS_PROFILE:-}${KUBECONFIG:-}${GOOGLE_CLOUD_PROJECT:-}" ] &&',
-  update:   '[ -f /tmp/claude-code-update ] && [ -n "$(cat /tmp/claude-code-update 2>/dev/null)" ] &&',
 };
 
 export function makeSegmentGroups(lang: 'ko' | 'en'): SegmentGroup[] {
@@ -158,13 +155,6 @@ export function makeSegmentGroups(lang: 'ko' | 'en'): SegmentGroup[] {
       { type:'docker_count',  label:{ko:'컨테이너 수',       en:'Container Count'},defaultFmt:'containers:{docker_running}',defaultStyle:'#60a5fa',    when:'docker' },
       { type:'port',          label:{ko:'포트 상태',         en:'Port Status'},    defaultFmt:':{port_3000}',              defaultStyle:'#00d97e',      when:'always' },
       { type:'tmux',          label:{ko:'tmux 세션',         en:'tmux Session'},   defaultFmt:'tmux:{tmux_session}',       defaultStyle:'#c084fc',      when:'tmux' },
-    ]},
-    // ── 12. 업데이트 알림 ─────────────────────────────────────
-    { group: g('업데이트 알림', 'Update Check'), segments: [
-      { type:'update_badge',  label:{ko:'업데이트 알림',   en:'Update Available'},defaultFmt:'↑ v{latest_version}',      defaultStyle:'#fbbf24 bold', when:'update' },
-      { type:'update_detail', label:{ko:'현재/최신 버전',  en:'Version Compare'}, defaultFmt:'v{version}→{latest_version}',defaultStyle:'#fb923c',     when:'update' },
-      { type:'update_minimal',label:{ko:'최신 버전 표시',  en:'Latest Version'},  defaultFmt:'latest:v{latest_version}',  defaultStyle:'#fbbf24',      when:'update' },
-      { type:'version_plain', label:{ko:'현재 버전만',     en:'Current Version'}, defaultFmt:'v{version}',                defaultStyle:'#4b5563',      when:'always' },
     ]},
   ];
 }
