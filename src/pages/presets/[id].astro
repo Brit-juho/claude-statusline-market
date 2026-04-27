@@ -11,7 +11,8 @@ export async function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const { preset } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL as string;
+const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
 
 const installSh = getInstallCommand(preset, 'sh');
 const installPs = getInstallCommand(preset, 'ps1');
