@@ -1,6 +1,13 @@
 ---
 import type { Lang } from '../i18n/index.ts';
-import { renderSegments, tokenBar, SAMPLE_VALUES } from '../lib/preview.ts';
+import { renderSegmentsWithStyle, contextBarStyled, SAMPLE_VALUES } from '../lib/preview.ts';
+
+interface Segment {
+  type: string;
+  format?: string;
+  enabled?: boolean;
+  style?: string;
+}
 
 interface Props {
   id: string;
@@ -11,7 +18,7 @@ interface Props {
   tool: string;
   lang: Lang;
   base: string;
-  segments: Array<{ type: string; format?: string; enabled?: boolean }>;
+  segments: Segment[];
   separator?: string;
 }
 
@@ -20,10 +27,10 @@ const t_title = title[lang] ?? title.ko;
 const t_desc = description[lang] ?? description.ko;
 const href = lang === 'en' ? `${base}en/presets/${id}` : `${base}presets/${id}`;
 
-const rendered = renderSegments(segments);
-const cachePct = SAMPLE_VALUES.cache_hit_rate as number;
-const hasCache = segments.some(s => s.type === 'cache');
-const bar = hasCache ? tokenBar(cachePct) : null;
+const renderedSegs = renderSegmentsWithStyle(segments);
+const usedPct = SAMPLE_VALUES.used_percentage as number;
+const hasContextBar = segments.some(s => s.type === 'context_bar');
+const ctxBar = hasContextBar ? contextBarStyled(usedPct) : null;
 
 const categoryLabel: Record<string, { ko: string; en: string }> = {
   minimal:      { ko: '미니멀', en: 'Minimal' },
@@ -36,8 +43,6 @@ const categoryLabel: Record<string, { ko: string; en: string }> = {
 const catLabel = categoryLabel[category]?.[lang] ?? category;
 ---
 <a href={href} class="card">
-
-  <!-- ① 터미널 미리보기 영역 -->
   <div class="card-terminal">
     <div class="term-chrome">
       <div class="term-dots">
@@ -47,35 +52,32 @@ const catLabel = categoryLabel[category]?.[lang] ?? category;
       <span class="term-id">{id}</span>
     </div>
 
-    <!-- statusline: 프리셋의 핵심 -->
+    <!-- 실제 렌더링된 statusline — 색상 적용 -->
     <div class="term-statusline">
       <div class="sl-row">
-        {rendered.map((seg, i) => (
+        {renderedSegs.map((seg, i) => (
           <span class="sl-seg">
-            {i > 0 && <span class="sl-div">·</span>}
-            <span class="sl-val">{seg}</span>
+            {i > 0 && <span class="sl-div">{separator.trim() || '·'}</span>}
+            <span class="sl-val" style={seg.cssStyle || 'color:#00d97e'}>{seg.text}</span>
           </span>
         ))}
       </div>
-      {bar && (
+      {ctxBar && (
         <div class="sl-bar-row">
-          <span class="sl-bar-fill">{bar}</span>
-          <span class="sl-bar-num">{cachePct.toFixed(0)}%</span>
+          <span class="sl-bar-fill" style={ctxBar.css}>{ctxBar.bar}</span>
+          <span class="sl-bar-num">{usedPct}%</span>
         </div>
       )}
     </div>
 
-    <!-- 프롬프트 힌트 (구분 역할) -->
     <div class="term-footer">
       <span class="term-cwd">~/project</span>
       <span class="term-cursor">$▌</span>
     </div>
   </div>
 
-  <!-- ② 구분선 -->
   <div class="card-divider"></div>
 
-  <!-- ③ 정보 영역 -->
   <div class="card-info">
     <div class="info-top">
       <span class="badge">{catLabel}</span>
@@ -85,183 +87,49 @@ const catLabel = categoryLabel[category]?.[lang] ?? category;
     <p class="card-desc">{t_desc}</p>
   </div>
 
-  <!-- ④ 태그 영역 -->
   {tags.length > 0 && (
     <div class="card-tags">
       {tags.slice(0, 3).map(tag => <span class="tag">#{tag}</span>)}
     </div>
   )}
-
 </a>
 
 <style>
 .card {
-  display: flex;
-  flex-direction: column;
-  background: #0e0e0e;
-  border: 1px solid #1c1c1c;
-  border-radius: 12px;
-  overflow: hidden;
+  display: flex; flex-direction: column;
+  background: #0e0e0e; border: 1px solid #1c1c1c;
+  border-radius: 12px; overflow: hidden;
   text-decoration: none;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .card:hover {
-  border-color: #2c2c2c;
-  transform: translateY(-2px);
+  border-color: #2c2c2c; transform: translateY(-2px);
   box-shadow: 0 12px 40px rgba(0,0,0,0.45);
 }
-
-/* ① 터미널 */
-.card-terminal {
-  background: #080808;
-  font-family: var(--font-mono);
-}
-.term-chrome {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 8px 12px;
-  border-bottom: 1px solid #161616;
-}
+.card-terminal { background: #080808; font-family: var(--font-mono); }
+.term-chrome { display: flex; align-items: center; gap: 0.5rem; padding: 8px 12px; border-bottom: 1px solid #141414; }
 .term-dots { display: flex; gap: 5px; }
 .dot { width: 9px; height: 9px; border-radius: 50%; }
-.dot.r { background: #ff5f57; }
-.dot.y { background: #febc2e; }
-.dot.g { background: #28c840; }
-.term-label {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #252525;
-  margin-left: 2px;
-}
-.term-id {
-  margin-left: auto;
-  font-size: 0.65rem;
-  color: #252525;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 140px;
-}
-
-/* statusline */
-.term-statusline {
-  padding: 1rem 1.125rem 0.625rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.sl-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0;
-  min-height: 1.25rem;
-}
-.sl-seg {
-  display: inline-flex;
-  align-items: center;
-}
-.sl-div {
-  color: #252525;
-  margin: 0 0.45rem;
-  font-size: 0.75rem;
-}
-.sl-val {
-  color: var(--accent);
-  font-size: 0.8125rem;
-  white-space: nowrap;
-}
-.sl-bar-row {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-}
-.sl-bar-fill {
-  font-size: 0.7rem;
-  color: #1e5c3a;
-  letter-spacing: -0.5px;
-}
-.sl-bar-num {
-  font-size: 0.7rem;
-  color: #2e7a52;
-}
-.term-footer {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.375rem 1.125rem 0.75rem;
-  font-size: 0.7rem;
-}
-.term-cwd { color: #222; }
-.term-cursor { color: #1e1e1e; }
-
-/* ② 구분선 */
-.card-divider {
-  height: 1px;
-  background: linear-gradient(90deg, #1a1a1a 0%, #222 50%, #1a1a1a 100%);
-}
-
-/* ③ 정보 */
-.card-info {
-  padding: 0.875rem 1.125rem 0.5rem;
-}
-.info-top {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.badge {
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-dim);
-  padding: 0.15rem 0.45rem;
-  border-radius: 3px;
-}
-.info-tool {
-  font-size: 0.65rem;
-  font-family: var(--font-mono);
-  color: #2a2a2a;
-}
-.card-title {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: #e0e0e0;
-  margin-bottom: 0.3rem;
-  line-height: 1.3;
-}
-.card-desc {
-  font-size: 0.8125rem;
-  color: #555;
-  line-height: 1.55;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* ④ 태그 */
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-  padding: 0.5rem 1.125rem 0.875rem;
-  border-top: 1px solid #161616;
-  margin-top: 0.5rem;
-}
-.tag {
-  font-size: 0.65rem;
-  font-family: var(--font-mono);
-  color: #2e2e2e;
-  background: #111;
-  padding: 0.1rem 0.4rem;
-  border-radius: 3px;
-  border: 1px solid #1e1e1e;
-}
+.dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+.term-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: #222; margin-left: 2px; }
+.term-id { margin-left: auto; font-size: 0.65rem; color: #222; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
+.term-statusline { padding: 0.875rem 1.125rem 0.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.sl-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0; min-height: 1.25rem; }
+.sl-seg { display: inline-flex; align-items: center; }
+.sl-div { color: #1e1e1e; margin: 0 0.4rem; font-size: 0.75rem; }
+.sl-val { font-size: 0.8125rem; white-space: nowrap; }
+.sl-bar-row { display: flex; align-items: center; gap: 0.375rem; }
+.sl-bar-fill { font-size: 0.7rem; letter-spacing: -0.5px; }
+.sl-bar-num { font-size: 0.7rem; color: #444; }
+.term-footer { display: flex; align-items: center; gap: 0.375rem; padding: 0.375rem 1.125rem 0.75rem; font-size: 0.7rem; }
+.term-cwd { color: #1e1e1e; } .term-cursor { color: #181818; }
+.card-divider { height: 1px; background: linear-gradient(90deg, #161616 0%, #1e1e1e 50%, #161616 100%); }
+.card-info { padding: 0.875rem 1.125rem 0.5rem; }
+.info-top { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--accent); background: var(--accent-dim); padding: 0.15rem 0.45rem; border-radius: 3px; }
+.info-tool { font-size: 0.65rem; font-family: var(--font-mono); color: #222; }
+.card-title { font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.02em; color: #d8d8d8; margin-bottom: 0.3rem; line-height: 1.3; }
+.card-desc { font-size: 0.8125rem; color: #4a4a4a; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; padding: 0.5rem 1.125rem 0.875rem; border-top: 1px solid #141414; margin-top: 0.5rem; }
+.tag { font-size: 0.65rem; font-family: var(--font-mono); color: #252525; background: #0d0d0d; padding: 0.1rem 0.4rem; border-radius: 3px; border: 1px solid #1a1a1a; }
 </style>

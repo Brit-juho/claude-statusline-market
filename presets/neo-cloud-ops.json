@@ -1,0 +1,27 @@
+{
+  "id": "neo-cloud-ops",
+  "version": "0.1.0",
+  "title": { "ko": "클라우드 Ops", "en": "Cloud Ops" },
+  "description": {
+    "ko": "클라우드 인프라 작업에 특화 — K8s 컨텍스트, AWS 프로파일, TF 워크스페이스, 비용",
+    "en": "Cloud infra work — K8s context, AWS profile, Terraform workspace, and cost"
+  },
+  "tool": "ccstatusline",
+  "category": "custom",
+  "tags": ["cloud", "k8s", "aws", "terraform", "devops"],
+  "author": { "name": "neo", "github": "NeTrioGit" },
+  "settings": {
+    "statusline": {
+      "enabled": true,
+      "position": "bottom",
+      "separator": "  │  ",
+      "segments": [
+        { "type": "model",       "format": "{model}",                 "style": "dim" },
+        { "type": "k8s",         "format": "☸ {k8s_context}/{k8s_namespace}", "style": "cyan bold" },
+        { "type": "cloud",       "format": "AWS:{aws_profile}",       "style": "orange" },
+        { "type": "terraform",   "format": "TF:{tf_workspace}",       "style": "magenta" },
+        { "type": "cost",        "format": "${total_cost:.4f}",       "style": "yellow" }
+      ]
+    }
+  }
+}

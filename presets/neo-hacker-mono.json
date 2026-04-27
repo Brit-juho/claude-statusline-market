@@ -1,0 +1,28 @@
+{
+  "id": "neo-hacker-mono",
+  "version": "0.1.0",
+  "title": { "ko": "해커 모노", "en": "Hacker Mono" },
+  "description": {
+    "ko": "단색 그린 해커 미학 — 심볼과 단축 표기로 정보 밀도를 극대화",
+    "en": "Monochrome green hacker aesthetic — max info density with symbols and shorthand"
+  },
+  "tool": "ccstatusline",
+  "category": "minimal",
+  "tags": ["hacker", "mono", "green", "dense"],
+  "author": { "name": "neo", "github": "NeTrioGit" },
+  "settings": {
+    "statusline": {
+      "enabled": true,
+      "position": "bottom",
+      "separator": " · ",
+      "segments": [
+        { "type": "model",        "format": "[{model}]",               "style": "green bold" },
+        { "type": "cwd",          "format": "{dir_name}",              "style": "green" },
+        { "type": "git_branch",   "format": "({branch})",              "style": "green" },
+        { "type": "context_bar",  "format": "{used_percentage}%",      "style": "green" },
+        { "type": "cost",         "format": "${total_cost_usd:.4f}",   "style": "green" },
+        { "type": "duration",     "format": "{duration}",              "style": "green" }
+      ]
+    }
+  }
+}

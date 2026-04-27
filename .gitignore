@@ -42,3 +42,4 @@ coverage/
 
 # CCstatusline local backup files (in case dev runs install scripts locally)
 *.backup-*
+.gstack/
