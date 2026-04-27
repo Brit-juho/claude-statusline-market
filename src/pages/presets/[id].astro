@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/index.ts';
 import { getAllPresets, getInstallCommand } from '../../lib/presets.ts';
+import { getBase } from '../../lib/utils.ts';
 import { renderSegments, tokenBar, SAMPLE_VALUES } from '../../lib/preview.ts';
 
 export async function getStaticPaths() {
@@ -12,8 +13,8 @@ export async function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const { preset } = Astro.props;
-const rawBase = import.meta.env.BASE_URL as string;
-const base = rawBase.endsWith('/') ? rawBase : rawBase + '/';
+
+const base = getBase();
 
 const installSh = getInstallCommand(preset, 'sh');
 const installPs = getInstallCommand(preset, 'ps1');

@@ -1,0 +1,27 @@
+{
+  "id": "neo-budget-sentinel",
+  "version": "0.1.0",
+  "title": { "ko": "예산 파수꾼", "en": "Budget Sentinel" },
+  "description": {
+    "ko": "지출과 API 한도를 동시 감시 — 비용, 5h/7d 속도 제한, 코드 변경량까지",
+    "en": "Watch spending and rate limits — cost, 5h/7d limits, and lines changed at once"
+  },
+  "tool": "ccstatusline",
+  "category": "cost",
+  "tags": ["cost", "rate-limit", "budget", "lines"],
+  "author": { "name": "neo", "github": "NeTrioGit" },
+  "settings": {
+    "statusline": {
+      "enabled": true,
+      "position": "bottom",
+      "separator": "  ",
+      "segments": [
+        { "type": "model",          "format": "{model}",                          "style": "dim" },
+        { "type": "cost",           "format": "💰 ${total_cost_usd:.4f}",         "style": "yellow bold" },
+        { "type": "lines_changed",  "format": "+{total_lines_added} -{total_lines_removed}", "style": "green" },
+        { "type": "rate_5h",        "format": "5h:{rate_limit_5h}%",              "style": "orange" },
+        { "type": "rate_7d",        "format": "7d:{rate_limit_7d}%",              "style": "red" }
+      ]
+    }
+  }
+}

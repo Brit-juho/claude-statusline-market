@@ -25,7 +25,7 @@ export interface Preset {
 }
 
 export async function getAllPresets(): Promise<Preset[]> {
-  const modules = import.meta.glob('/presets/*.json', { eager: true });
+  const modules = import.meta.glob('/public/presets/*.json', { eager: true });
   const presets: Preset[] = [];
   for (const [, mod] of Object.entries(modules)) {
     const data = (mod as { default?: Preset } & Preset).default ?? (mod as Preset);

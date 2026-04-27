@@ -1,0 +1,28 @@
+{
+  "id": "neo-python-dev",
+  "version": "0.1.0",
+  "title": { "ko": "Python 개발자", "en": "Python Developer" },
+  "description": {
+    "ko": "Python 환경 특화 — 가상환경명, Python 버전, 브랜치, 컨텍스트 상태",
+    "en": "Python-focused — venv name, Python version, branch, and context state"
+  },
+  "tool": "ccstatusline",
+  "category": "custom",
+  "tags": ["python", "venv", "conda", "runtime"],
+  "author": { "name": "neo", "github": "NeTrioGit" },
+  "settings": {
+    "statusline": {
+      "enabled": true,
+      "position": "bottom",
+      "separator": "  ",
+      "segments": [
+        { "type": "model",       "format": "◆ {model}",              "style": "cyan bold" },
+        { "type": "venv",        "format": "({venv_name})",           "style": "yellow bold" },
+        { "type": "runtime",     "format": "py{python_version}",      "style": "blue" },
+        { "type": "git_branch",  "format": "⎇ {branch}",             "style": "green" },
+        { "type": "context_bar", "format": "{used_percentage}%",      "style": "orange" },
+        { "type": "cost",        "format": "${total_cost:.4f}",       "style": "dim" }
+      ]
+    }
+  }
+}

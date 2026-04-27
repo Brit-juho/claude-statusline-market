@@ -1,0 +1,52 @@
+{
+  "id": "en-git-focused",
+  "version": "0.1.0",
+  "title": {
+    "ko": "Git 포커스",
+    "en": "Git Focused"
+  },
+  "description": {
+    "ko": "Git 상태를 중심으로 — 브랜치, 변경 파일 수, 커밋 수를 강조 표시",
+    "en": "Git-centric view — highlights branch, changed file count, and ahead/behind commits"
+  },
+  "tool": "ccstatusline",
+  "category": "git",
+  "tags": ["git", "branch", "version-control"],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "settings": {
+    "statusline": {
+      "enabled": true,
+      "position": "bottom",
+      "separator": " | ",
+      "segments": [
+        {
+          "type": "git",
+          "enabled": true,
+          "format": "{branch} +{ahead}/-{behind}",
+          "style": "bold cyan"
+        },
+        {
+          "type": "git_changes",
+          "enabled": true,
+          "format": "{changed} changed",
+          "style": "yellow"
+        },
+        {
+          "type": "model",
+          "enabled": true,
+          "format": "{model}",
+          "style": "dim"
+        },
+        {
+          "type": "cost",
+          "enabled": true,
+          "format": "${total_cost:.4f}",
+          "style": "dim"
+        }
+      ]
+    }
+  }
+}
