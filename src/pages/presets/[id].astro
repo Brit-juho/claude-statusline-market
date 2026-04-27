@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/index.ts';
 import { getAllPresets, getInstallCommand } from '../../lib/presets.ts';
+import { renderSegments, tokenBar, SAMPLE_VALUES } from '../../lib/preview.ts';
 
 export async function getStaticPaths() {
   const presets = await getAllPresets();
@@ -28,6 +29,13 @@ const categoryLabel: Record<string, { ko: string; en: string }> = {
 };
 const catLabel = categoryLabel[preset.category]?.[lang] ?? preset.category;
 const backHref = lang === 'en' ? `${base}en/` : base || '/';
+
+const { segments, separator = '  ' } = preset.settings.statusline;
+const rendered = renderSegments(segments);
+const statusline = rendered.join(separator);
+const hasCache = segments.some(s => s.type === 'cache');
+const cachePct = SAMPLE_VALUES.cache_hit_rate as number;
+const bar = hasCache ? tokenBar(cachePct, 12) : null;
 ---
 <Base title={preset.title[lang]} description={preset.description[lang]}>
   <div class="detail-layout">
@@ -70,30 +78,27 @@ const backHref = lang === 'en' ? `${base}en/` : base || '/';
         </div>
       </div>
 
-      <!-- Screenshot / Mock Terminal -->
+      <!-- Terminal Preview -->
       <div class="mock-section">
         <div class="mock-terminal">
           <div class="mock-bar">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-            <span class="mock-title">bash — {preset.id}</span>
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="mock-title">bash — ~/GitHub/my-project</span>
           </div>
           <div class="mock-content">
-            <div class="mock-line"><span class="prompt">~ $</span> claude</div>
-            <div class="mock-line dim">&nbsp;</div>
-            <div class="mock-line">Claude Code <span class="accent">v1.0.0</span></div>
-            <div class="mock-line dim">&nbsp;</div>
-            {preset.settings.statusline.segments.slice(0, 4).map(seg => (
-              <div class="mock-line dim">&nbsp;&nbsp;{seg.type}: <span class="accent">{seg.format ?? seg.type}</span></div>
-            ))}
+            <div class="mock-line"><span class="prompt">~/GitHub/my-project</span> <span class="dim">$</span> claude</div>
+            <div class="mock-line dim">▶ Reviewing recent changes...</div>
+            <div class="mock-line">&nbsp;</div>
+            <div class="mock-line dim">  3 files changed, 47 insertions(+), 12 deletions(-)</div>
           </div>
           <div class="mock-statusline">
-            {preset.settings.statusline.segments.map((seg, i) => (
-              <span class:list={['seg', i === 0 && 'seg-accent']}>{seg.format ?? seg.type}</span>
-            ))}
+            <span class="sline">{statusline}</span>
+            {bar && <span class="sline-bar">{bar} {cachePct.toFixed(0)}%</span>}
           </div>
         </div>
+        <p class="mock-note">
+          {lang === 'ko' ? '샘플 값으로 렌더링한 미리보기입니다.' : 'Preview rendered with sample values.'}
+        </p>
       </div>
 
       <!-- Install -->
@@ -196,38 +201,42 @@ document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach(btn => {
 .tags-wrap { align-items: flex-start; }
 .tags { display: flex; flex-wrap: wrap; gap: 0.375rem; }
 .tag { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
-.mock-section { margin-bottom: 3rem; }
+.mock-section { margin-bottom: 2.5rem; }
 .mock-terminal {
   background: #0d0d0d;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
   overflow: hidden;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
 }
 .mock-bar {
   display: flex; align-items: center;
-  gap: 6px; padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
+  gap: 5px; padding: 9px 13px;
+  border-bottom: 1px solid #1a1a1a;
 }
 .dot { width: 10px; height: 10px; border-radius: 50%; }
-.dot.red { background: #ff5f57; }
-.dot.yellow { background: #febc2e; }
-.dot.green { background: #28c840; }
-.mock-title { margin-left: 8px; font-size: 0.75rem; color: var(--text-muted); }
-.mock-content { padding: 1rem 1.25rem; min-height: 120px; }
-.mock-line { color: var(--text-dim); line-height: 1.7; }
-.mock-line.dim { color: var(--text-muted); }
+.dot.r { background: #ff5f57; }
+.dot.y { background: #febc2e; }
+.dot.g { background: #28c840; }
+.mock-title { margin-left: 8px; font-size: 0.75rem; color: #444; }
+.mock-content { padding: 1rem 1.25rem; min-height: 100px; }
+.mock-line { color: #666; line-height: 1.75; }
+.mock-line.dim { color: #3a3a3a; }
 .prompt { color: var(--accent); }
-.accent { color: var(--accent); }
+.dim { color: #444; }
 .mock-statusline {
-  padding: 6px 14px;
-  background: #141414;
-  border-top: 1px solid var(--border);
-  display: flex; flex-wrap: wrap; gap: 1.25rem;
+  padding: 5px 13px;
+  background: #111;
+  border-top: 1px solid #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
-.seg { font-size: 0.75rem; color: var(--text-muted); }
-.seg-accent { color: var(--accent); }
+.sline { font-size: 0.75rem; color: var(--accent); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sline-bar { font-size: 0.7rem; color: #555; white-space: nowrap; flex-shrink: 0; }
+.mock-note { font-size: 0.75rem; color: #444; margin-top: 0.5rem; text-align: right; }
 .install-section { margin-bottom: 2.5rem; }
 .section-title {
   font-size: 1rem; font-weight: 600;

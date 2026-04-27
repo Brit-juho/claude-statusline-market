@@ -45,6 +45,7 @@ const koHref = lang === 'en'
       </a>
       <nav class="nav">
         <a href={lang === 'en' ? `${base}en/` : base || '/'} class="nav-link">{t('nav.gallery')}</a>
+        <a href={lang === 'en' ? `${base}en/builder` : `${base}builder`} class="nav-link">{lang === 'ko' ? '빌더' : 'Builder'}</a>
         <a href={lang === 'en' ? `${base}en/about` : `${base}about`} class="nav-link">{t('nav.about')}</a>
         <a href="https://github.com/NeTrioGit/claude-statusline-market" class="nav-link" target="_blank" rel="noopener">GitHub</a>
         <div class="lang-switcher">
