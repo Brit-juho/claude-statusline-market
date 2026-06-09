@@ -3,7 +3,14 @@ import Base from '../../layouts/Base.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/index.ts';
 import { getAllPresets, getInstallCommand } from '../../lib/presets.ts';
 import { getBase } from '../../lib/utils.ts';
-import { renderSegments, tokenBar, SAMPLE_VALUES } from '../../lib/preview.ts';
+import { renderCcsWidgets, tokenBar, SAMPLE_VALUES } from '../../lib/preview.ts';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+
+const scriptPath = resolve(process.cwd(), 'scripts/install-preset.sh');
+const scriptContent = readFileSync(scriptPath, 'utf-8');
+const scriptSha256 = createHash('sha256').update(scriptContent).digest('hex');
 
 export async function getStaticPaths() {
   const presets = await getAllPresets();
@@ -18,7 +25,7 @@ const base = getBase();
 
 const installSh = getInstallCommand(preset, 'sh');
 const installPs = getInstallCommand(preset, 'ps1');
-const settingsJson = JSON.stringify(preset.settings, null, 2);
+const settingsJson = JSON.stringify(preset.ccstatusline_settings, null, 2);
 
 const categoryLabel: Record<string, { ko: string; en: string }> = {
   minimal:      { ko: '미니멀', en: 'Minimal' },
@@ -31,10 +38,10 @@ const categoryLabel: Record<string, { ko: string; en: string }> = {
 const catLabel = categoryLabel[preset.category]?.[lang] ?? preset.category;
 const backHref = lang === 'en' ? `${base}en/` : base || '/';
 
-const { segments, separator = '  ' } = preset.settings.statusline;
-const rendered = renderSegments(segments);
-const statusline = rendered.join(separator);
-const hasCache = segments.some(s => s.type === 'cache');
+const widgets = preset.ccstatusline_settings.lines[0] ?? [];
+const renderedWidgets = renderCcsWidgets(widgets);
+const statusline = renderedWidgets.map(s => s.text).join('  ');
+const hasCache = widgets.some((w: { type: string }) => w.type === 'tokens-cached');
 const cachePct = SAMPLE_VALUES.cache_hit_rate as number;
 const bar = hasCache ? tokenBar(cachePct, 12) : null;
 ---
@@ -113,6 +120,7 @@ const bar = hasCache ? tokenBar(cachePct, 12) : null;
             <button class="copy-btn" data-copy={installSh} aria-label="copy">
               {t('preset.install_copy')}
             </button>
+            <div role="status" aria-live="polite" class="sr-only"></div>
           </div>
         </div>
 
@@ -123,9 +131,22 @@ const bar = hasCache ? tokenBar(cachePct, 12) : null;
             <button class="copy-btn" data-copy={installPs} aria-label="copy">
               {t('preset.install_copy')}
             </button>
+            <div role="status" aria-live="polite" class="sr-only"></div>
           </div>
         </div>
       </div>
+
+      <!-- Script SHA256 + body -->
+      <div class="sha-row">
+        <span class="sha-label">SHA256 (install-preset.sh)</span>
+        <code class="sha-value">{scriptSha256}</code>
+      </div>
+      <details class="settings-section script-section">
+        <summary class="settings-summary">
+          {lang === 'ko' ? '▼ 설치 스크립트 본문 보기 (실행 전 검토 권장)' : '▼ View install script (recommended before running)'}
+        </summary>
+        <pre class="settings-pre"><code>{scriptContent}</code></pre>
+      </details>
 
       <!-- Settings Preview -->
       <details class="settings-section">
@@ -138,17 +159,23 @@ const bar = hasCache ? tokenBar(cachePct, 12) : null;
 </Base>
 
 <script>
+const isEn = window.location.pathname.startsWith('/en/');
+const copiedLabel = isEn ? 'Copied to clipboard' : '클립보드에 복사됨';
+
 document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach(btn => {
   btn.addEventListener('click', async () => {
     const text = btn.dataset.copy ?? '';
+    const statusEl = btn.nextElementSibling as HTMLElement | null;
     try {
       await navigator.clipboard.writeText(text);
       const orig = btn.textContent;
       btn.textContent = '✓ Copied';
       btn.classList.add('copied');
+      if (statusEl) statusEl.textContent = copiedLabel;
       setTimeout(() => {
         btn.textContent = orig;
         btn.classList.remove('copied');
+        if (statusEl) statusEl.textContent = '';
       }, 2000);
     } catch {}
   });
@@ -270,6 +297,7 @@ document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach(btn => {
 }
 .copy-btn:hover { border-color: var(--border-hover); color: var(--text); }
 .copy-btn.copied { color: var(--accent); border-color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .settings-section {
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -297,4 +325,18 @@ details[open] .settings-summary::before { content: '- '; }
   font-size: 0.8125rem; color: var(--text-dim);
   white-space: pre; display: block;
 }
+.sha-row {
+  display: flex; align-items: baseline; gap: 0.75rem;
+  flex-wrap: wrap; margin-bottom: 0.75rem;
+}
+.sha-label {
+  font-size: 0.75rem; font-weight: 500;
+  color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.04em; white-space: nowrap;
+}
+.sha-value {
+  font-size: 0.75rem; font-family: var(--font-mono);
+  color: var(--text-muted); word-break: break-all;
+}
+.script-section { margin-bottom: 1rem; }
 </style>

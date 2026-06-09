@@ -1,0 +1,68 @@
+{
+  "id": "speed-check",
+  "version": "0.1.0",
+  "title": {
+    "ko": "속도 체크",
+    "en": "Speed Check"
+  },
+  "description": {
+    "ko": "토큰 생성 속도 실시간 모니터링 — 입출력 속도, 총 토큰, 컨텍스트 사용률",
+    "en": "Real-time token generation speed — input/output speed, total tokens, and context usage"
+  },
+  "tool": "ccstatusline",
+  "category": "productivity",
+  "tags": [
+    "speed",
+    "tokens",
+    "performance",
+    "context",
+    "monitor"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "cyan",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "input-speed",
+          "color": "blue"
+        },
+        {
+          "id": "3",
+          "type": "output-speed",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "total-speed",
+          "color": "cyan"
+        },
+        {
+          "id": "5",
+          "type": "tokens-total",
+          "color": "dim"
+        },
+        {
+          "id": "6",
+          "type": "context-percentage",
+          "color": "yellow"
+        },
+        {
+          "id": "7",
+          "type": "session-cost",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

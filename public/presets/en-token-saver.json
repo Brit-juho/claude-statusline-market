@@ -11,42 +11,42 @@
   },
   "tool": "ccstatusline",
   "category": "cost",
-  "tags": ["cache", "tokens", "efficiency", "savings"],
+  "tags": [
+    "cache",
+    "tokens",
+    "efficiency",
+    "savings"
+  ],
   "author": {
     "name": "neo",
     "github": "NeTrioGit"
   },
-  "settings": {
-    "statusline": {
-      "enabled": true,
-      "position": "bottom",
-      "separator": "  ",
-      "segments": [
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
         {
+          "id": "1",
           "type": "model",
-          "enabled": true,
-          "format": "{model}",
-          "style": "dim"
+          "color": "dim"
         },
         {
-          "type": "cache",
-          "enabled": true,
-          "format": "CACHE {cache_hit_rate:.1f}%",
-          "style": "bold green"
+          "id": "2",
+          "type": "tokens-cached",
+          "color": "green",
+          "bold": true
         },
         {
-          "type": "tokens",
-          "enabled": true,
-          "format": "saved:{cache_saved_tokens}",
-          "style": "green"
+          "id": "3",
+          "type": "tokens-total",
+          "color": "green"
         },
         {
-          "type": "cost",
-          "enabled": true,
-          "format": "actual:${total_cost:.6f}",
-          "style": "yellow"
+          "id": "4",
+          "type": "session-cost",
+          "color": "yellow"
         }
       ]
-    }
+    ]
   }
 }

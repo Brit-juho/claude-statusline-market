@@ -1,0 +1,58 @@
+{
+  "id": "cyber-pink",
+  "version": "0.1.0",
+  "title": {
+    "ko": "사이버 핑크",
+    "en": "Cyber Pink"
+  },
+  "description": {
+    "ko": "핑크·마젠타 팔레트의 사이버펑크 스타일 — 세션, 노력, 비용을 강렬하게",
+    "en": "Cyberpunk pink-magenta palette — session, effort, cost rendered with punch"
+  },
+  "tool": "ccstatusline",
+  "category": "custom",
+  "tags": [
+    "cyberpunk",
+    "pink",
+    "magenta",
+    "bold"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "pink",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "thinking-effort",
+          "color": "magenta",
+          "bold": true
+        },
+        {
+          "id": "3",
+          "type": "current-working-dir",
+          "color": "pink"
+        },
+        {
+          "id": "4",
+          "type": "session-cost",
+          "color": "magenta"
+        },
+        {
+          "id": "5",
+          "type": "session-clock",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

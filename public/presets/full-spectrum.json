@@ -1,0 +1,67 @@
+{
+  "id": "full-spectrum",
+  "version": "0.1.0",
+  "title": {
+    "ko": "풀 스펙트럼",
+    "en": "Full Spectrum"
+  },
+  "description": {
+    "ko": "모든 주요 정보를 무지개 색상으로 — 2줄 출력으로 정보 과부하 없이 전부 표시",
+    "en": "All key info in rainbow colors — 2-line output showing everything without overload"
+  },
+  "tool": "ccstatusline",
+  "category": "powerline",
+  "tags": [
+    "full",
+    "colors",
+    "rainbow",
+    "multiline"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "cyan",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "current-working-dir",
+          "color": "blue"
+        },
+        {
+          "id": "3",
+          "type": "git-branch",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "context-percentage",
+          "color": "yellow"
+        },
+        {
+          "id": "5",
+          "type": "session-cost",
+          "color": "orange"
+        },
+        {
+          "id": "6",
+          "type": "session-clock",
+          "color": "magenta"
+        },
+        {
+          "id": "7",
+          "type": "session-usage",
+          "color": "red"
+        }
+      ]
+    ]
+  }
+}

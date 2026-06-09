@@ -1,0 +1,63 @@
+{
+  "id": "budget-sentinel",
+  "version": "0.2.0",
+  "title": {
+    "ko": "예산 파수꾼",
+    "en": "Budget Sentinel"
+  },
+  "description": {
+    "ko": "지출·한도·리셋 타이머를 한눈에 — 비용, 5h/7d 한도, Sonnet 주간 사용량, 리셋까지",
+    "en": "Cost, rate limits, Sonnet weekly usage, and reset timer — all spending signals at once"
+  },
+  "tool": "ccstatusline",
+  "category": "cost",
+  "tags": [
+    "cost",
+    "rate-limit",
+    "budget",
+    "weekly",
+    "reset"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "dim"
+        },
+        {
+          "id": "2",
+          "type": "session-cost",
+          "color": "yellow",
+          "bold": true
+        },
+        {
+          "id": "3",
+          "type": "session-usage",
+          "color": "orange"
+        },
+        {
+          "id": "4",
+          "type": "weekly-usage",
+          "color": "red"
+        },
+        {
+          "id": "5",
+          "type": "weekly-sonnet-usage",
+          "color": "cyan"
+        },
+        {
+          "id": "6",
+          "type": "reset-timer",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

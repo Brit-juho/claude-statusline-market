@@ -1,0 +1,73 @@
+{
+  "id": "git-pro",
+  "version": "0.2.0",
+  "title": {
+    "ko": "Git 프로",
+    "en": "Git Pro"
+  },
+  "description": {
+    "ko": "Git 작업에 최적화 — 브랜치, ahead/behind, 추가/삭제 라인, 변경 파일, SHA까지",
+    "en": "Optimized for Git work — branch, ahead/behind, insertions, deletions, changes, and SHA"
+  },
+  "tool": "ccstatusline",
+  "category": "git",
+  "tags": [
+    "git",
+    "branch",
+    "diff",
+    "sha",
+    "colors"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "git-branch",
+          "color": "green",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "git-ahead-behind",
+          "color": "cyan"
+        },
+        {
+          "id": "3",
+          "type": "git-insertions",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "git-deletions",
+          "color": "red"
+        },
+        {
+          "id": "5",
+          "type": "git-changes",
+          "color": "yellow"
+        },
+        {
+          "id": "6",
+          "type": "git-sha",
+          "color": "dim"
+        },
+        {
+          "id": "7",
+          "type": "current-working-dir",
+          "color": "blue"
+        },
+        {
+          "id": "8",
+          "type": "model",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

@@ -11,42 +11,41 @@
   },
   "tool": "ccstatusline",
   "category": "git",
-  "tags": ["git", "branch", "version-control"],
+  "tags": [
+    "git",
+    "branch",
+    "version-control"
+  ],
   "author": {
     "name": "neo",
     "github": "NeTrioGit"
   },
-  "settings": {
-    "statusline": {
-      "enabled": true,
-      "position": "bottom",
-      "separator": " | ",
-      "segments": [
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
         {
-          "type": "git",
-          "enabled": true,
-          "format": "{branch} +{ahead}/-{behind}",
-          "style": "bold cyan"
+          "id": "1",
+          "type": "git-status",
+          "color": "cyan",
+          "bold": true
         },
         {
-          "type": "git_changes",
-          "enabled": true,
-          "format": "{changed} changed",
-          "style": "yellow"
+          "id": "2",
+          "type": "git-changes",
+          "color": "yellow"
         },
         {
+          "id": "3",
           "type": "model",
-          "enabled": true,
-          "format": "{model}",
-          "style": "dim"
+          "color": "dim"
         },
         {
-          "type": "cost",
-          "enabled": true,
-          "format": "${total_cost:.4f}",
-          "style": "dim"
+          "id": "4",
+          "type": "session-cost",
+          "color": "dim"
         }
       ]
-    }
+    ]
   }
 }

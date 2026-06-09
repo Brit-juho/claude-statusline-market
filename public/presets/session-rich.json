@@ -1,0 +1,68 @@
+{
+  "id": "session-rich",
+  "version": "0.2.0",
+  "title": {
+    "ko": "세션 리치",
+    "en": "Session Rich"
+  },
+  "description": {
+    "ko": "세션 정보 풀 패키지 — 모델, 추론 수준, 세션 이름, 스킬, 경과 시간, 압축 횟수",
+    "en": "Full session info — model, effort, session name, active skills, elapsed time, compaction count"
+  },
+  "tool": "ccstatusline",
+  "category": "productivity",
+  "tags": [
+    "session",
+    "effort",
+    "skills",
+    "compaction",
+    "time"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "cyan",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "thinking-effort",
+          "color": "magenta"
+        },
+        {
+          "id": "3",
+          "type": "session-name",
+          "color": "blue"
+        },
+        {
+          "id": "4",
+          "type": "skills",
+          "color": "green"
+        },
+        {
+          "id": "5",
+          "type": "session-clock",
+          "color": "yellow"
+        },
+        {
+          "id": "6",
+          "type": "compaction-counter",
+          "color": "dim"
+        },
+        {
+          "id": "7",
+          "type": "version",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

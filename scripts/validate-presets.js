@@ -7,7 +7,7 @@ import Ajv from 'ajv';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 const presetsDir = join(root, 'public', 'presets');
-const schemaPath = join(root, 'presets', 'schema.json');
+const schemaPath = join(root, 'public', 'presets', 'schema.json');
 
 const ajv = new Ajv({ allErrors: true });
 const schema = JSON.parse(readFileSync(schemaPath, 'utf8'));

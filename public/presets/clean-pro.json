@@ -1,0 +1,52 @@
+{
+  "id": "clean-pro",
+  "version": "0.1.0",
+  "title": {
+    "ko": "클린 프로",
+    "en": "Clean Pro"
+  },
+  "description": {
+    "ko": "군더더기 없는 프로페셔널 스타일 — 모델, 경로, 비용, 세션 시간만 담백하게",
+    "en": "No-noise professional style — model, path, cost, session time. Nothing else"
+  },
+  "tool": "ccstatusline",
+  "category": "minimal",
+  "tags": [
+    "clean",
+    "professional",
+    "minimal",
+    "colors"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "white",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "current-working-dir",
+          "color": "blue"
+        },
+        {
+          "id": "3",
+          "type": "session-cost",
+          "color": "yellow"
+        },
+        {
+          "id": "4",
+          "type": "session-clock",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

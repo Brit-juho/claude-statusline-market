@@ -1,0 +1,57 @@
+{
+  "id": "powerline-dark",
+  "version": "0.1.0",
+  "title": {
+    "ko": "파워라인 다크",
+    "en": "Powerline Dark"
+  },
+  "description": {
+    "ko": "색상으로 구분된 파워라인 — 모델, 디렉터리, 브랜치, 컨텍스트, 비용을 한 줄에",
+    "en": "Color-coded powerline — model, dir, branch, context, cost in one clean line"
+  },
+  "tool": "ccstatusline",
+  "category": "powerline",
+  "tags": [
+    "powerline",
+    "colors",
+    "git",
+    "context"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "cyan",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "current-working-dir",
+          "color": "blue"
+        },
+        {
+          "id": "3",
+          "type": "git-branch",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "context-bar",
+          "color": "yellow"
+        },
+        {
+          "id": "5",
+          "type": "session-cost",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

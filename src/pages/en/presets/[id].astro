@@ -3,7 +3,14 @@ import Base from '../../../layouts/Base.astro';
 import { useTranslations } from '../../../i18n/index.ts';
 import { getAllPresets, getInstallCommand } from '../../../lib/presets.ts';
 import { getBase } from '../../../lib/utils.ts';
-import { renderSegments, tokenBar, SAMPLE_VALUES } from '../../../lib/preview.ts';
+import { renderCcsWidgets, tokenBar, SAMPLE_VALUES } from '../../../lib/preview.ts';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+
+const scriptPath = resolve(process.cwd(), 'scripts/install-preset.sh');
+const scriptContent = readFileSync(scriptPath, 'utf-8');
+const scriptSha256 = createHash('sha256').update(scriptContent).digest('hex');
 
 export async function getStaticPaths() {
   const presets = await getAllPresets();
@@ -18,7 +25,7 @@ const base = getBase();
 
 const installSh = getInstallCommand(preset, 'sh');
 const installPs = getInstallCommand(preset, 'ps1');
-const settingsJson = JSON.stringify(preset.settings, null, 2);
+const settingsJson = JSON.stringify(preset.ccstatusline_settings, null, 2);
 
 const categoryLabel: Record<string, string> = {
   minimal: 'Minimal', productivity: 'Productivity', cost: 'Cost Tracking',
@@ -27,10 +34,10 @@ const categoryLabel: Record<string, string> = {
 const catLabel = categoryLabel[preset.category] ?? preset.category;
 const backHref = `${base}en/`;
 
-const { segments, separator = '  ' } = preset.settings.statusline;
-const rendered = renderSegments(segments);
-const statusline = rendered.join(separator);
-const hasCache = segments.some((s: { type: string }) => s.type === 'cache');
+const widgets = preset.ccstatusline_settings.lines[0] ?? [];
+const renderedWidgets = renderCcsWidgets(widgets);
+const statusline = renderedWidgets.map((s: { text: string }) => s.text).join('  ');
+const hasCache = widgets.some((w: { type: string }) => w.type === 'tokens-cached');
 const cachePct = SAMPLE_VALUES.cache_hit_rate as number;
 const bar = hasCache ? tokenBar(cachePct, 12) : null;
 ---
@@ -88,6 +95,7 @@ const bar = hasCache ? tokenBar(cachePct, 12) : null;
           <div class="code-row">
             <code class="code-block">{installSh}</code>
             <button class="copy-btn" data-copy={installSh}>{t('preset.install_copy')}</button>
+            <div role="status" aria-live="polite" class="sr-only"></div>
           </div>
         </div>
         <div class="install-block">
@@ -95,9 +103,20 @@ const bar = hasCache ? tokenBar(cachePct, 12) : null;
           <div class="code-row">
             <code class="code-block">{installPs}</code>
             <button class="copy-btn" data-copy={installPs}>{t('preset.install_copy')}</button>
+            <div role="status" aria-live="polite" class="sr-only"></div>
           </div>
         </div>
       </div>
+      <!-- Script SHA256 + body -->
+      <div class="sha-row">
+        <span class="sha-label">SHA256 (install-preset.sh)</span>
+        <code class="sha-value">{scriptSha256}</code>
+      </div>
+      <details class="settings-section script-section">
+        <summary class="settings-summary">▼ View install script (recommended before running)</summary>
+        <pre class="settings-pre"><code>{scriptContent}</code></pre>
+      </details>
+
       <details class="settings-section">
         <summary class="settings-summary">{t('preset.settings_preview')}</summary>
         <pre class="settings-pre"><code>{settingsJson}</code></pre>
@@ -110,12 +129,18 @@ const bar = hasCache ? tokenBar(cachePct, 12) : null;
 document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach(btn => {
   btn.addEventListener('click', async () => {
     const text = btn.dataset.copy ?? '';
+    const statusEl = btn.nextElementSibling as HTMLElement | null;
     try {
       await navigator.clipboard.writeText(text);
       const orig = btn.textContent;
       btn.textContent = '✓ Copied';
       btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+      if (statusEl) statusEl.textContent = 'Copied to clipboard';
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.classList.remove('copied');
+        if (statusEl) statusEl.textContent = '';
+      }, 2000);
     } catch {}
   });
 });
@@ -164,6 +189,7 @@ document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach(btn => {
 .copy-btn { flex-shrink: 0; padding: 0.25rem 0.625rem; background: transparent; border: 1px solid var(--border); border-radius: 4px; color: var(--text-dim); font-size: 0.75rem; cursor: pointer; font-family: inherit; transition: all 0.15s; }
 .copy-btn:hover { border-color: var(--border-hover); color: var(--text); }
 .copy-btn.copied { color: var(--accent); border-color: var(--accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 .settings-section { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 .settings-summary { padding: 0.75rem 1rem; font-size: 0.875rem; font-weight: 500; cursor: pointer; color: var(--text-dim); background: var(--bg-card); list-style: none; }
 .settings-summary::-webkit-details-marker { display: none; }
@@ -171,4 +197,8 @@ document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach(btn => {
 details[open] .settings-summary::before { content: '- '; }
 .settings-pre { background: #0d0d0d; padding: 1rem; overflow: auto; border-top: 1px solid var(--border); }
 .settings-pre code { font-size: 0.8125rem; color: var(--text-dim); white-space: pre; display: block; }
+.sha-row { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.sha-label { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+.sha-value { font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); word-break: break-all; }
+.script-section { margin-bottom: 1rem; }
 </style>

@@ -1,0 +1,78 @@
+name: Smoke Test — Install Script
+
+on:
+  workflow_run:
+    workflows: ["Deploy to GitHub Pages"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      preset_id:
+        description: "Preset ID to test (default: ko-minimal)"
+        default: "ko-minimal"
+        required: false
+
+jobs:
+  smoke:
+    # Only run if the deploy succeeded (or manually triggered)
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y jq curl
+
+      - name: Wait for GitHub Pages propagation
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: sleep 30
+
+      - name: Run install script (ko-minimal)
+        env:
+          PRESET_ID: ${{ github.event.inputs.preset_id || 'ko-minimal' }}
+          SITE_BASE: "https://netriogit.github.io/claude-statusline-market"
+        run: |
+          bash scripts/install-preset.sh "$PRESET_ID"
+
+      - name: Verify settings.json was written
+        env:
+          PRESET_ID: ${{ github.event.inputs.preset_id || 'ko-minimal' }}
+        run: |
+          SETTINGS="${XDG_CONFIG_HOME:-$HOME/.config}/ccstatusline/settings.json"
+
+          if [ ! -f "$SETTINGS" ]; then
+            echo "ERROR: settings.json not found at $SETTINGS" >&2
+            exit 1
+          fi
+
+          echo "✓ settings.json exists"
+
+          # Validate JSON
+          jq empty "$SETTINGS" || { echo "ERROR: invalid JSON" >&2; exit 1; }
+          echo "✓ valid JSON"
+
+          # Verify ccstatusline v3 format: version=3 and lines[0] non-empty
+          VERSION=$(jq '.version' "$SETTINGS")
+          if [ "$VERSION" != "3" ]; then
+            echo "ERROR: expected version=3, got $VERSION" >&2
+            exit 1
+          fi
+          echo "✓ version=3"
+
+          COUNT=$(jq '.lines[0] | length' "$SETTINGS")
+          if [ "$COUNT" -lt 1 ]; then
+            echo "ERROR: no widgets in lines[0]" >&2
+            exit 1
+          fi
+          echo "✓ $COUNT widget(s) in lines[0]"
+
+          # Verify all types are kebab-case (no underscores)
+          SNAKE=$(jq -r '.lines[0][].type' "$SETTINGS" | grep '_' || true)
+          if [ -n "$SNAKE" ]; then
+            echo "ERROR: snake_case type(s) found: $SNAKE" >&2
+            exit 1
+          fi
+          echo "✓ all widget types are kebab-case"
+
+          echo "Settings installed from preset: $PRESET_ID"
+          cat "$SETTINGS"

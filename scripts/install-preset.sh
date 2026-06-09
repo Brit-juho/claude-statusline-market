@@ -76,8 +76,15 @@ if [ -f "$CCS_SETTINGS" ]; then
   echo "Backup saved: $BACKUP"
 fi
 
-# ── 설치 ─────────────────────────────────────────────────────
-mv "$TMP" "$CCS_SETTINGS"
+# ── ccstatusline_settings 추출 및 설치 ───────────────────────
+if ! jq -e '.ccstatusline_settings' "$TMP" >/dev/null 2>&1; then
+  echo "Error: preset '${PRESET_ID}' does not contain 'ccstatusline_settings' key." >&2
+  echo "  This preset may be outdated. Please check for an updated version at:" >&2
+  echo "  ${SITE_BASE}" >&2
+  exit 1
+fi
+
+jq '.ccstatusline_settings' "$TMP" > "$CCS_SETTINGS"
 echo "Preset installed: $CCS_SETTINGS"
 
 # ── Claude Code settings.json에 statusLine 등록 (없으면) ─────
@@ -100,6 +107,19 @@ fi
 # ── 권한 체크 ────────────────────────────────────────────────
 if [ ! -w "$(dirname "$CCS_SETTINGS")" ]; then
   echo "Warning: cannot write to $(dirname "$CCS_SETTINGS"). Check directory permissions." >&2
+fi
+
+# ── ccstatusline 감지 체크 ───────────────────────────────────
+if ! command -v npx >/dev/null 2>&1; then
+  echo ""
+  echo "Note: 'npx' (Node.js) is required to run ccstatusline." >&2
+  echo "  Install Node.js: https://nodejs.org/" >&2
+  echo "  After installation, run: npx -y ccstatusline@latest" >&2
+elif ! command -v ccstatusline >/dev/null 2>&1; then
+  echo ""
+  echo "Note: ccstatusline is not installed globally." >&2
+  echo "  Install it: npm install -g ccstatusline" >&2
+  echo "  Or it will be fetched automatically via: npx -y ccstatusline@latest" >&2
 fi
 
 echo ""

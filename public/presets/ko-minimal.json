@@ -11,28 +11,30 @@
   },
   "tool": "ccstatusline",
   "category": "minimal",
-  "tags": ["minimal", "clean", "beginner"],
+  "tags": [
+    "minimal",
+    "clean",
+    "beginner"
+  ],
   "author": {
     "name": "neo",
     "github": "NeTrioGit"
   },
-  "settings": {
-    "statusline": {
-      "enabled": true,
-      "position": "bottom",
-      "separator": " | ",
-      "segments": [
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
         {
+          "id": "1",
           "type": "model",
-          "enabled": true,
-          "format": "{model}"
+          "color": "dim"
         },
         {
-          "type": "cost",
-          "enabled": true,
-          "format": "${total_cost:.4f}"
+          "id": "2",
+          "type": "session-cost",
+          "color": "dim"
         }
       ]
-    }
+    ]
   }
 }

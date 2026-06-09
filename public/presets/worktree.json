@@ -1,0 +1,67 @@
+{
+  "id": "worktree",
+  "version": "0.1.0",
+  "title": {
+    "ko": "워크트리 모드",
+    "en": "Worktree Mode"
+  },
+  "description": {
+    "ko": "git worktree 작업 전용 — 현재 워크트리명, 브랜치, 원본 브랜치, 변경 파일, 비용",
+    "en": "Built for git worktree — current worktree name, branch, original branch, changes, and cost"
+  },
+  "tool": "ccstatusline",
+  "category": "git",
+  "tags": [
+    "worktree",
+    "git",
+    "branch",
+    "parallel"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "dim"
+        },
+        {
+          "id": "2",
+          "type": "worktree-name",
+          "color": "magenta",
+          "bold": true
+        },
+        {
+          "id": "3",
+          "type": "worktree-branch",
+          "color": "cyan"
+        },
+        {
+          "id": "4",
+          "type": "worktree-original-branch",
+          "color": "dim"
+        },
+        {
+          "id": "5",
+          "type": "git-changes",
+          "color": "yellow"
+        },
+        {
+          "id": "6",
+          "type": "git-ahead-behind",
+          "color": "green"
+        },
+        {
+          "id": "7",
+          "type": "session-cost",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

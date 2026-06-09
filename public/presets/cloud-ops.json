@@ -1,0 +1,61 @@
+{
+  "id": "cloud-ops",
+  "version": "0.1.0",
+  "title": {
+    "ko": "클라우드 Ops",
+    "en": "Cloud Ops"
+  },
+  "description": {
+    "ko": "클라우드 인프라 작업에 특화 — K8s 컨텍스트, AWS 프로파일, TF 워크스페이스, 비용",
+    "en": "Cloud infra work — K8s context, AWS profile, Terraform workspace, and cost"
+  },
+  "tool": "ccstatusline",
+  "category": "custom",
+  "tags": [
+    "cloud",
+    "k8s",
+    "aws",
+    "terraform",
+    "devops"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "dim"
+        },
+        {
+          "id": "2",
+          "type": "custom-command",
+          "color": "cyan",
+          "commandPath": "kubectl config current-context",
+          "bold": true
+        },
+        {
+          "id": "3",
+          "type": "custom-command",
+          "color": "orange",
+          "commandPath": "aws configure get region"
+        },
+        {
+          "id": "4",
+          "type": "custom-command",
+          "color": "magenta",
+          "commandPath": "terraform workspace show"
+        },
+        {
+          "id": "5",
+          "type": "session-cost",
+          "color": "yellow"
+        }
+      ]
+    ]
+  }
+}

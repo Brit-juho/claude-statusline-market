@@ -1,0 +1,61 @@
+{
+  "id": "context-guardian",
+  "version": "0.1.0",
+  "title": {
+    "ko": "컨텍스트 가디언",
+    "en": "Context Guardian"
+  },
+  "description": {
+    "ko": "컨텍스트 창 상태를 중심으로 — 사용량 바, %, 토큰 수, 남은 캐시를 실시간 모니터링",
+    "en": "Context window health first — usage bar, %, token count, and cache savings live"
+  },
+  "tool": "ccstatusline",
+  "category": "productivity",
+  "tags": [
+    "context",
+    "tokens",
+    "cache",
+    "monitor"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "dim"
+        },
+        {
+          "id": "2",
+          "type": "context-bar",
+          "color": "green"
+        },
+        {
+          "id": "3",
+          "type": "context-percentage",
+          "color": "yellow"
+        },
+        {
+          "id": "4",
+          "type": "tokens-input",
+          "color": "dim"
+        },
+        {
+          "id": "5",
+          "type": "tokens-output",
+          "color": "dim"
+        },
+        {
+          "id": "6",
+          "type": "tokens-cached",
+          "color": "cyan"
+        }
+      ]
+    ]
+  }
+}

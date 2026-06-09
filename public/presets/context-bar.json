@@ -1,0 +1,68 @@
+{
+  "id": "context-bar",
+  "version": "0.1.0",
+  "title": {
+    "ko": "컨텍스트 바 (neo)",
+    "en": "Context Bar (neo)"
+  },
+  "description": {
+    "ko": "모델 · 디렉토리 · Git 상태 · 컨텍스트 바 — context-bar.sh 스타일을 ccstatusline로 재현",
+    "en": "Model · directory · Git status · context bar — context-bar.sh style rebuilt for ccstatusline"
+  },
+  "tool": "ccstatusline",
+  "category": "productivity",
+  "tags": [
+    "git",
+    "context",
+    "model",
+    "directory",
+    "personal"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "cyan",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "current-working-dir",
+          "color": "dim"
+        },
+        {
+          "id": "3",
+          "type": "git-branch",
+          "color": "cyan"
+        },
+        {
+          "id": "4",
+          "type": "git-changes",
+          "color": "dim"
+        },
+        {
+          "id": "5",
+          "type": "git-ahead-behind",
+          "color": "dim"
+        },
+        {
+          "id": "6",
+          "type": "context-bar",
+          "color": "cyan"
+        },
+        {
+          "id": "7",
+          "type": "context-percentage",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

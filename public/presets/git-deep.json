@@ -1,0 +1,78 @@
+{
+  "id": "git-deep",
+  "version": "0.1.0",
+  "title": {
+    "ko": "Git 딥다이브",
+    "en": "Git Deep Dive"
+  },
+  "description": {
+    "ko": "Git 상태를 최대 해상도로 — staged/unstaged/untracked 파일 수, 추가/삭제 라인, SHA, ahead/behind",
+    "en": "Maximum Git resolution — staged, unstaged, untracked counts, insertions, deletions, SHA, and ahead/behind"
+  },
+  "tool": "ccstatusline",
+  "category": "git",
+  "tags": [
+    "git",
+    "staged",
+    "diff",
+    "sha",
+    "detailed"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "git-branch",
+          "color": "green",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "git-ahead-behind",
+          "color": "cyan"
+        },
+        {
+          "id": "3",
+          "type": "git-staged-files",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "git-unstaged-files",
+          "color": "yellow"
+        },
+        {
+          "id": "5",
+          "type": "git-untracked-files",
+          "color": "dim"
+        },
+        {
+          "id": "6",
+          "type": "git-insertions",
+          "color": "green"
+        },
+        {
+          "id": "7",
+          "type": "git-deletions",
+          "color": "red"
+        },
+        {
+          "id": "8",
+          "type": "git-sha",
+          "color": "dim"
+        },
+        {
+          "id": "9",
+          "type": "model",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

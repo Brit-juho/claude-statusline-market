@@ -1,0 +1,73 @@
+{
+  "id": "usage-sentinel",
+  "version": "0.1.0",
+  "title": {
+    "ko": "사용량 감시탑",
+    "en": "Usage Sentinel"
+  },
+  "description": {
+    "ko": "API 한도 종합 대시보드 — Sonnet/Opus 주간 사용량, 추가 한도 잔여, 리셋 타이머",
+    "en": "API limits dashboard — Sonnet/Opus weekly usage, extra quota remaining, and reset countdown"
+  },
+  "tool": "ccstatusline",
+  "category": "cost",
+  "tags": [
+    "usage",
+    "weekly",
+    "sonnet",
+    "opus",
+    "quota",
+    "reset"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "dim"
+        },
+        {
+          "id": "2",
+          "type": "session-cost",
+          "color": "yellow"
+        },
+        {
+          "id": "3",
+          "type": "weekly-sonnet-usage",
+          "color": "cyan"
+        },
+        {
+          "id": "4",
+          "type": "weekly-opus-usage",
+          "color": "magenta"
+        },
+        {
+          "id": "5",
+          "type": "extra-usage-utilization",
+          "color": "orange"
+        },
+        {
+          "id": "6",
+          "type": "extra-usage-remaining",
+          "color": "green"
+        },
+        {
+          "id": "7",
+          "type": "reset-timer",
+          "color": "dim"
+        },
+        {
+          "id": "8",
+          "type": "weekly-reset-timer",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

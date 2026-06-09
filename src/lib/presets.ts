@@ -1,3 +1,13 @@
+export interface CcsWidgetItem {
+  id: string;
+  type: string;
+  color?: string;
+  bold?: boolean;
+  commandPath?: string;
+  rawValue?: string;
+  [key: string]: unknown;
+}
+
 export interface Preset {
   id: string;
   version: string;
@@ -8,19 +18,9 @@ export interface Preset {
   tags: string[];
   author: { name: string; github?: string };
   screenshot?: string;
-  settings: {
-    statusline: {
-      enabled: boolean;
-      position?: string;
-      separator?: string;
-      segments: Array<{
-        type: string;
-        enabled?: boolean;
-        format?: string;
-        style?: string;
-        options?: Record<string, unknown>;
-      }>;
-    };
+  ccstatusline_settings: {
+    version: 3;
+    lines: CcsWidgetItem[][];
   };
 }
 

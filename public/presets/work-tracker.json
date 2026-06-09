@@ -1,21 +1,21 @@
 {
-  "id": "ko-productivity",
+  "id": "work-tracker",
   "version": "0.1.0",
   "title": {
-    "ko": "생산성 올인원",
-    "en": "Productivity All-in-One"
+    "ko": "작업 트래커",
+    "en": "Work Tracker"
   },
   "description": {
-    "ko": "생산성 극대화를 위한 올인원 설정 — 시간, 작업 수, 토큰, Git, 비용을 모두 표시",
-    "en": "All-in-one for maximum productivity — time, tasks, tokens, Git, and cost in one bar"
+    "ko": "개발 생산성 추적 — 경과 시간, 코드 변경량, Git 상태, 컨텍스트 사용률",
+    "en": "Dev productivity tracking — elapsed time, code delta, Git state, context usage"
   },
   "tool": "ccstatusline",
   "category": "productivity",
   "tags": [
     "productivity",
-    "all-in-one",
     "time",
-    "tasks"
+    "git",
+    "lines"
   ],
   "author": {
     "name": "neo",
@@ -28,27 +28,27 @@
         {
           "id": "1",
           "type": "session-clock",
-          "color": "dim"
+          "color": "cyan"
         },
         {
           "id": "2",
-          "type": "git-status",
-          "color": "blue"
+          "type": "git-branch",
+          "color": "green"
         },
         {
           "id": "3",
-          "type": "model",
-          "color": "dim"
+          "type": "git-changes",
+          "color": "yellow"
         },
         {
           "id": "4",
-          "type": "tokens-total",
+          "type": "context-bar",
           "color": "dim"
         },
         {
           "id": "5",
-          "type": "session-cost",
-          "color": "green"
+          "type": "model",
+          "color": "dim"
         }
       ]
     ]

@@ -1,0 +1,58 @@
+{
+  "id": "docker-dev",
+  "version": "0.1.0",
+  "title": {
+    "ko": "Docker 개발자",
+    "en": "Docker Developer"
+  },
+  "description": {
+    "ko": "컨테이너 개발 환경 — Docker 컨텍스트, 브랜치, 변경 라인, 세션 비용",
+    "en": "Container dev environment — Docker context, branch, diff lines, session cost"
+  },
+  "tool": "ccstatusline",
+  "category": "custom",
+  "tags": [
+    "docker",
+    "container",
+    "devops",
+    "git"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "cyan"
+        },
+        {
+          "id": "2",
+          "type": "custom-command",
+          "color": "blue",
+          "commandPath": "docker context show",
+          "bold": true
+        },
+        {
+          "id": "3",
+          "type": "git-branch",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "git-changes",
+          "color": "yellow"
+        },
+        {
+          "id": "5",
+          "type": "session-cost",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

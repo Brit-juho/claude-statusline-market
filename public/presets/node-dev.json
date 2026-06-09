@@ -1,0 +1,64 @@
+{
+  "id": "node-dev",
+  "version": "0.1.0",
+  "title": {
+    "ko": "Node 개발자",
+    "en": "Node Developer"
+  },
+  "description": {
+    "ko": "Node.js 개발에 최적화 — Node 버전, 브랜치, 디렉터리, 비용을 한눈에",
+    "en": "Optimized for Node.js dev — Node version, branch, dir, and cost at a glance"
+  },
+  "tool": "ccstatusline",
+  "category": "custom",
+  "tags": [
+    "node",
+    "javascript",
+    "runtime",
+    "git"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "NeTrioGit"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "cyan",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "current-working-dir",
+          "color": "blue"
+        },
+        {
+          "id": "3",
+          "type": "git-branch",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "custom-command",
+          "color": "green",
+          "commandPath": "node --version",
+          "bold": true
+        },
+        {
+          "id": "5",
+          "type": "session-cost",
+          "color": "yellow"
+        },
+        {
+          "id": "6",
+          "type": "context-bar",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}
