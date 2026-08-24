@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import preact from '@astrojs/preact';
 
 export default defineConfig({
-  site: 'https://netriogit.github.io',
+  site: 'https://brit-juho.github.io',
   base: '/claude-statusline-market',
   integrations: [preact({ compat: true })],
   i18n: {

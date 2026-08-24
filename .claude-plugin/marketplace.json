@@ -1,6 +1,6 @@
 {
   "name": "claude-statusline-market",
-  "owner": { "name": "NeTrioGit" },
+  "owner": { "name": "Brit-juho" },
   "plugins": [
     {
       "name": "statusline-market",

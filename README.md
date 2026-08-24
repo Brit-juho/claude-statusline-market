@@ -25,7 +25,7 @@ Claude Code's statusline is a powerful customization point, but the tooling ecos
 **Option A — plugin marketplace (recommended):**
 
 ```
-/plugin marketplace add NeTrioGit/claude-statusline-market
+/plugin marketplace add Brit-juho/claude-statusline-market
 /plugin install statusline-market@claude-statusline-market
 ```
 

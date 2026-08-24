@@ -35,7 +35,7 @@ export async function getAllPresets(): Promise<Preset[]> {
 }
 
 export function getInstallCommand(preset: Preset, platform: 'sh' | 'ps1' = 'sh'): string {
-  const base = 'https://raw.githubusercontent.com/NeTrioGit/claude-statusline-market/main';
+  const base = 'https://raw.githubusercontent.com/Brit-juho/claude-statusline-market/main';
   if (platform === 'sh') {
     return `curl -fsSL ${base}/scripts/install-preset.sh | bash -s -- ${preset.id}`;
   }

@@ -8,7 +8,7 @@ tools: [Bash, WebFetch]
 
 당신(Claude)은 이 스킬이 호출되면, **사용자가 브라우저를 열지 않고 지금 이 대화만으로** ccstatusline 상태줄을 탐색·구성·적용할 수 있게 안내한다. 미리보기는 항상 실제 터미널 ANSI 출력으로 보여준다(이미지 미리보기는 이 스킬의 목적에 맞지 않음 — 사용자가 지금 보고 있는 터미널이 실제 렌더링 환경이므로).
 
-`SITE_BASE`는 `https://NeTrioGit.github.io/claude-statusline-market`(프리셋 JSON, GitHub Pages 빌드 결과물)이다. `RAW_BASE`는 `https://raw.githubusercontent.com/NeTrioGit/claude-statusline-market/main`(스크립트류 — `scripts/`는 GitHub Pages 빌드 산출물에 포함되지 않으므로 저장소 raw 콘텐츠에서 받는다)이다. 플러그인으로 설치되어 로컬에 `scripts/`가 이미 있으면(먼저 `ls scripts/apply-ccstatusline.sh`로 확인) 그것을 우선 사용하고, 없으면(수동 SKILL.md 복사 설치본 등) `RAW_BASE`에서 매번 최신본을 받아 실행한다.
+`SITE_BASE`는 `https://Brit-juho.github.io/claude-statusline-market`(프리셋 JSON, GitHub Pages 빌드 결과물)이다. `RAW_BASE`는 `https://raw.githubusercontent.com/Brit-juho/claude-statusline-market/main`(스크립트류 — `scripts/`는 GitHub Pages 빌드 산출물에 포함되지 않으므로 저장소 raw 콘텐츠에서 받는다)이다. 플러그인으로 설치되어 로컬에 `scripts/`가 이미 있으면(먼저 `ls scripts/apply-ccstatusline.sh`로 확인) 그것을 우선 사용하고, 없으면(수동 SKILL.md 복사 설치본 등) `RAW_BASE`에서 매번 최신본을 받아 실행한다.
 
 ## 1. 탐색 (Browse)
 

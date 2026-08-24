@@ -15,7 +15,7 @@ param(
   [string]$PresetId = "",
 
   [Parameter(Mandatory=$false)]
-  [string]$SiteBase = "https://NeTrioGit.github.io/claude-statusline-market",
+  [string]$SiteBase = "https://Brit-juho.github.io/claude-statusline-market",
 
   [Parameter(Mandatory=$false)]
   [string]$ExpectedSha256 = ""
@@ -28,7 +28,7 @@ function Install-Preset {
     [string]$PresetId,
 
     [Parameter(Mandatory=$false)]
-    [string]$SiteBase = "https://NeTrioGit.github.io/claude-statusline-market",
+    [string]$SiteBase = "https://Brit-juho.github.io/claude-statusline-market",
 
     [Parameter(Mandatory=$false)]
     [string]$ExpectedSha256 = ""

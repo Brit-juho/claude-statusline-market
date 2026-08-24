@@ -5,11 +5,11 @@
 set -euo pipefail
 
 PRESET_ID="${1:-}"
-SITE_BASE="${SITE_BASE:-https://NeTrioGit.github.io/claude-statusline-market}"
+SITE_BASE="${SITE_BASE:-https://Brit-juho.github.io/claude-statusline-market}"
 # Presets are served from the built GitHub Pages site (SITE_BASE), but the
 # scripts/ folder isn't part of the Astro build output — it only exists in
 # the git repo, so it's fetched from raw.githubusercontent.com instead.
-RAW_BASE="${RAW_BASE:-https://raw.githubusercontent.com/NeTrioGit/claude-statusline-market/main}"
+RAW_BASE="${RAW_BASE:-https://raw.githubusercontent.com/Brit-juho/claude-statusline-market/main}"
 # Resolve alongside this script when run from a checkout; when piped via
 # `curl ... | sh` there is no local file, so BASH_SOURCE[0] won't point
 # anywhere usable — fall back to fetching it fresh from the site.

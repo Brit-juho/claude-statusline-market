@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getInstallCommand } from './presets';
 import type { Preset } from './presets';
 
-const BASE = 'https://raw.githubusercontent.com/NeTrioGit/claude-statusline-market/main';
+const BASE = 'https://raw.githubusercontent.com/Brit-juho/claude-statusline-market/main';
 
 function makePreset(id: string): Preset {
   return {
