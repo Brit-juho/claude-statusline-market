@@ -45,9 +45,9 @@ const koHref = lang === 'en'
       </a>
       <nav class="nav">
         <a href={lang === 'en' ? `${base}en/` : base || '/'} class="nav-link">{t('nav.gallery')}</a>
-        <a href={lang === 'en' ? `${base}en/builder` : `${base}builder`} class="nav-link">{lang === 'ko' ? '빌더' : 'Builder'}</a>
+        <a href={lang === 'en' ? `${base}en/builder` : `${base}builder`} class="nav-link">{t('builder.title')}</a>
         <a href={lang === 'en' ? `${base}en/about` : `${base}about`} class="nav-link">{t('nav.about')}</a>
-        <a href="https://github.com/NeTrioGit/claude-statusline-market" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/Brit-juho/claude-statusline-market" class="nav-link" target="_blank" rel="noopener">GitHub</a>
         <div class="lang-switcher">
           <a href={koHref} class:list={['lang-btn', { active: lang === 'ko' }]}>KR</a>
           <a href={enHref} class:list={['lang-btn', { active: lang === 'en' }]}>EN</a>
@@ -66,8 +66,8 @@ const koHref = lang === 'en'
         {t('footer.description')} &mdash; MIT License
       </p>
       <p class="footer-credit">
-        {t('footer.made_with')} ♥ {t('footer.by')}
-        <a href="https://github.com/NeTrioGit" target="_blank" rel="noopener">@NeTrioGit</a>
+        {t('footer.made_with')} {t('footer.by')}
+        <a href="https://github.com/Brit-juho" target="_blank" rel="noopener">@Brit-juho</a>
       </p>
     </div>
   </footer>

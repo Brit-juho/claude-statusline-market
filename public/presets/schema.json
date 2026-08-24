@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://netriogit.github.io/claude-statusline-market/presets/schema.json",
+  "$id": "https://brit-juho.github.io/claude-statusline-market/presets/schema.json",
   "title": "Claude Statusline Preset",
   "description": "A preset configuration for ccstatusline",
   "type": "object",

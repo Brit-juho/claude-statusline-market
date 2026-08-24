@@ -1,0 +1,28 @@
+diff --git a/node_modules/@astrojs/preact/dist/index.js b/node_modules/@astrojs/preact/dist/index.js
+index 1f4b926..28ae959 100644
+--- a/node_modules/@astrojs/preact/dist/index.js
++++ b/node_modules/@astrojs/preact/dist/index.js
+@@ -15,19 +15,11 @@ function optionsPlugin(include, exclude) {
+   const virtualModuleId = "\0" + virtualModule;
+   return {
+     name: "@astrojs/preact:opts",
+-    resolveId: {
+-      filter: {
+-        id: new RegExp(`^${virtualModule}$`)
+-      },
+-      handler() {
+-        return virtualModuleId;
+-      }
++    resolveId(id) {
++      if (id === virtualModule) return virtualModuleId;
+     },
+-    load: {
+-      filter: {
+-        id: new RegExp(`^${virtualModuleId}$`)
+-      },
+-      handler() {
++    load(id) {
++      if (id === virtualModuleId) {
+         const opts = {
+           include,
+           exclude

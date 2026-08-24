@@ -30,7 +30,7 @@ jobs:
       - name: Run install script (ko-minimal)
         env:
           PRESET_ID: ${{ github.event.inputs.preset_id || 'ko-minimal' }}
-          SITE_BASE: "https://netriogit.github.io/claude-statusline-market"
+          SITE_BASE: "https://brit-juho.github.io/claude-statusline-market"
         run: |
           bash scripts/install-preset.sh "$PRESET_ID"
 

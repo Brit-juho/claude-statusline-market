@@ -5,7 +5,7 @@ One-line preset installers for each supported platform.
 ## macOS / Linux
 
 ```bash
-curl -fsSL https://NeTrioGit.github.io/claude-statusline-market/i/<preset-id> | sh
+curl -fsSL https://Brit-juho.github.io/claude-statusline-market/i/<preset-id> | sh
 ```
 
 **Requirements**: `curl`, `jq`
@@ -25,10 +25,10 @@ sudo pacman -S jq
 
 ```bash
 # View the script first
-curl -fsSL https://NeTrioGit.github.io/claude-statusline-market/i/<preset-id>
+curl -fsSL https://Brit-juho.github.io/claude-statusline-market/i/<preset-id>
 
 # Then install
-curl -fsSL https://NeTrioGit.github.io/claude-statusline-market/i/<preset-id> | sh
+curl -fsSL https://Brit-juho.github.io/claude-statusline-market/i/<preset-id> | sh
 ```
 
 ---
@@ -36,13 +36,13 @@ curl -fsSL https://NeTrioGit.github.io/claude-statusline-market/i/<preset-id> | 
 ## Windows (PowerShell)
 
 ```powershell
-irm https://NeTrioGit.github.io/claude-statusline-market/i/<preset-id>.ps1 | iex
+irm https://Brit-juho.github.io/claude-statusline-market/i/<preset-id>.ps1 | iex
 ```
 
 Or download and run manually:
 
 ```powershell
-Invoke-WebRequest -Uri https://NeTrioGit.github.io/claude-statusline-market/scripts/install-preset.ps1 -OutFile install.ps1
+Invoke-WebRequest -Uri https://Brit-juho.github.io/claude-statusline-market/scripts/install-preset.ps1 -OutFile install.ps1
 .\install.ps1 -PresetId <preset-id>
 ```
 
@@ -75,7 +75,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ```powershell
 # View the script first
-Invoke-WebRequest -Uri https://NeTrioGit.github.io/claude-statusline-market/i/<preset-id>.ps1 | Select-Object -ExpandProperty Content
+Invoke-WebRequest -Uri https://Brit-juho.github.io/claude-statusline-market/i/<preset-id>.ps1 | Select-Object -ExpandProperty Content
 ```
 
 ---

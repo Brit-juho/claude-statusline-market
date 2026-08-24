@@ -18,6 +18,27 @@ Claude Code's statusline is a powerful customization point, but the tooling ecos
 - **Contribute** — submit your preset via PR, CI auto-generates the screenshot
 - **Multilingual** — Korean and English from day one (Japanese, Chinese coming)
 
+## Use it from the terminal (no browser needed)
+
+`skills/statusline-market` is a Claude Code Skill that lets you browse, preview, customize, and apply a statusline entirely by talking to Claude Code — no site visit, no copy-pasting install commands. Previews render as real ANSI terminal output, the same environment the statusline actually runs in.
+
+**Option A — plugin marketplace (recommended):**
+
+```
+/plugin marketplace add Brit-juho/claude-statusline-market
+/plugin install statusline-market@claude-statusline-market
+```
+
+Then just say `/statusline-market` (or ask "상태줄 프리셋 골라줘" / "help me pick a statusline") in any Claude Code session.
+
+**Option B — manual copy (no plugin system needed):**
+
+```bash
+mkdir -p ~/.claude/skills && cp -r skills/statusline-market ~/.claude/skills/
+```
+
+Both paths run the exact same `SKILL.md`, and both end up calling the same `scripts/apply-ccstatusline.sh` that the one-line `curl | sh` install below uses — so terminal, plugin, and website installs all converge on one apply path.
+
 ## Status
 
 **Planning phase.** v0.1 ships as a static gallery on GitHub Pages with `ccstatusline` preset support.
