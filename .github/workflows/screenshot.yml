@@ -3,7 +3,7 @@ name: Generate Screenshots
 on:
   push:
     paths:
-      - 'presets/*.json'
+      - 'public/presets/*.json'
   workflow_dispatch:
 
 jobs:
@@ -22,16 +22,19 @@ jobs:
         run: |
           FREEZE_VERSION="1.4.3"
           curl -fsSL "https://github.com/charmbracelet/freeze/releases/download/v${FREEZE_VERSION}/freeze_${FREEZE_VERSION}_linux_amd64.tar.gz" | tar xz -C /usr/local/bin freeze
-          chmod +x /usr/local/bin freeze
+          chmod +x /usr/local/bin/freeze
 
       - name: Generate mock screenshots
         run: |
           mkdir -p public/screenshots
-          for f in presets/*.json; do
+          for f in public/presets/*.json; do
+            base="$(basename "$f")"
+            [ "$base" = "schema.json" ] && continue
+            [ "$base" = "index.json" ] && continue
             id=$(node -e "const d=JSON.parse(require('fs').readFileSync('$f')); console.log(d.id)")
             segments=$(node -e "
               const d=JSON.parse(require('fs').readFileSync('$f'));
-              const segs = d.settings.statusline.segments.map(s => s.format ?? s.type).join(' | ');
+              const segs = d.ccstatusline_settings.lines.flat().map(w => w.rawValue ?? w.type).join(' | ');
               console.log(segs)
             ")
             printf '%s\n' \

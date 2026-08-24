@@ -1,625 +1,81 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getLangFromUrl, useTranslations } from '../i18n/index.ts';
-import { getAllPresets } from '../lib/presets.ts';
-import { SAMPLE_VALUES } from '../lib/preview.ts';
-import { makeSegmentGroups, ICON_GROUPS, WHEN_LABELS } from '../lib/segments.ts';
 import { getBase } from '../lib/utils.ts';
+import { BuilderApp } from '../components/Builder/BuilderApp.tsx';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const presets = await getAllPresets();
 const base = getBase();
-const SEGMENT_GROUPS = makeSegmentGroups(lang);
 
-const sampleValuesJson = JSON.stringify(SAMPLE_VALUES);
-const segmentGroupsJson = JSON.stringify(SEGMENT_GROUPS);
-const iconGroupsJson = JSON.stringify(ICON_GROUPS);
-const whenLabelsJson = JSON.stringify(WHEN_LABELS);
-const presetsJson = JSON.stringify(presets.map(p => ({
-  id: p.id, title: p.title, category: p.category,
-  segments: p.settings.statusline.segments,
-  separator: p.settings.statusline.separator ?? '  ',
-})));
+const translations = {
+  palette_title: t('builder.palette_title'),
+  canvas_title: t('builder.canvas_title'),
+  config_title: t('builder.config_title'),
+  canvas_empty: t('builder.canvas_empty'),
+  config_empty: t('builder.config_empty'),
+  preview_note: t('builder.preview_note'),
+  preview_error: t('builder.preview_error'),
+  download: t('builder.download'),
+  copy_install: t('builder.copy_install'),
+  copy_install_done: t('builder.copy_install_done'),
+  apply_title: t('builder.apply_title'),
+  apply_step1: t('builder.apply_step1'),
+  apply_step2: t('builder.apply_step2'),
+  back: t('builder.back'),
+  tab_palette: t('builder.tab_palette'),
+  tab_canvas: t('builder.tab_canvas'),
+  tab_config: t('builder.tab_config'),
+  a11y_drag_start: t('builder.a11y_drag_start'),
+  a11y_drag_over: t('builder.a11y_drag_over'),
+  a11y_drag_end: t('builder.a11y_drag_end'),
+  a11y_drag_cancel: t('builder.a11y_drag_cancel'),
+};
 ---
-
-<Base title={lang === 'ko' ? '커스텀 빌더' : 'Custom Builder'}>
-<!-- xterm CSS는 npm 패키지에서 인라인 -->
-<style>
-  /* xterm.js 핵심 스타일 인라인 */
-  .xterm { font-feature-settings:"liga" 0; position:relative; user-select:none; -ms-user-select:none; -webkit-user-select:none; }
-  .xterm.focus,.xterm:focus { outline:none; }
-  .xterm .xterm-helpers { position:absolute; top:0; z-index:5; }
-  .xterm .xterm-helper-textarea { padding:0; border:0; width:0; height:0; position:absolute; opacity:0; left:-9999em; top:0; overflow:hidden; resize:none; z-index:-5; white-space:nowrap; overflow:hidden; color:transparent; }
-  .xterm-viewport { background-color:#000; overflow-y:scroll; cursor:default; position:absolute; right:0; left:0; top:0; bottom:0; }
-  .xterm-viewport::-webkit-scrollbar { width:6px; } .xterm-viewport::-webkit-scrollbar-track { background:#111; } .xterm-viewport::-webkit-scrollbar-thumb { background:#2a2a2a; border-radius:3px; }
-  .xterm-screen { position:relative; }
-  .xterm-scroll-area { visibility:hidden; }
-  .xterm-char-measure-element { display:inline-block; visibility:hidden; position:absolute; top:0; left:-9999em; line-height:normal; }
-  .xterm.enable-mouse-events { cursor:default; }
-  .xterm .xterm-cursor-pointer,.xterm.mouse-visual-mode { cursor:pointer; }
-  .xterm .xterm-accessibility,.xterm .xterm-message { position:absolute; left:0; top:0; bottom:0; right:0; z-index:10; color:transparent; }
-  .xterm .live-region { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
-  .xterm-dim { opacity:.5; }
-  .xterm-underline-1 { text-decoration:underline; } .xterm-strikethrough { text-decoration:line-through; }
-  .xterm-screen .xterm-decoration-container .xterm-decoration { z-index:6; position:absolute; } .xterm-screen .xterm-decoration-container .xterm-decoration.xterm-decoration-top-layer { z-index:7; }
-  .xterm-decoration-overview-ruler { z-index:8; position:absolute; top:0; right:0; pointer-events:none; }
-  .xterm-decoration-top { z-index:2; position:relative; }
-  .xterm-rows { position:absolute; } .xterm-rows>span { display:inline-block; line-height:0; }
-</style>
-
-<div class="builder-layout">
-  <div class="builder-header">
-    <h1>{lang === 'ko' ? '커스텀 빌더' : 'Custom Builder'}</h1>
-    <p>{lang === 'ko' ? '색상 직접 지정 · 아이콘 선택 · 드래그 순서 변경 · 로컬 저장' : 'Custom colors · icon picker · drag reorder · local saves'}</p>
-  </div>
-
-  <!-- 프리셋 기반 시작 -->
-  <div class="preset-start">
-    <span class="start-label">{lang === 'ko' ? '프리셋에서 시작:' : 'Start from preset:'}</span>
-    <div class="preset-chips" id="presetChips"></div>
-  </div>
-
-  <div class="builder-main">
-    <!-- 왼쪽: 팔레트 -->
-    <div class="panel panel-left">
-      <h2 class="panel-title">{lang === 'ko' ? '세그먼트 선택' : 'Segments'}</h2>
-      <div id="segmentPalette"></div>
-      <div class="separator-row">
-        <label class="sep-label">{lang === 'ko' ? '구분자' : 'Separator'}</label>
-        <input id="separatorInput" class="sep-input" type="text" value="  " maxlength="10" />
+<Base title={t('builder.title')}>
+  <div class="builder-page">
+    <div class="builder-header">
+      <a href={base || '/'} class="back-link">&larr; {t('builder.back')}</a>
+      <div>
+        <h1 class="builder-title">{t('builder.title')}</h1>
+        <p class="builder-subtitle">{t('builder.subtitle')}</p>
       </div>
     </div>
 
-    <!-- 오른쪽: 활성 세그먼트 -->
-    <div class="panel panel-right">
-      <h2 class="panel-title">
-        {lang === 'ko' ? '활성 세그먼트' : 'Active Segments'}
-        <span class="drag-hint">{lang === 'ko' ? '드래그로 순서 변경' : 'drag to reorder'}</span>
-      </h2>
-      <div class="active-list" id="activeList">
-        <div class="empty-hint">{lang === 'ko' ? '왼쪽에서 세그먼트를 추가하세요' : 'Add segments from the left'}</div>
-      </div>
-    </div>
+    <BuilderApp
+      client:only="preact"
+      lang={lang}
+      t={translations}
+      base={base}
+    />
   </div>
-
-  <!-- xterm.js 실제 터미널 -->
-  <div class="xterm-section">
-    <div class="xterm-header">
-      <h2 class="panel-title">{lang === 'ko' ? '실제 터미널 미리보기' : 'Live Terminal Preview'}</h2>
-      <span class="xterm-badge">xterm.js · ANSI</span>
-    </div>
-    <div class="xterm-wrapper">
-      <div id="xterm-container"></div>
-    </div>
-  </div>
-
-  <!-- 로컬 저장 -->
-  <div class="saves-section" id="savesSection">
-    <div class="saves-header">
-      <h2 class="panel-title">{lang === 'ko' ? '내 저장소' : 'My Saves'}</h2>
-      <div class="save-form">
-        <input id="saveNameInput" class="save-name-input" type="text"
-          placeholder={lang === 'ko' ? '레이아웃 이름...' : 'Layout name...'} maxlength="30" />
-        <button class="save-btn" id="saveLayoutBtn">
-          {lang === 'ko' ? '현재 저장' : 'Save current'}
-        </button>
-      </div>
-    </div>
-    <div class="saves-body">
-      <div class="saves-col">
-        <div class="saves-col-title">{lang === 'ko' ? '저장된 레이아웃' : 'Saved Layouts'}</div>
-        <div id="savedLayouts"><span class="save-empty">{lang === 'ko' ? '없음' : 'None'}</span></div>
-      </div>
-      <div class="saves-col">
-        <div class="saves-col-title">{lang === 'ko' ? '즐겨찾기 세그먼트' : 'Favorite Segments'}</div>
-        <div id="savedSegments"><span class="save-empty">{lang === 'ko' ? '없음' : 'None'}</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 출력 -->
-  <div class="output-section">
-    <div class="output-tabs">
-      <button class="out-tab active" data-tab="install">{lang === 'ko' ? '설치 명령' : 'Install'}</button>
-      <button class="out-tab" data-tab="json">JSON</button>
-    </div>
-    <div class="out-panel" id="panelInstall">
-      <div class="install-label">macOS / Linux</div>
-      <div class="code-row"><code class="code-block" id="installSh"></code><button class="copy-btn" id="copyInstallSh">{lang === 'ko' ? '복사' : 'Copy'}</button></div>
-      <div class="install-label mt">Windows (PowerShell)</div>
-      <div class="code-row"><code class="code-block" id="installPs"></code><button class="copy-btn" id="copyInstallPs">{lang === 'ko' ? '복사' : 'Copy'}</button></div>
-    </div>
-    <div class="out-panel hidden" id="panelJson">
-      <div class="code-row json-row"><pre class="code-block json-pre" id="jsonOutput"></pre><button class="copy-btn" id="copyJson">{lang === 'ko' ? '복사' : 'Copy'}</button></div>
-    </div>
-  </div>
-</div>
 </Base>
 
-<!-- xterm.js: npm 번들 (CDN 제거) -->
-<script src="../scripts/xterm-init.ts"></script>
-
-<script define:vars={{ sampleValuesJson, segmentGroupsJson, iconGroupsJson, whenLabelsJson, presetsJson, lang }}>
-const VALS = JSON.parse(sampleValuesJson);
-const GROUPS = JSON.parse(segmentGroupsJson);
-const ICON_GROUPS = JSON.parse(iconGroupsJson);
-const WHEN_LABELS = JSON.parse(whenLabelsJson);
-const PRESETS = JSON.parse(presetsJson);
-const STORAGE_KEY = 'statusline-market-v1';
-
-let activeSegments = [];
-let separator = '  ';
-let dragSrcIdx = null;
-let openIconPicker = null; // idx of open icon picker
-
-/* ── helpers ── */
-const CSS_NAMED = { green:'#00d97e', accent:'#00d97e', cyan:'#22d3ee', blue:'#60a5fa', yellow:'#fbbf24', orange:'#fb923c', red:'#f87171', magenta:'#c084fc', pink:'#f472b6', white:'#d0d0d0', dim:'#4b5563', bold:'#ededed' };
-
-function renderFmt(fmt) {
-  return fmt.replace(/\{([a-zA-Z_.]+)(?::([^}]+))?\}/g, (_, key, spec) => {
-    const v = VALS[key]; if (v === undefined) return `{${key}}`;
-    if (spec) { const m = spec.match(/\.(\d+)f/); if (m) return Number(v).toFixed(parseInt(m[1])); }
-    return String(v);
-  });
-}
-
-function styleToCSS(style) {
-  if (!style) return 'color:#00d97e';
-  const css = [];
-  for (const p of style.split(/\s+/)) {
-    if (p === 'bold') css.push('font-weight:700');
-    else if (p === 'dim') css.push('color:#4b5563');
-    else if (/^#[0-9a-fA-F]{6}$/.test(p)) css.push(`color:${p}`);
-    else if (CSS_NAMED[p]) css.push(`color:${CSS_NAMED[p]}`);
-  }
-  return css.join(';') || 'color:#00d97e';
-}
-
-function getHexFromStyle(style) {
-  if (!style) return '#00d97e';
-  const hex = style.match(/#[0-9a-fA-F]{6}/);
-  if (hex) return hex[0];
-  const named = style.split(/\s+/).find(p => CSS_NAMED[p]);
-  return named ? CSS_NAMED[named] : '#00d97e';
-}
-
-function replaceColorInStyle(style, newHex) {
-  const parts = (style || '').split(/\s+/).filter(p => p !== 'dim' && !CSS_NAMED[p] && !/^#/.test(p));
-  parts.unshift(newHex);
-  return parts.join(' ').trim();
-}
-
-/* ── local storage ── */
-function getStore() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"layouts":[],"segments":[]}'); }
-  catch { return { layouts:[], segments:[] }; }
-}
-function putStore(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-
-function saveLayout(name) {
-  if (!name.trim()) return;
-  const store = getStore();
-  const existing = store.layouts.findIndex(l => l.name === name);
-  const entry = { name, separator, segments: JSON.parse(JSON.stringify(activeSegments)), savedAt: Date.now() };
-  if (existing !== -1) store.layouts[existing] = entry; else store.layouts.push(entry);
-  putStore(store); renderSavedLayouts();
-}
-
-function saveSegment(idx) {
-  const s = activeSegments[idx]; if (!s) return;
-  const store = getStore();
-  const name = `${s.label}: ${renderFmt(s.format)}`.slice(0, 40);
-  const existing = store.segments.findIndex(x => x.name === name);
-  const entry = { name, type: s.type, format: s.format, style: s.style, label: s.label, savedAt: Date.now() };
-  if (existing !== -1) store.segments[existing] = entry; else store.segments.push(entry);
-  putStore(store); renderSavedSegments();
-}
-
-function deleteLayout(name) { const s = getStore(); s.layouts = s.layouts.filter(l => l.name !== name); putStore(s); renderSavedLayouts(); }
-function deleteSegment(name) { const s = getStore(); s.segments = s.segments.filter(l => l.name !== name); putStore(s); renderSavedSegments(); }
-
-function renderSavedLayouts() {
-  const el = document.getElementById('savedLayouts'); if (!el) return;
-  const { layouts } = getStore();
-  if (!layouts.length) { el.innerHTML = `<span class="save-empty">${lang==='ko'?'없음':'None'}</span>`; return; }
-  el.innerHTML = layouts.map(l => `
-    <div class="save-item">
-      <span class="save-name">${l.name}</span>
-      <span class="save-meta">${l.segments.length}seg</span>
-      <button class="save-action load" data-name="${l.name}">${lang==='ko'?'불러오기':'Load'}</button>
-      <button class="save-action del" data-name="${l.name}">×</button>
-    </div>`).join('');
-  el.querySelectorAll('.save-action.load').forEach(b => b.addEventListener('click', () => {
-    const l = getStore().layouts.find(x => x.name === b.dataset.name); if (!l) return;
-    separator = l.separator; activeSegments = JSON.parse(JSON.stringify(l.segments));
-    document.getElementById('separatorInput').value = separator; refresh();
-  }));
-  el.querySelectorAll('.save-action.del').forEach(b => b.addEventListener('click', () => deleteLayout(b.dataset.name)));
-}
-
-function renderSavedSegments() {
-  const el = document.getElementById('savedSegments'); if (!el) return;
-  const { segments } = getStore();
-  if (!segments.length) { el.innerHTML = `<span class="save-empty">${lang==='ko'?'없음':'None'}</span>`; return; }
-  el.innerHTML = segments.map(s => `
-    <div class="save-item">
-      <span class="save-preview" style="${styleToCSS(s.style)}">${renderFmt(s.format)}</span>
-      <button class="save-action load" data-name="${s.name}">${lang==='ko'?'추가':'Add'}</button>
-      <button class="save-action del" data-name="${s.name}">×</button>
-    </div>`).join('');
-  el.querySelectorAll('.save-action.load').forEach(b => b.addEventListener('click', () => {
-    const s = getStore().segments.find(x => x.name === b.dataset.name); if (!s) return;
-    activeSegments.push({ type: s.type, format: s.format, style: s.style, label: s.label }); refresh();
-  }));
-  el.querySelectorAll('.save-action.del').forEach(b => b.addEventListener('click', () => deleteSegment(b.dataset.name)));
-}
-
-/* ── dispatch to xterm ── */
-function dispatchXterm() {
-  const segs = activeSegments.map(s => ({ text: renderFmt(s.format), style: s.style, when: s.when }));
-  window.dispatchEvent(new CustomEvent('xterm:update', { detail: { segments: segs, separator } }));
-}
-
-function buildJson() {
-  return JSON.stringify({ settings: { statusline: { enabled:true, position:'bottom', separator, segments: activeSegments.map(s => ({ type:s.type, format:s.format, style:s.style })) } } }, null, 2);
-}
-function updateOutput() {
-  const BASE = 'https://raw.githubusercontent.com/NeTrioGit/claude-statusline-market/main';
-  const id = 'custom-' + Date.now().toString(36);
-  document.getElementById('installSh').textContent = `curl -fsSL ${BASE}/scripts/install-preset.sh | bash -s -- ${id}`;
-  document.getElementById('installPs').textContent = `irm ${BASE}/scripts/install-preset.ps1 | iex; Install-Preset ${id}`;
-  document.getElementById('jsonOutput').textContent = buildJson();
-}
-
-function refresh() { renderActiveList(); renderPalette(); dispatchXterm(); updateOutput(); }
-
-/* ── icon picker popup ── */
-function buildIconPickerHtml(idx) {
-  return `<div class="icon-picker" id="ipanel-${idx}">
-    ${ICON_GROUPS.map(g => `
-      <div class="icon-cat-label">${g.name}</div>
-      <div class="icon-cat-items">
-        ${g.icons.map(ic => `<button class="ic-btn" data-idx="${idx}" data-icon="${ic}">${ic}</button>`).join('')}
-      </div>`).join('')}
-  </div>`;
-}
-
-/* ── active list ── */
-function renderActiveList() {
-  const el = document.getElementById('activeList'); if (!el) return;
-  if (!activeSegments.length) {
-    el.innerHTML = `<div class="empty-hint">${lang==='ko'?'왼쪽에서 세그먼트를 추가하세요':'Add segments from the left'}</div>`; return;
-  }
-  el.innerHTML = activeSegments.map((s, i) => {
-    const hex = getHexFromStyle(s.style);
-    const isBold = s.style?.includes('bold');
-    return `
-    <div class="active-item" draggable="true" data-idx="${i}">
-      <div class="active-header">
-        <span class="drag-handle" title="drag">⠿</span>
-        <span class="active-type">${s.label}</span>
-        ${s.when && s.when !== 'always' ? `<span class="when-badge" title="${WHEN_LABELS[s.when]?.[lang]??s.when}">◌ ${WHEN_LABELS[s.when]?.[lang]??s.when}</span>` : ''}
-        <span class="active-preview" style="${styleToCSS(s.style)}">${renderFmt(s.format)}</span>
-        <div class="ah-actions">
-          <button class="icon-btn star" data-action="star" data-idx="${i}" title="${lang==='ko'?'즐겨찾기':'Favorite'}">★</button>
-          <button class="icon-btn rm" data-action="rm" data-idx="${i}">×</button>
-        </div>
-      </div>
-
-      <!-- 색상 직접 지정 -->
-      <div class="color-row">
-        <label class="color-pick-label">${lang==='ko'?'색상':'Color'}</label>
-        <input type="color" class="color-hex-input" data-idx="${i}" value="${hex}" />
-        <span class="color-hex-val">${hex}</span>
-        <label class="bold-toggle">
-          <input type="checkbox" class="bold-check" data-idx="${i}" ${isBold?'checked':''}>
-          bold
-        </label>
-      </div>
-
-      <!-- 포맷 + 아이콘 피커 -->
-      <div class="fmt-row">
-        <input class="fmt-input" data-idx="${i}" value="${s.format.replace(/"/g,'&quot;')}" />
-        <button class="icon-pick-open" data-idx="${i}" title="${lang==='ko'?'아이콘 삽입':'Insert icon'}">⊕</button>
-      </div>
-      ${openIconPicker === i ? buildIconPickerHtml(i) : ''}
-    </div>`;
-  }).join('');
-
-  /* color hex input */
-  el.querySelectorAll('.color-hex-input').forEach(inp => {
-    inp.addEventListener('input', e => {
-      const idx = parseInt(e.target.dataset.idx);
-      const hex = e.target.value;
-      e.target.nextElementSibling.textContent = hex;
-      activeSegments[idx].style = replaceColorInStyle(activeSegments[idx].style, hex);
-      // update preview live without full re-render
-      const prev = e.target.closest('.active-item')?.querySelector('.active-preview');
-      if (prev) { prev.style.cssText = styleToCSS(activeSegments[idx].style); }
-      dispatchXterm(); updateOutput();
-    });
-    inp.addEventListener('change', () => refresh());
-  });
-
-  /* bold toggle */
-  el.querySelectorAll('.bold-check').forEach(cb => {
-    cb.addEventListener('change', () => {
-      const idx = parseInt(cb.dataset.idx);
-      const parts = (activeSegments[idx].style || '').split(/\s+/).filter(p => p !== 'bold');
-      if (cb.checked) parts.push('bold');
-      activeSegments[idx].style = parts.join(' ').trim();
-      refresh();
-    });
-  });
-
-  /* format input */
-  el.querySelectorAll('.fmt-input').forEach(inp => {
-    inp.addEventListener('input', e => {
-      activeSegments[parseInt(e.target.dataset.idx)].format = e.target.value;
-      dispatchXterm(); updateOutput();
-      const prev = e.target.closest('.active-item')?.querySelector('.active-preview');
-      if (prev) prev.textContent = renderFmt(e.target.value);
-    });
-  });
-
-  /* icon picker toggle */
-  el.querySelectorAll('.icon-pick-open').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      openIconPicker = openIconPicker === idx ? null : idx;
-      renderActiveList();
-    });
-  });
-
-  /* icon insert */
-  el.querySelectorAll('.ic-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.dataset.idx);
-      const icon = btn.dataset.icon;
-      const input = el.querySelector(`.fmt-input[data-idx="${idx}"]`);
-      if (input) {
-        const pos = input.selectionStart ?? input.value.length;
-        const v = input.value;
-        input.value = v.slice(0, pos) + icon + v.slice(pos);
-        activeSegments[idx].format = input.value;
-        openIconPicker = null;
-        refresh();
-      }
-    });
-  });
-
-  /* star (save segment) */
-  el.querySelectorAll('.icon-btn.star').forEach(btn => {
-    btn.addEventListener('click', () => { saveSegment(parseInt(btn.dataset.idx)); btn.classList.add('starred'); setTimeout(() => btn.classList.remove('starred'), 1000); });
-  });
-
-  /* remove */
-  el.querySelectorAll('.icon-btn.rm').forEach(btn => {
-    btn.addEventListener('click', () => { activeSegments.splice(parseInt(btn.dataset.idx), 1); openIconPicker = null; refresh(); });
-  });
-
-  /* drag & drop */
-  el.querySelectorAll('.active-item[draggable]').forEach(item => {
-    item.addEventListener('dragstart', e => { dragSrcIdx = parseInt(item.dataset.idx); item.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
-    item.addEventListener('dragend', () => { item.classList.remove('dragging'); el.querySelectorAll('.active-item').forEach(i => i.classList.remove('drag-over')); });
-    item.addEventListener('dragover', e => { e.preventDefault(); el.querySelectorAll('.active-item').forEach(i => i.classList.remove('drag-over')); if (parseInt(item.dataset.idx) !== dragSrcIdx) item.classList.add('drag-over'); });
-    item.addEventListener('drop', e => {
-      e.preventDefault();
-      const t = parseInt(item.dataset.idx);
-      if (dragSrcIdx !== null && dragSrcIdx !== t) { const [m] = activeSegments.splice(dragSrcIdx, 1); activeSegments.splice(t, 0, m); refresh(); }
-    });
-  });
-}
-
-/* ── palette ── */
-function renderPalette() {
-  const el = document.getElementById('segmentPalette'); if (!el) return;
-  el.innerHTML = GROUPS.map(g => `
-    <div class="seg-group">
-      <div class="seg-group-label">${g.group}</div>
-      <div class="seg-group-items">
-        ${g.segments.map(seg => {
-          const active = activeSegments.some(s => s.type === seg.type);
-          const whenLabel = seg.when !== 'always' ? (WHEN_LABELS[seg.when]?.[lang] ?? seg.when) : '';
-          return `<button class="seg-btn ${active?'seg-active':''} ${seg.when!=='always'?'seg-cond':''}" data-type="${seg.type}">
-            <span class="seg-lbl">${seg.label[lang]??seg.label.ko}</span>
-            <span class="seg-sample" style="${active?styleToCSS(seg.defaultStyle):''}">${renderFmt(seg.defaultFmt)}</span>
-            ${whenLabel ? `<span class="seg-when" title="${whenLabel}">◌</span>` : ''}
-            <span class="seg-toggle">${active?'✓':'+'}</span>
-          </button>`;
-        }).join('')}
-      </div>
-    </div>`).join('');
-  el.querySelectorAll('.seg-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const type = btn.dataset.type, idx = activeSegments.findIndex(s => s.type === type);
-      if (idx !== -1) { activeSegments.splice(idx, 1); }
-      else {
-        let def = null; for (const g of GROUPS) { def = g.segments.find(s => s.type === type); if (def) break; }
-        if (!def) return;
-        activeSegments.push({ type, format: def.defaultFmt, style: def.defaultStyle, label: def.label[lang]??def.label.ko, when: def.when??'always' });
-      }
-      openIconPicker = null; refresh();
-    });
-  });
-}
-
-/* ── preset chips ── */
-function renderPresetChips() {
-  const el = document.getElementById('presetChips'); if (!el) return;
-  el.innerHTML = PRESETS.map(p => `<button class="preset-chip" data-id="${p.id}">${p.title[lang]??p.title.ko}</button>`).join('');
-  el.querySelectorAll('.preset-chip').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const p = PRESETS.find(x => x.id === btn.dataset.id); if (!p) return;
-      separator = p.separator ?? '  '; document.getElementById('separatorInput').value = separator;
-      activeSegments = p.segments.map(s => {
-        let def = null; for (const g of GROUPS) { def = g.segments.find(d => d.type === s.type); if (def) break; }
-        return { type: s.type, format: s.format??def?.defaultFmt??s.type, style: s.style??def?.defaultStyle??'#00d97e', label: def?.label?.[lang]??def?.label?.ko??s.type };
-      });
-      openIconPicker = null; el.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active')); btn.classList.add('active'); refresh();
-    });
-  });
-}
-
-/* ── separator ── */
-document.getElementById('separatorInput')?.addEventListener('input', e => { separator = e.target.value; dispatchXterm(); updateOutput(); });
-
-/* ── save layout btn ── */
-document.getElementById('saveLayoutBtn')?.addEventListener('click', () => {
-  const name = document.getElementById('saveNameInput')?.value?.trim();
-  if (name && activeSegments.length) { saveLayout(name); document.getElementById('saveNameInput').value = ''; }
-});
-
-/* ── output tabs ── */
-document.querySelectorAll('.out-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.out-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active');
-    const w = tab.dataset.tab; document.getElementById('panelInstall').classList.toggle('hidden', w!=='install'); document.getElementById('panelJson').classList.toggle('hidden', w!=='json');
-  });
-});
-
-/* ── copy ── */
-['copyInstallSh:installSh','copyInstallPs:installPs','copyJson:jsonOutput'].forEach(pair => {
-  const [btnId, srcId] = pair.split(':');
-  document.getElementById(btnId)?.addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(document.getElementById(srcId)?.textContent??'');
-      const b = document.getElementById(btnId), o = b.textContent; b.textContent='✓'; b.classList.add('copied');
-      setTimeout(() => { b.textContent=o; b.classList.remove('copied'); }, 1800); } catch {}
-  });
-});
-
-/* ── init ── */
-renderPresetChips(); renderPalette(); renderActiveList(); updateOutput(); renderSavedLayouts(); renderSavedSegments();
-</script>
-
 <style>
-.builder-layout { max-width:1100px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
-.builder-header { margin-bottom:1.75rem; }
-.builder-header h1 { font-size:1.625rem; font-weight:700; letter-spacing:-0.03em; margin-bottom:0.3rem; }
-.builder-header p { color:#555; font-size:0.875rem; }
-
-.preset-start { display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap; margin-bottom:1.25rem; padding:0.75rem 1rem; background:#0e0e0e; border:1px solid #1c1c1c; border-radius:8px; }
-.start-label { font-size:0.75rem; color:#444; white-space:nowrap; }
-.preset-chips { display:flex; flex-wrap:wrap; gap:0.3rem; }
-.preset-chip { padding:0.2rem 0.6rem; border-radius:999px; border:1px solid #1e1e1e; background:transparent; color:#555; font-size:0.75rem; font-family:inherit; cursor:pointer; transition:all 0.12s; }
-.preset-chip:hover { border-color:#2e2e2e; color:#888; }
-.preset-chip.active { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
-
-.builder-main { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem; }
-@media (max-width:720px) { .builder-main { grid-template-columns:1fr; } }
-.panel { background:#0e0e0e; border:1px solid #1c1c1c; border-radius:10px; padding:1.125rem; }
-.panel-title { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#333; margin-bottom:0.875rem; display:flex; align-items:center; gap:0.5rem; }
-.drag-hint { font-size:0.6rem; color:#222; font-weight:400; text-transform:none; letter-spacing:0; }
-
-/* palette */
-.seg-group { margin-bottom:0.875rem; }
-.seg-group-label { font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#252525; margin-bottom:0.3rem; }
-.seg-group-items { display:flex; flex-direction:column; gap:0.2rem; }
-.seg-btn { display:flex; align-items:center; gap:0.5rem; padding:0.3rem 0.625rem; border-radius:5px; border:1px solid #161616; background:transparent; color:#444; font-family:inherit; cursor:pointer; text-align:left; transition:all 0.1s; }
-.seg-btn:hover { border-color:#222; color:#666; }
-.seg-btn.seg-active { border-color:#1a3d2b; background:#0a1810; }
-.seg-lbl { font-size:0.75rem; font-weight:500; min-width:90px; flex-shrink:0; }
-.seg-sample { font-size:0.7rem; font-family:var(--font-mono); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#2a2a2a; }
-.seg-btn.seg-active .seg-sample { color:inherit; }
-.seg-toggle { font-size:0.7rem; color:#2a2a2a; margin-left:auto; flex-shrink:0; }
-.seg-btn.seg-active .seg-toggle { color:var(--accent); }
-/* 조건부 세그먼트 */
-.seg-btn.seg-cond { border-color:#1a1a14; }
-.seg-btn.seg-cond .seg-sample { color:#1e1e10; }
-.seg-when { font-size:0.6rem; color:#2a2a18; flex-shrink:0; }
-.seg-btn.seg-active.seg-cond { border-color:#2a3d1a; }
-/* 활성 세그먼트 when 뱃지 */
-.when-badge { font-size:0.6rem; color:#3a4a20; background:#1a1e10; border:1px solid #2a2a18; border-radius:3px; padding:0.05rem 0.3rem; flex-shrink:0; }
-
-.separator-row { display:flex; align-items:center; gap:0.625rem; padding-top:0.75rem; border-top:1px solid #161616; margin-top:0.5rem; }
-.sep-label { font-size:0.75rem; color:#333; }
-.sep-input { background:#111; border:1px solid #1e1e1e; border-radius:4px; color:#888; font-family:var(--font-mono); font-size:0.8125rem; padding:0.2rem 0.5rem; width:72px; outline:none; }
-
-/* active list */
-.active-list { display:flex; flex-direction:column; gap:0.4rem; min-height:80px; }
-.empty-hint { font-size:0.8rem; color:#252525; padding:1.5rem 0; text-align:center; }
-.active-item { background:#0d0d0d; border:1px solid #1c1c1c; border-radius:7px; padding:0.6rem 0.75rem; display:flex; flex-direction:column; gap:0.4rem; transition:border-color 0.15s; }
-.active-item.drag-over { border-color:var(--accent); background:#0a1810; }
-.active-item.dragging { opacity:0.35; }
-.active-header { display:flex; align-items:center; gap:0.4rem; }
-.drag-handle { font-size:0.9rem; color:#252525; cursor:grab; flex-shrink:0; user-select:none; }
-.drag-handle:active { cursor:grabbing; }
-.active-type { font-size:0.7rem; font-weight:600; color:#333; flex-shrink:0; min-width:60px; }
-.active-preview { font-size:0.75rem; font-family:var(--font-mono); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.ah-actions { display:flex; gap:0.25rem; margin-left:auto; }
-.icon-btn { width:20px; height:20px; border-radius:3px; border:1px solid #1e1e1e; background:transparent; color:#2a2a2a; font-size:0.7rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.12s; }
-.icon-btn.star:hover { color:#fbbf24; border-color:#fbbf24; }
-.icon-btn.star.starred { color:#fbbf24; border-color:#fbbf24; }
-.icon-btn.rm:hover { color:#f87171; border-color:#f87171; }
-
-/* color row */
-.color-row { display:flex; align-items:center; gap:0.5rem; }
-.color-pick-label { font-size:0.65rem; color:#333; flex-shrink:0; }
-.color-hex-input { width:28px; height:22px; border:1px solid #222; border-radius:3px; padding:1px; background:#111; cursor:pointer; flex-shrink:0; }
-.color-hex-input::-webkit-color-swatch-wrapper { padding:0; }
-.color-hex-input::-webkit-color-swatch { border:none; border-radius:2px; }
-.color-hex-val { font-size:0.65rem; font-family:var(--font-mono); color:#333; flex-shrink:0; }
-.bold-toggle { font-size:0.65rem; color:#444; display:flex; align-items:center; gap:0.2rem; cursor:pointer; margin-left:auto; }
-.bold-check { width:11px; height:11px; accent-color:var(--accent); }
-
-/* fmt row */
-.fmt-row { display:flex; align-items:center; gap:0.375rem; }
-.fmt-input { flex:1; background:transparent; border:none; border-bottom:1px solid #1c1c1c; color:#555; font-family:var(--font-mono); font-size:0.7rem; outline:none; padding:0.1rem 0; }
-.fmt-input:focus { border-bottom-color:#2e2e2e; color:#888; }
-.icon-pick-open { flex-shrink:0; width:20px; height:20px; border-radius:3px; border:1px solid #1c1c1c; background:transparent; color:#333; font-size:0.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.12s; }
-.icon-pick-open:hover { color:var(--accent); border-color:var(--accent); }
-
-/* icon picker panel */
-.icon-picker { background:#0a0a0a; border:1px solid #1a1a1a; border-radius:6px; padding:0.625rem; margin-top:0.125rem; display:flex; flex-direction:column; gap:0.375rem; }
-.icon-cat-label { font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#2a2a2a; }
-.icon-cat-items { display:flex; flex-wrap:wrap; gap:0.25rem; }
-.ic-btn { width:26px; height:26px; border-radius:4px; border:1px solid #1a1a1a; background:transparent; color:#555; font-size:0.875rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.1s; }
-.ic-btn:hover { border-color:#2a2a2a; color:#d0d0d0; background:#141414; }
-
-/* xterm */
-.xterm-section { margin-bottom:1.25rem; }
-.xterm-header { display:flex; align-items:center; gap:0.625rem; margin-bottom:0.625rem; }
-.xterm-badge { font-size:0.6rem; font-weight:700; color:#00d97e; background:rgba(0,217,126,0.08); padding:0.1rem 0.45rem; border-radius:3px; border:1px solid rgba(0,217,126,0.15); }
-.xterm-wrapper { border:1px solid #1a1a1a; border-radius:10px; overflow:hidden; background:#080808; }
-#xterm-container { padding:10px 14px; }
-
-/* saves section */
-.saves-section { background:#0e0e0e; border:1px solid #1c1c1c; border-radius:10px; padding:1.125rem; margin-bottom:1.25rem; }
-.saves-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.875rem; }
-.save-form { display:flex; gap:0.5rem; align-items:center; }
-.save-name-input { background:#111; border:1px solid #1e1e1e; border-radius:5px; color:#888; font-size:0.8rem; padding:0.3rem 0.625rem; outline:none; width:160px; font-family:inherit; }
-.save-name-input:focus { border-color:#2e2e2e; }
-.save-btn { padding:0.3rem 0.75rem; background:var(--accent-dim); border:1px solid var(--accent); border-radius:5px; color:var(--accent); font-size:0.75rem; font-family:inherit; cursor:pointer; transition:all 0.12s; }
-.save-btn:hover { background:var(--accent); color:#000; }
-.saves-body { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-@media (max-width:600px) { .saves-body { grid-template-columns:1fr; } }
-.saves-col-title { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#2a2a2a; margin-bottom:0.5rem; }
-.save-empty { font-size:0.75rem; color:#222; }
-.save-item { display:flex; align-items:center; gap:0.375rem; padding:0.375rem 0.5rem; border:1px solid #1a1a1a; border-radius:5px; background:#0a0a0a; margin-bottom:0.3rem; }
-.save-name { font-size:0.75rem; color:#555; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.save-preview { font-size:0.75rem; font-family:var(--font-mono); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.save-meta { font-size:0.65rem; color:#2a2a2a; flex-shrink:0; }
-.save-action { padding:0.15rem 0.5rem; border-radius:3px; border:1px solid #1e1e1e; background:transparent; font-size:0.7rem; font-family:inherit; cursor:pointer; transition:all 0.1s; color:#333; }
-.save-action.load { color:var(--accent); border-color:#1a3d2b; }
-.save-action.load:hover { background:var(--accent-dim); }
-.save-action.del:hover { color:#f87171; border-color:#f87171; }
-
-/* output */
-.output-section { background:#0e0e0e; border:1px solid #1c1c1c; border-radius:10px; overflow:hidden; }
-.output-tabs { display:flex; border-bottom:1px solid #1a1a1a; }
-.out-tab { padding:0.5rem 1rem; background:transparent; border:none; color:#333; font-size:0.8125rem; font-family:inherit; cursor:pointer; transition:all 0.12s; border-bottom:2px solid transparent; }
-.out-tab:hover { color:#555; }
-.out-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
-.out-panel { padding:1rem; }
-.out-panel.hidden { display:none; }
-.install-label { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#333; margin-bottom:0.3rem; }
-.mt { margin-top:0.75rem; }
-.code-row { display:flex; gap:0.5rem; align-items:center; background:#090909; border:1px solid #181818; border-radius:6px; padding:0.5rem 0.75rem; }
-.code-block { flex:1; font-size:0.75rem; color:#555; white-space:nowrap; overflow:auto; font-family:var(--font-mono); }
-.json-row { align-items:flex-start; }
-.json-pre { white-space:pre; flex:1; font-size:0.75rem; color:#555; font-family:var(--font-mono); overflow:auto; margin:0; max-height:220px; }
-.copy-btn { flex-shrink:0; padding:0.2rem 0.55rem; background:transparent; border:1px solid #1e1e1e; border-radius:4px; color:#333; font-size:0.7rem; cursor:pointer; font-family:inherit; transition:all 0.12s; }
-.copy-btn:hover { border-color:#2e2e2e; color:#555; }
-.copy-btn.copied { color:var(--accent); border-color:var(--accent); }
+.builder-page {
+  padding: 2rem 1.5rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.builder-header {
+  margin-bottom: 2rem;
+}
+.back-link {
+  display: inline-block;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+  transition: color 0.15s;
+}
+.back-link:hover { color: var(--text); }
+.builder-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.375rem;
+}
+.builder-subtitle {
+  font-size: 0.9375rem;
+  color: var(--text-dim);
+}
 </style>

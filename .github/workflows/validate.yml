@@ -4,12 +4,12 @@ on:
   push:
     paths:
       - 'public/presets/**'
-      - 'scripts/validate-presets.js'
+      - 'scripts/**'
       - 'src/lib/**'
   pull_request:
     paths:
       - 'public/presets/**'
-      - 'scripts/validate-presets.js'
+      - 'scripts/**'
       - 'src/lib/**'
 
 jobs:

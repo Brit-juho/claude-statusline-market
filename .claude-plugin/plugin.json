@@ -1,0 +1,12 @@
+{
+  "name": "statusline-market",
+  "displayName": "Claude Statusline Market",
+  "description": "터미널에서 대화로 ccstatusline 프리셋을 탐색·미리보기·커스터마이징하고 바로 적용합니다.",
+  "version": "0.1.0",
+  "author": { "name": "NeTrioGit" },
+  "homepage": "https://NeTrioGit.github.io/claude-statusline-market",
+  "repository": "https://github.com/NeTrioGit/claude-statusline-market",
+  "license": "MIT",
+  "keywords": ["statusline", "ccstatusline", "claude-code", "terminal", "preset"],
+  "skills": "./skills"
+}

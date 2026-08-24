@@ -1,0 +1,10 @@
+{
+  "name": "claude-statusline-market",
+  "owner": { "name": "NeTrioGit" },
+  "plugins": [
+    {
+      "name": "statusline-market",
+      "source": { "source": "path", "path": "." }
+    }
+  ]
+}
