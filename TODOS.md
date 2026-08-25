@@ -25,9 +25,8 @@
 - **[T20]** Fixed a bug where the browser builder's "custom" widgets lost their value on download — `custom-text`/`custom-command`'s actual text/command (`rawValue`/`commandPath`) rendered correctly in the preview but was missing from the downloaded JSON. Also fixed the "global separator" field, which was preview-only, to export ccstatusline's real `defaultSeparator` field. Fixed a dead branch (`isText`/`segmentLabel`) that checked `def?.type === 'text'` and never matched anything — should have been `'custom-text'`. Added a regression test
 - **[T21]** Fixed a copy-paste mistake in `python-dev.json` that ran `node --version` — found while auditing custom-command/custom-text/link/custom-symbol usage and actual rendering across all 30 presets. Fixed to `python --version`, and added a new `python-version` catalog entry to `segment-defs.ts`
 
+- **[T15]** Added a `smoke-windows` job (`windows-latest`) to `smoke.yml` — runs `Install-Preset` for real on GitHub's cloud Windows runner (no local Windows needed) and validates `ccstatusline/settings.json` the same way the Linux job does, plus a dedicated check that no preset metadata leaks into the top level (the exact regression T10 fixed). **Immediately caught a real bug**: `install-preset.ps1` used `[System.IO.File]::WriteAllBytes($TmpFile, $Response.Content)`, which throws on PowerShell 7 (pwsh) — `.Content` is a decoded string there, not `byte[]` like on Windows PowerShell 5.1, so every download failed outright despite the "PowerShell 5.1+" comment. Fixed by using `Invoke-WebRequest -OutFile` instead (version-safe). Re-ran the workflow after the fix and confirmed a clean pass on the real Windows runner.
+
 ## Open
 
-## [T15] No Windows (`install-preset.ps1`) smoke test
-**What:** `smoke.yml` only validates the sh script — there's no ps1 coverage, so Windows install breakage isn't caught by CI
-**Why:** T10 fixed ps1, but there's no CI to catch a regression
-**Status:** Not started. Needs a `windows-latest` runner job that runs `Install-Preset` and validates `ccstatusline/settings.json` — GitHub Actions' `windows-latest` is a cloud runner, so this can be built and actually verified without a local Windows machine
+None currently.

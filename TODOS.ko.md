@@ -25,9 +25,8 @@
 - **[T20]** 브라우저 빌더의 "커스텀" 위젯이 다운로드 시 값을 버리던 버그 수정 — `custom-text`/`custom-command`의 실제 텍스트·명령어(`rawValue`/`commandPath`)가 미리보기엔 반영되는데 다운로드한 JSON엔 빠져 있었음. "전역 구분자" 입력도 미리보기 전용이었던 걸 ccstatusline 실제 필드(`defaultSeparator`)로 내보내도록 수정. `def?.type === 'text'`로 되어 있어 한 번도 매치되지 않던 죽은 분기(`isText`/`segmentLabel`)도 `'custom-text'`로 수정. 회귀 방지 테스트 추가
 - **[T21]** `python-dev.json`이 `node --version`을 실행하던 복붙 실수 수정 — 전체 30개 프리셋의 custom-command/custom-text/link/custom-symbol 사용 현황과 실제 렌더링을 전수 점검하는 과정에서 발견. `python --version`으로 수정, `segment-defs.ts`에 `python-version` 카탈로그 항목도 신규 추가
 
+- **[T15]** `smoke.yml`에 `smoke-windows` 잡(`windows-latest`) 추가 — GitHub 클라우드 Windows 러너에서 `Install-Preset`을 실제로 실행해 `ccstatusline/settings.json`을 sh 버전과 동일한 기준으로 검증(로컬 Windows 불필요), T10이 고친 회귀(프리셋 메타데이터 유출)를 직접 잡는 체크도 추가. **CI가 즉시 진짜 버그를 잡음**: `install-preset.ps1`의 `[System.IO.File]::WriteAllBytes($TmpFile, $Response.Content)`가 PowerShell 7(pwsh)에서 항상 실패하고 있었음 — pwsh에서는 `.Content`가 Windows PowerShell 5.1과 달리 byte[]가 아니라 문자열이라, 헤더에 "PowerShell 5.1+"라고 적혀 있었지만 실제론 5.1에서만 동작했음. `Invoke-WebRequest -OutFile`로 교체(버전 무관하게 안전)해서 수정, 실제 워크플로우 재실행으로 Windows 러너에서 통과 확인.
+
 ## 남은 항목
 
-## [T15] Windows(`install-preset.ps1`) 스모크 테스트 부재
-**What:** `smoke.yml`에는 sh 스크립트 검증만 있고 ps1 검증이 없어 Windows 설치가 CI에서 감지되지 않음
-**Why:** T10에서 ps1을 고쳤지만 회귀를 잡아줄 CI가 없음
-**Status:** 미착수. `windows-latest` 러너에서 `Install-Preset`을 실행해 `ccstatusline/settings.json`을 검증하는 잡 추가 필요 — GitHub Actions의 `windows-latest`는 클라우드 러너라 로컬에 Windows가 없어도 구현·실제 실행 검증 모두 가능함
+현재 없음.
