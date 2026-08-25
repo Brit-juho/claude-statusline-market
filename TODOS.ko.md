@@ -20,21 +20,14 @@
 - **[T17]** GitHub Pages 활성화 — 저장소에 Pages 자체가 꺼져 있어 `Deploy to GitHub Pages`가 항상 404로 실패하고 있었음. `gh api`로 Source=GitHub Actions 활성화 후 재배포, 라이브 URL 200 확인
 - **[T19]** `flex-separator` 위젯 추가 — `separator`와는 별개로 실존하는 ccstatusline 타입임을 소스 직접 확인("Expands to fill available terminal width", 우측 정렬용). `skills/statusline-market/SKILL.md`의 stale "9개 그룹" 표현도 수정(카탈로그가 커질 때마다 바뀌므로 하드코딩 숫자 대신 실제 읽어온 개수를 쓰도록 지침 변경)
 - **[T18]** `screenshot.yml`의 `freeze` 버전 핀 수정 — `FREEZE_VERSION=1.4.3`은 존재한 적 없는 버전(항상 404). 최신 `v0.2.2`로 교체하고 에셋 이름 규칙 변경(`linux_amd64`→`Linux_x86_64`, tar 내부 서브디렉터리 구조)에 맞춰 설치 로직도 수정. 실제 워크플로우 재실행으로 성공 확인
+- **[T2]** 설치 스크립트 E2E 스모크 테스트 — `.github/workflows/smoke.yml`이 v3 형식 검증까지 반영돼 있고, T17(Pages 활성화) 이후 실제 라이브 URL로 정상 실행 확인(워크플로우 성공)
+- **[T16]** `pr-status`/`agent-name` 세그먼트 검토 — 최신 Claude Code CLI가 stdin으로 넘기는 `pr.*`(GitHub PR + GitLab MR), `agent.name` 필드를 세그먼트 카탈로그에 추가하려 했으나, ccstatusline 2.2.27(npm) 소스를 직접 확인해 해당 widget type이 존재하지 않음을 확인 — 카탈로그에 추가해도 실제로 그려지지 않아 혼란만 줄 것이라 판단해 미반영으로 확정. ccstatusline 상류에서 지원이 추가되면 그때 `segment-defs.ts` + `public/presets/schema.json` enum + `scripts/segment-catalog.json`에 반영
+- **[T20]** 브라우저 빌더의 "커스텀" 위젯이 다운로드 시 값을 버리던 버그 수정 — `custom-text`/`custom-command`의 실제 텍스트·명령어(`rawValue`/`commandPath`)가 미리보기엔 반영되는데 다운로드한 JSON엔 빠져 있었음. "전역 구분자" 입력도 미리보기 전용이었던 걸 ccstatusline 실제 필드(`defaultSeparator`)로 내보내도록 수정. `def?.type === 'text'`로 되어 있어 한 번도 매치되지 않던 죽은 분기(`isText`/`segmentLabel`)도 `'custom-text'`로 수정. 회귀 방지 테스트 추가
+- **[T21]** `python-dev.json`이 `node --version`을 실행하던 복붙 실수 수정 — 전체 30개 프리셋의 custom-command/custom-text/link/custom-symbol 사용 현황과 실제 렌더링을 전수 점검하는 과정에서 발견. `python --version`으로 수정, `segment-defs.ts`에 `python-version` 카탈로그 항목도 신규 추가
 
 ## 남은 항목
-
-## [T2] 설치 스크립트 E2E 스모크 테스트
-**What:** CI에서 GitHub Pages 배포 후 `curl ... | bash -s -- ko-minimal` 실행 → settings.json 검증
-**Why:** 배포 구조 변경 시 설치가 조용히 깨지는 걸 자동으로 감지
-**Status:** 완료. `.github/workflows/smoke.yml`이 v3 형식 검증까지 반영돼 있고, T17(Pages 활성화) 이후 실제 라이브 URL로 정상 실행 확인(워크플로우 성공).
-**Depends on:** 없음
 
 ## [T15] Windows(`install-preset.ps1`) 스모크 테스트 부재
 **What:** `smoke.yml`에는 sh 스크립트 검증만 있고 ps1 검증이 없어 Windows 설치가 CI에서 감지되지 않음
 **Why:** T10에서 ps1을 고쳤지만 회귀를 잡아줄 CI가 없음
-**Status:** 미착수. `windows-latest` 러너에서 `Install-Preset`을 실행해 `ccstatusline/settings.json`을 검증하는 잡 추가 필요
-
-## [T16] `pr-status`/`agent-name` 세그먼트 — ccstatusline 미지원 확인, 보류
-**What:** 최신 Claude Code CLI가 stdin으로 넘기는 `pr.*`(GitHub PR + GitLab MR), `agent.name` 필드를 세그먼트 카탈로그에 추가하려 했으나, ccstatusline 2.2.27(npm) 소스에 해당 widget type이 존재하지 않아 렌더링이 불가능함을 확인
-**Why:** 카탈로그에 추가해도 실제 ccstatusline이 그려주지 못하면 사용자에게 오히려 혼란
-**Status:** 이번 스코프에서 제외. ccstatusline 상류에서 지원이 추가되면 `segment-defs.ts` + `public/presets/schema.json` enum + `scripts/segment-catalog.json`(재생성)에 반영
+**Status:** 미착수. `windows-latest` 러너에서 `Install-Preset`을 실행해 `ccstatusline/settings.json`을 검증하는 잡 추가 필요 — GitHub Actions의 `windows-latest`는 클라우드 러너라 로컬에 Windows가 없어도 구현·실제 실행 검증 모두 가능함
