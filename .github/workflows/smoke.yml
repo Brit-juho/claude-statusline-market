@@ -76,3 +76,70 @@ jobs:
 
           echo "Settings installed from preset: $PRESET_ID"
           cat "$SETTINGS"
+
+  smoke-windows:
+    # Same checks as `smoke`, but exercises install-preset.ps1 (T15) —
+    # no local Windows machine needed, this runs on GitHub's own
+    # windows-latest cloud runner.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for GitHub Pages propagation
+        if: ${{ github.event_name == 'workflow_run' }}
+        shell: pwsh
+        run: Start-Sleep -Seconds 30
+
+      - name: Run install script (Install-Preset)
+        shell: pwsh
+        env:
+          PRESET_ID: ${{ github.event.inputs.preset_id || 'ko-minimal' }}
+        run: |
+          . .\scripts\install-preset.ps1
+          Install-Preset -PresetId $env:PRESET_ID -SiteBase "https://brit-juho.github.io/claude-statusline-market"
+
+      - name: Verify settings.json was written
+        shell: pwsh
+        run: |
+          $settingsPath = Join-Path $HOME ".config" "ccstatusline" "settings.json"
+
+          if (-not (Test-Path $settingsPath)) {
+            Write-Error "settings.json not found at $settingsPath"
+            exit 1
+          }
+          Write-Host "✓ settings.json exists"
+
+          $json = Get-Content $settingsPath -Raw | ConvertFrom-Json
+          if ($json.version -ne 3) {
+            Write-Error "expected version=3, got $($json.version)"
+            exit 1
+          }
+          Write-Host "✓ version=3"
+
+          $widgets = $json.lines[0]
+          if ($widgets.Count -lt 1) {
+            Write-Error "no widgets in lines[0]"
+            exit 1
+          }
+          Write-Host "✓ $($widgets.Count) widget(s) in lines[0]"
+
+          $snakeCase = $widgets | Where-Object { $_.type -match '_' }
+          if ($snakeCase) {
+            Write-Error "snake_case type(s) found: $($snakeCase.type -join ', ')"
+            exit 1
+          }
+          Write-Host "✓ all widget types are kebab-case"
+
+          # T10 regression check: past versions moved the whole preset file
+          # as-is, so id/title/description ended up mixed into ccstatusline's
+          # own settings.json instead of just {version, lines}.
+          $extraProps = $json.PSObject.Properties.Name | Where-Object { $_ -notin @('version', 'lines') }
+          if ($extraProps) {
+            Write-Error "unexpected top-level keys leaked from the preset file: $($extraProps -join ', ')"
+            exit 1
+          }
+          Write-Host "✓ no preset metadata leaked into ccstatusline settings"
+
+          Write-Host "Settings installed from preset: $env:PRESET_ID"
+          Get-Content $settingsPath | Write-Host
