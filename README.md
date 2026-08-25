@@ -1,13 +1,10 @@
+**English** · [한국어](./README.ko.md)
+
 # Claude Statusline Market
 
 > Discover Claude Code statusline presets. Install in one line.
-> 클로드 코드 상태 표시줄 프리셋 갤러리. 한 줄로 설치.
 
 A multilingual marketplace for [Claude Code](https://code.claude.com) statusline presets. Browse community presets with screenshots, install with one command, contribute your own via PR.
-
-## Status
-
-**v0.1 in planning.** See [design doc](#design) for scope.
 
 ## What this is
 
@@ -41,11 +38,11 @@ Both paths run the exact same `SKILL.md`, and both end up calling the same `scri
 
 ## Status
 
-**Planning phase.** v0.1 ships as a static gallery on GitHub Pages with `ccstatusline` preset support.
+**v0.1.** Ships as a static gallery on GitHub Pages with `ccstatusline` preset support.
 
 Roadmap:
 
-- **v0.1** — gallery + one-line install + Korean/English i18n + 5-10 seed presets (`ccstatusline` only)
+- **v0.1** — gallery + one-line install + Korean/English i18n + seed presets (`ccstatusline` only)
 - **v0.2** — interactive builder, more languages (ja/zh), additional tools (`cship`, `claude-powerline`)
 - **v0.3+** — cross-tool config converters, NPM packaging
 
@@ -54,17 +51,17 @@ Roadmap:
 PRs welcome. The contribution flow:
 
 1. Fork this repo
-2. Add your preset JSON to `presets/`
+2. Add your preset JSON to `public/presets/`
 3. Open a PR
 4. CI validates the JSON and generates a terminal screenshot
 5. Maintainer reviews and merges
 6. Site auto-deploys with your preset
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) once it exists.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
 ## Design
 
-Architecture and design decisions documented in the design doc (kept in `~/.gstack/projects/setting/` during planning, will move into this repo as `docs/design.md` during implementation).
+Architecture and design decisions are documented in [DESIGN.md](./DESIGN.md).
 
 ## License
 

@@ -1,3 +1,5 @@
+**English** · [한국어](./CONTRIBUTING.ko.md)
+
 # Contributing a Preset
 
 Anyone can add a preset to the gallery via a pull request.
@@ -43,7 +45,7 @@ Minimum required fields:
 }
 ```
 
-`ccstatusline_settings`는 native ccstatusline v3 설정 그대로다(위젯 `type` 전체 목록은 `public/presets/schema.json`의 enum 참고). `lines`는 줄 배열, 각 줄은 위젯 아이템 배열이다.
+`ccstatusline_settings` is the native ccstatusline v3 settings object, verbatim (see `public/presets/schema.json`'s enum for the full list of widget `type`s). `lines` is an array of lines, each line an array of widget items.
 
 **Categories:** `minimal` · `productivity` · `cost` · `git` · `powerline` · `custom`
 

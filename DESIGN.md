@@ -1,3 +1,5 @@
+**English only** — internal engineering doc, no Korean translation (nothing to translate from; ask if one is wanted)
+
 # Design System — Claude Statusline Market
 
 > Source of truth for all UI decisions. Read this before adding any component.
