@@ -1,0 +1,67 @@
+{
+  "id": "jj-workflow",
+  "version": "0.1.0",
+  "title": {
+    "ko": "JJ 워크플로우",
+    "en": "JJ Workflow"
+  },
+  "description": {
+    "ko": "Git 대신 Jujutsu(jj)를 쓰는 사용자용 — 리비전, 북마크, 워크스페이스, 변경 통계까지",
+    "en": "For users on Jujutsu (jj) instead of Git — revision, bookmarks, workspace, and change stats"
+  },
+  "tool": "ccstatusline",
+  "category": "git",
+  "tags": [
+    "jujutsu",
+    "jj",
+    "vcs",
+    "colors"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "jj-bookmarks",
+          "color": "magenta",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "jj-revision",
+          "color": "green"
+        },
+        {
+          "id": "3",
+          "type": "jj-changes",
+          "color": "yellow"
+        },
+        {
+          "id": "4",
+          "type": "jj-insertions",
+          "color": "green"
+        },
+        {
+          "id": "5",
+          "type": "jj-deletions",
+          "color": "red"
+        },
+        {
+          "id": "6",
+          "type": "jj-workspace",
+          "color": "blue"
+        },
+        {
+          "id": "7",
+          "type": "model",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

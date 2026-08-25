@@ -120,6 +120,19 @@ export const SAMPLE_VALUES: Record<string, number | string | boolean> = {
   battery_pct: 78,
   tmux_session: 'dev',
 
+  // ── Rate Limits / Usage (extra model tiers) ───────────────
+  fable_usage: 9,
+
+  // ── Jujutsu (jj) ───────────────────────────────────────────
+  jj_revision: 'k9lrxyz',
+  jj_bookmarks: 'main*',
+  jj_workspace: 'default',
+  jj_description: 'wip: refactor status renderer',
+  jj_changes: 5,
+  jj_insertions: 38,
+  jj_deletions: 6,
+  jj_root: 'my-project',
+
   // ── Computed display values ───────────────────────────────
   context_bar: '█░░░░░░░░░',
 };
@@ -234,6 +247,22 @@ const WIDGET_SAMPLE: Record<string, string> = {
   'custom-command':           '[cmd]',
   'link':                     'link',
   'separator':                '|',
+  'sandbox-status':           '🔒 sandboxed',
+  'remote-control-status':    '📡 remote',
+  'cache-hit-rate':           '⚡87%',
+  'cache-read':               '↓cache 2000',
+  'cache-write':              '↑cache 5000',
+  'cache-timer':              'cache:42s',
+  'fable-weekly-usage':       'F:9%',
+  'git-ci-status':            '✓ CI',
+  'jj-revision':              'k9lrxyz',
+  'jj-bookmarks':             'main*',
+  'jj-workspace':             'default',
+  'jj-description':           'wip: refactor status renderer',
+  'jj-changes':               '~5',
+  'jj-insertions':            '+38',
+  'jj-deletions':             '-6',
+  'jj-root-dir':              'my-project',
 };
 
 export interface CcsWidgetItem {

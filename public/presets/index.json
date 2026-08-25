@@ -23,6 +23,28 @@
     }
   },
   {
+    "id": "cache-insights",
+    "title": {
+      "ko": "캐시 인사이트",
+      "en": "Cache Insights"
+    },
+    "description": {
+      "ko": "프롬프트 캐시 적중률·읽기/쓰기·TTL을 상시 추적하고 싶은 사용자용 — 비용 최적화에 유용",
+      "en": "For users watching prompt cache hit rate, read/write volume, and TTL — useful for cost optimization"
+    },
+    "category": "cost",
+    "tags": [
+      "cache",
+      "cost",
+      "tokens",
+      "colors"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
     "id": "clean-pro",
     "title": {
       "ko": "클린 프로",
@@ -312,6 +334,28 @@
     }
   },
   {
+    "id": "jj-workflow",
+    "title": {
+      "ko": "JJ 워크플로우",
+      "en": "JJ Workflow"
+    },
+    "description": {
+      "ko": "Git 대신 Jujutsu(jj)를 쓰는 사용자용 — 리비전, 북마크, 워크스페이스, 변경 통계까지",
+      "en": "For users on Jujutsu (jj) instead of Git — revision, bookmarks, workspace, and change stats"
+    },
+    "category": "git",
+    "tags": [
+      "jujutsu",
+      "jj",
+      "vcs",
+      "colors"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
     "id": "ko-cost-tracker",
     "title": {
       "ko": "비용 추적기",
@@ -399,6 +443,29 @@
     }
   },
   {
+    "id": "multi-model-usage",
+    "title": {
+      "ko": "멀티 모델 사용량",
+      "en": "Multi-Model Usage"
+    },
+    "description": {
+      "ko": "Sonnet·Opus·Fable을 오가며 쓰는 사용자용 — 모델별 주간 사용량을 한 줄에서 비교",
+      "en": "For users switching between Sonnet, Opus, and Fable — compare weekly usage across models in one line"
+    },
+    "category": "cost",
+    "tags": [
+      "usage",
+      "fable",
+      "opus",
+      "sonnet",
+      "colors"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
     "id": "node-dev",
     "title": {
       "ko": "Node 개발자",
@@ -458,6 +525,28 @@
       "venv",
       "conda",
       "runtime"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
+    "id": "sandbox-power",
+    "title": {
+      "ko": "샌드박스 파워유저",
+      "en": "Sandbox Power User"
+    },
+    "description": {
+      "ko": "샌드박스/원격 제어 세션을 자주 오가는 사용자용 — 어느 세션이 격리·원격 상태인지 상태줄에서 바로 확인",
+      "en": "For users juggling sandboxed and remote-controlled sessions — see at a glance which session is isolated or remote"
+    },
+    "category": "productivity",
+    "tags": [
+      "sandbox",
+      "remote-control",
+      "power-user",
+      "colors"
     ],
     "author": {
       "name": "neo",

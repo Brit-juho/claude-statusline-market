@@ -99,6 +99,22 @@ const WIDGET_SAMPLE = {
   'custom-command': '[cmd]',
   'link': 'link',
   'separator': '|',
+  'sandbox-status': '🔒 sandboxed',
+  'remote-control-status': '📡 remote',
+  'cache-hit-rate': '⚡87%',
+  'cache-read': '↓cache 2000',
+  'cache-write': '↑cache 5000',
+  'cache-timer': 'cache:42s',
+  'fable-weekly-usage': 'F:9%',
+  'git-ci-status': '✓ CI',
+  'jj-revision': 'k9lrxyz',
+  'jj-bookmarks': 'main*',
+  'jj-workspace': 'default',
+  'jj-description': 'wip: refactor status renderer',
+  'jj-changes': '~5',
+  'jj-insertions': '+38',
+  'jj-deletions': '-6',
+  'jj-root-dir': 'my-project',
 };
 
 function ansiFor(color, bold) {

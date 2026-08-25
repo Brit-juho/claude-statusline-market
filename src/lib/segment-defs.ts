@@ -9,7 +9,7 @@ export type SegmentDef = {
   id: string;
   label: { ko: string; en: string };
   type: string;
-  group: 'claude' | 'context' | 'cost' | 'git' | 'workspace' | 'infra' | 'runtime' | 'stats' | 'separators';
+  group: 'claude' | 'context' | 'cost' | 'git' | 'jj' | 'workspace' | 'infra' | 'runtime' | 'stats' | 'separators';
   defaultConfig: { format: string; style: string };
   configSchema: ConfigField[];
 };
@@ -79,6 +79,16 @@ export const SEGMENT_DEFS: SegmentDef[] = [
     defaultConfig: { format: '{compaction_count}', style: 'dim' },
     configSchema: baseSchema,
   },
+  {
+    id: 'sandbox-status', label: { ko: '샌드박스 상태', en: 'Sandbox Status' }, type: 'sandbox-status', group: 'claude',
+    defaultConfig: { format: '🔒 sandboxed', style: 'green' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'remote-control-status', label: { ko: '원격 제어 상태', en: 'Remote Control Status' }, type: 'remote-control-status', group: 'claude',
+    defaultConfig: { format: '📡 remote', style: 'blue' },
+    configSchema: baseSchema,
+  },
 
   // ── Context / Tokens ────────────────────────────────────────
   {
@@ -141,6 +151,26 @@ export const SEGMENT_DEFS: SegmentDef[] = [
     defaultConfig: { format: '{total_speed}t/s', style: 'dim' },
     configSchema: baseSchema,
   },
+  {
+    id: 'cache-hit-rate', label: { ko: '캐시 적중률', en: 'Cache Hit Rate' }, type: 'cache-hit-rate', group: 'context',
+    defaultConfig: { format: '⚡{cache_hit_rate}%', style: 'green' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'cache-read', label: { ko: '캐시 읽기', en: 'Cache Read' }, type: 'cache-read', group: 'context',
+    defaultConfig: { format: '↓cache {cache_read_tokens}', style: 'green' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'cache-write', label: { ko: '캐시 쓰기', en: 'Cache Write' }, type: 'cache-write', group: 'context',
+    defaultConfig: { format: '↑cache {cache_creation_tokens}', style: 'yellow' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'cache-timer', label: { ko: '캐시 TTL 타이머', en: 'Cache Timer' }, type: 'cache-timer', group: 'context',
+    defaultConfig: { format: 'cache:{block_time}', style: 'cyan' },
+    configSchema: baseSchema,
+  },
 
   // ── Cost / Time ─────────────────────────────────────────────
   {
@@ -171,6 +201,11 @@ export const SEGMENT_DEFS: SegmentDef[] = [
   {
     id: 'weekly-opus-usage', label: { ko: '주간 Opus 사용량', en: 'Weekly Opus Usage' }, type: 'weekly-opus-usage', group: 'cost',
     defaultConfig: { format: 'O:{opus_usage}', style: 'magenta' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'fable-weekly-usage', label: { ko: '주간 Fable 사용량', en: 'Weekly Fable Usage' }, type: 'fable-weekly-usage', group: 'cost',
+    defaultConfig: { format: 'F:{fable_usage}%', style: 'cyan' },
     configSchema: baseSchema,
   },
   {
@@ -335,6 +370,53 @@ export const SEGMENT_DEFS: SegmentDef[] = [
     defaultConfig: { format: '{is_fork}', style: 'dim' },
     configSchema: baseSchema,
   },
+  {
+    id: 'git-ci-status', label: { ko: 'Git CI 상태', en: 'Git CI Status' }, type: 'git-ci-status', group: 'git',
+    defaultConfig: { format: '✓ CI', style: 'green' },
+    configSchema: baseSchema,
+  },
+
+  // ── Jujutsu (jj) ──────────────────────────────────────────────
+  {
+    id: 'jj-revision', label: { ko: 'JJ 리비전', en: 'JJ Revision' }, type: 'jj-revision', group: 'jj',
+    defaultConfig: { format: '{jj_revision}', style: 'green' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'jj-bookmarks', label: { ko: 'JJ 북마크', en: 'JJ Bookmarks' }, type: 'jj-bookmarks', group: 'jj',
+    defaultConfig: { format: '{jj_bookmarks}', style: 'magenta' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'jj-workspace', label: { ko: 'JJ 워크스페이스', en: 'JJ Workspace' }, type: 'jj-workspace', group: 'jj',
+    defaultConfig: { format: '{jj_workspace}', style: 'blue' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'jj-description', label: { ko: 'JJ 설명', en: 'JJ Description' }, type: 'jj-description', group: 'jj',
+    defaultConfig: { format: '{jj_description}', style: 'white' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'jj-changes', label: { ko: 'JJ 변경', en: 'JJ Changes' }, type: 'jj-changes', group: 'jj',
+    defaultConfig: { format: '~{jj_changes}', style: 'yellow' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'jj-insertions', label: { ko: 'JJ 추가 줄', en: 'JJ Insertions' }, type: 'jj-insertions', group: 'jj',
+    defaultConfig: { format: '+{jj_insertions}', style: 'green' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'jj-deletions', label: { ko: 'JJ 삭제 줄', en: 'JJ Deletions' }, type: 'jj-deletions', group: 'jj',
+    defaultConfig: { format: '-{jj_deletions}', style: 'red' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'jj-root-dir', label: { ko: 'JJ 루트', en: 'JJ Root Dir' }, type: 'jj-root-dir', group: 'jj',
+    defaultConfig: { format: '{jj_root}', style: 'cyan' },
+    configSchema: baseSchema,
+  },
 
   // ── Workspace ────────────────────────────────────────────────
   {
@@ -413,6 +495,16 @@ export const SEGMENT_DEFS: SegmentDef[] = [
     defaultConfig: { format: '|', style: 'dim' },
     configSchema: baseSchema,
   },
+  {
+    id: 'custom-symbol', label: { ko: '커스텀 심볼', en: 'Custom Symbol' }, type: 'custom-symbol', group: 'separators',
+    defaultConfig: { format: '◆', style: 'white' },
+    configSchema: baseSchema,
+  },
+  {
+    id: 'link', label: { ko: '터미널 하이퍼링크', en: 'Terminal Link' }, type: 'link', group: 'separators',
+    defaultConfig: { format: 'link', style: 'cyan' },
+    configSchema: baseSchema,
+  },
 ];
 
 export const SEGMENT_GROUPS: Record<SegmentDef['group'], { ko: string; en: string }> = {
@@ -420,6 +512,7 @@ export const SEGMENT_GROUPS: Record<SegmentDef['group'], { ko: string; en: strin
   context:    { ko: '컨텍스트 / 토큰', en: 'Context / Tokens' },
   cost:       { ko: '비용 / 시간', en: 'Cost / Time' },
   git:        { ko: 'Git', en: 'Git' },
+  jj:         { ko: 'Jujutsu (jj)', en: 'Jujutsu (jj)' },
   workspace:  { ko: '작업공간', en: 'Workspace' },
   infra:      { ko: '클라우드 / 인프라', en: 'Cloud / Infra' },
   runtime:    { ko: '런타임 / 환경', en: 'Runtime / Env' },

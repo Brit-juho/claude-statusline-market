@@ -1,0 +1,62 @@
+{
+  "id": "cache-insights",
+  "version": "0.1.0",
+  "title": {
+    "ko": "캐시 인사이트",
+    "en": "Cache Insights"
+  },
+  "description": {
+    "ko": "프롬프트 캐시 적중률·읽기/쓰기·TTL을 상시 추적하고 싶은 사용자용 — 비용 최적화에 유용",
+    "en": "For users watching prompt cache hit rate, read/write volume, and TTL — useful for cost optimization"
+  },
+  "tool": "ccstatusline",
+  "category": "cost",
+  "tags": [
+    "cache",
+    "cost",
+    "tokens",
+    "colors"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "dim"
+        },
+        {
+          "id": "2",
+          "type": "cache-hit-rate",
+          "color": "green",
+          "bold": true
+        },
+        {
+          "id": "3",
+          "type": "cache-read",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "cache-write",
+          "color": "yellow"
+        },
+        {
+          "id": "5",
+          "type": "cache-timer",
+          "color": "cyan"
+        },
+        {
+          "id": "6",
+          "type": "session-cost",
+          "color": "orange"
+        }
+      ]
+    ]
+  }
+}

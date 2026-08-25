@@ -16,6 +16,10 @@
       "ko": "Git",
       "en": "Git"
     },
+    "jj": {
+      "ko": "Jujutsu (jj)",
+      "en": "Jujutsu (jj)"
+    },
     "workspace": {
       "ko": "작업공간",
       "en": "Workspace"
@@ -579,6 +583,112 @@
       "defaultConfig": {
         "format": "{compaction_count}",
         "style": "dim"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "sandbox-status",
+      "label": {
+        "ko": "샌드박스 상태",
+        "en": "Sandbox Status"
+      },
+      "type": "sandbox-status",
+      "group": "claude",
+      "defaultConfig": {
+        "format": "🔒 sandboxed",
+        "style": "green"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "remote-control-status",
+      "label": {
+        "ko": "원격 제어 상태",
+        "en": "Remote Control Status"
+      },
+      "type": "remote-control-status",
+      "group": "claude",
+      "defaultConfig": {
+        "format": "📡 remote",
+        "style": "blue"
       },
       "configSchema": [
         {
@@ -1258,6 +1368,218 @@
       ]
     },
     {
+      "id": "cache-hit-rate",
+      "label": {
+        "ko": "캐시 적중률",
+        "en": "Cache Hit Rate"
+      },
+      "type": "cache-hit-rate",
+      "group": "context",
+      "defaultConfig": {
+        "format": "⚡{cache_hit_rate}%",
+        "style": "green"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "cache-read",
+      "label": {
+        "ko": "캐시 읽기",
+        "en": "Cache Read"
+      },
+      "type": "cache-read",
+      "group": "context",
+      "defaultConfig": {
+        "format": "↓cache {cache_read_tokens}",
+        "style": "green"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "cache-write",
+      "label": {
+        "ko": "캐시 쓰기",
+        "en": "Cache Write"
+      },
+      "type": "cache-write",
+      "group": "context",
+      "defaultConfig": {
+        "format": "↑cache {cache_creation_tokens}",
+        "style": "yellow"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "cache-timer",
+      "label": {
+        "ko": "캐시 TTL 타이머",
+        "en": "Cache Timer"
+      },
+      "type": "cache-timer",
+      "group": "context",
+      "defaultConfig": {
+        "format": "cache:{block_time}",
+        "style": "cyan"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
       "id": "session-cost",
       "label": {
         "ko": "세션 비용",
@@ -1533,6 +1855,59 @@
       "defaultConfig": {
         "format": "O:{opus_usage}",
         "style": "magenta"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "fable-weekly-usage",
+      "label": {
+        "ko": "주간 Fable 사용량",
+        "en": "Weekly Fable Usage"
+      },
+      "type": "fable-weekly-usage",
+      "group": "cost",
+      "defaultConfig": {
+        "format": "F:{fable_usage}%",
+        "style": "cyan"
       },
       "configSchema": [
         {
@@ -3272,6 +3647,483 @@
       ]
     },
     {
+      "id": "git-ci-status",
+      "label": {
+        "ko": "Git CI 상태",
+        "en": "Git CI Status"
+      },
+      "type": "git-ci-status",
+      "group": "git",
+      "defaultConfig": {
+        "format": "✓ CI",
+        "style": "green"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "jj-revision",
+      "label": {
+        "ko": "JJ 리비전",
+        "en": "JJ Revision"
+      },
+      "type": "jj-revision",
+      "group": "jj",
+      "defaultConfig": {
+        "format": "{jj_revision}",
+        "style": "green"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "jj-bookmarks",
+      "label": {
+        "ko": "JJ 북마크",
+        "en": "JJ Bookmarks"
+      },
+      "type": "jj-bookmarks",
+      "group": "jj",
+      "defaultConfig": {
+        "format": "{jj_bookmarks}",
+        "style": "magenta"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "jj-workspace",
+      "label": {
+        "ko": "JJ 워크스페이스",
+        "en": "JJ Workspace"
+      },
+      "type": "jj-workspace",
+      "group": "jj",
+      "defaultConfig": {
+        "format": "{jj_workspace}",
+        "style": "blue"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "jj-description",
+      "label": {
+        "ko": "JJ 설명",
+        "en": "JJ Description"
+      },
+      "type": "jj-description",
+      "group": "jj",
+      "defaultConfig": {
+        "format": "{jj_description}",
+        "style": "white"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "jj-changes",
+      "label": {
+        "ko": "JJ 변경",
+        "en": "JJ Changes"
+      },
+      "type": "jj-changes",
+      "group": "jj",
+      "defaultConfig": {
+        "format": "~{jj_changes}",
+        "style": "yellow"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "jj-insertions",
+      "label": {
+        "ko": "JJ 추가 줄",
+        "en": "JJ Insertions"
+      },
+      "type": "jj-insertions",
+      "group": "jj",
+      "defaultConfig": {
+        "format": "+{jj_insertions}",
+        "style": "green"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "jj-deletions",
+      "label": {
+        "ko": "JJ 삭제 줄",
+        "en": "JJ Deletions"
+      },
+      "type": "jj-deletions",
+      "group": "jj",
+      "defaultConfig": {
+        "format": "-{jj_deletions}",
+        "style": "red"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "jj-root-dir",
+      "label": {
+        "ko": "JJ 루트",
+        "en": "JJ Root Dir"
+      },
+      "type": "jj-root-dir",
+      "group": "jj",
+      "defaultConfig": {
+        "format": "{jj_root}",
+        "style": "cyan"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
       "id": "current-working-dir",
       "label": {
         "ko": "작업 디렉토리",
@@ -3971,6 +4823,112 @@
       "defaultConfig": {
         "format": "|",
         "style": "dim"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "custom-symbol",
+      "label": {
+        "ko": "커스텀 심볼",
+        "en": "Custom Symbol"
+      },
+      "type": "custom-symbol",
+      "group": "separators",
+      "defaultConfig": {
+        "format": "◆",
+        "style": "white"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "id": "link",
+      "label": {
+        "ko": "터미널 하이퍼링크",
+        "en": "Terminal Link"
+      },
+      "type": "link",
+      "group": "separators",
+      "defaultConfig": {
+        "format": "link",
+        "style": "cyan"
       },
       "configSchema": [
         {
