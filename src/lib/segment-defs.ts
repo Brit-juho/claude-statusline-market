@@ -474,6 +474,11 @@ export const SEGMENT_DEFS: SegmentDef[] = [
     configSchema: baseSchema,
   },
   {
+    id: 'python-version', label: { ko: 'Python 버전', en: 'Python Version' }, type: 'custom-command', group: 'runtime',
+    defaultConfig: { format: 'python --version', style: 'blue' },
+    configSchema: baseSchema,
+  },
+  {
     id: 'venv', label: { ko: 'Python 가상환경', en: 'Python Venv' }, type: 'custom-command', group: 'runtime',
     defaultConfig: { format: 'basename $VIRTUAL_ENV', style: 'yellow' },
     configSchema: baseSchema,

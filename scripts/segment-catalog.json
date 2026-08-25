@@ -4654,6 +4654,59 @@
       ]
     },
     {
+      "id": "python-version",
+      "label": {
+        "ko": "Python 버전",
+        "en": "Python Version"
+      },
+      "type": "custom-command",
+      "group": "runtime",
+      "defaultConfig": {
+        "format": "python --version",
+        "style": "blue"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
       "id": "venv",
       "label": {
         "ko": "Python 가상환경",

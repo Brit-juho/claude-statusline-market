@@ -42,7 +42,7 @@
           "id": "3",
           "type": "custom-command",
           "color": "blue",
-          "commandPath": "node --version"
+          "commandPath": "python --version"
         },
         {
           "id": "4",
