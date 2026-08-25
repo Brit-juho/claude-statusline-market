@@ -73,6 +73,10 @@
           "enum": [3],
           "description": "ccstatusline settings format version"
         },
+        "defaultSeparator": {
+          "type": "string",
+          "description": "Text inserted between widgets on a line (ccstatusline's global separator setting)"
+        },
         "lines": {
           "type": "array",
           "description": "Array of statusline lines, each line is an array of widget items",

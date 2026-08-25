@@ -193,4 +193,42 @@ describe('BuilderApp — JSON 직렬화', () => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
+
+  it('커스텀 텍스트의 실제 입력값이 rawValue로 내보내진다 (미리보기-다운로드 divergence 회귀 방지)', async () => {
+    let capturedBlob: Blob | null = null;
+    const createObjectURL = vi.fn((blob: Blob) => { capturedBlob = blob; return 'blob:test'; });
+    const revokeObjectURL = vi.fn();
+    vi.stubGlobal('URL', { createObjectURL, revokeObjectURL });
+
+    render(<BuilderApp {...defaultProps} />);
+
+    const paletteItems = screen.getAllByTitle('클릭해서 추가 / Click to add');
+    const customTextItem = paletteItems.find(el => el.textContent === '커스텀 텍스트')!;
+    fireEvent.click(customTextItem);
+
+    // Select the newly added canvas item (by container, not text — its
+    // rendered label is ambiguous) to open the config panel
+    const canvasItem = document.querySelector('.canvas-item') as HTMLElement;
+    fireEvent.click(canvasItem);
+
+    const formatInput = screen.getByDisplayValue('·') as HTMLInputElement;
+    fireEvent.input(formatInput, { target: { value: '::' } });
+
+    const origCreate = document.createElement.bind(document);
+    vi.spyOn(document, 'createElement').mockImplementation((tag: string) => {
+      const el = origCreate(tag);
+      if (tag === 'a') (el as HTMLAnchorElement).click = vi.fn();
+      return el;
+    });
+
+    fireEvent.click(screen.getByText('JSON 다운로드'));
+
+    const text = await capturedBlob!.text();
+    const data = JSON.parse(text);
+    expect(data.lines[0][0].type).toBe('custom-text');
+    expect(data.lines[0][0].rawValue).toBe('::');
+
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
 });

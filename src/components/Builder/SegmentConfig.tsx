@@ -25,7 +25,7 @@ export function SegmentConfig({ segment, t, onUpdate }: Props) {
   }
 
   const def = SEGMENT_DEFS.find(d => d.id === segment.defId);
-  const isText = def?.type === 'text';
+  const isText = def?.type === 'custom-text';
 
   return (
     <div class="config-panel">

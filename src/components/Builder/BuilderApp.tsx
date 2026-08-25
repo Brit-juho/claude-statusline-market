@@ -40,7 +40,7 @@ function PaletteItem({ defId, label, onAdd }: { defId: string; label: string; on
 // Compute a human label for a segment (handles text/empty/whitespace clearly)
 function segmentLabel(seg: CanvasSegment, lang: 'ko' | 'en'): string {
   const def = SEGMENT_DEFS.find(d => d.id === seg.defId);
-  if (def?.type === 'text') {
+  if (def?.type === 'custom-text') {
     const fmt = seg.format ?? '';
     if (fmt === '') return lang === 'ko' ? '[빈 텍스트]' : '[empty]';
     if (fmt.trim() === '') return lang === 'ko' ? `[공백 ${fmt.length}칸]` : `[${fmt.length} spaces]`;
@@ -65,7 +65,7 @@ function CanvasItem({
   });
 
   const def = SEGMENT_DEFS.find(d => d.id === seg.defId);
-  const isText = def?.type === 'text';
+  const isText = def?.type === 'custom-text';
   const displayLabel = segmentLabel(seg, lang);
   const style = { transform: CSS.Transform.toString(transform), transition };
 
@@ -343,9 +343,18 @@ export function BuilderApp({ lang, t, base }: Props) {
         color: s.color ?? 'dim',
       };
       if (s.bold) item.bold = true;
+      // custom-text / custom-command hold their actual payload in `format`
+      // (edited via the config panel) — without this, the widget exports
+      // with no text/command at all, silently diverging from the preview.
+      if (def?.type === 'custom-text') item.rawValue = s.format;
+      if (def?.type === 'custom-command') item.commandPath = s.format;
       return item;
     });
-    const data = { version: 3, lines: [items] };
+    // ccstatusline's real global-separator mechanism is a top-level
+    // `defaultSeparator` string on the settings object (not a per-widget
+    // item) — matches what the "전역 구분자" field already shows in preview.
+    const data: Record<string, unknown> = { version: 3, lines: [items] };
+    if (separator) data.defaultSeparator = separator;
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -353,7 +362,7 @@ export function BuilderApp({ lang, t, base }: Props) {
     a.download = 'ccstatusline-settings.json';
     a.click();
     URL.revokeObjectURL(url);
-  }, [segments]);
+  }, [segments, separator]);
 
   const copyInstall = useCallback(async () => {
     if (!navigator.clipboard) return;
