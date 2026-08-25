@@ -101,6 +101,8 @@ jobs:
 
       - name: Verify settings.json was written
         shell: pwsh
+        env:
+          PRESET_ID: ${{ github.event.inputs.preset_id || 'ko-minimal' }}
         run: |
           $settingsPath = Join-Path $HOME ".config" "ccstatusline" "settings.json"
 
