@@ -61,12 +61,14 @@ function Install-Preset {
   $TmpFile = [System.IO.Path]::GetTempFileName()
 
   try {
-    $Response = Invoke-WebRequest -Uri $PresetUrl -UseBasicParsing -ErrorAction Stop
-    if ($Response.StatusCode -eq 404) {
-      Write-Error "Preset '$PresetId' not found (404). Browse: $SiteBase"
-      return
-    }
-    [System.IO.File]::WriteAllBytes($TmpFile, $Response.Content)
+    # -OutFile writes the response body straight to disk and is safe across
+    # PowerShell versions. Reading .Content and re-encoding it manually is
+    # NOT: on PowerShell 7 (pwsh, what GitHub's windows-latest runner and
+    # macOS/Linux installs use), -UseBasicParsing's .Content is a decoded
+    # string for text responses (not byte[] like on Windows PowerShell 5.1),
+    # so WriteAllBytes($TmpFile, $Response.Content) throws a type-conversion
+    # error and the install fails outright.
+    Invoke-WebRequest -Uri $PresetUrl -UseBasicParsing -OutFile $TmpFile -ErrorAction Stop
   } catch {
     if ($_.Exception.Response.StatusCode -eq 404) {
       Write-Error "Preset '$PresetId' not found. Browse: $SiteBase"
