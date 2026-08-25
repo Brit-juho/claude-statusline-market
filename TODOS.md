@@ -18,6 +18,7 @@
 - **[T13]** Fixed the outdated schema reference (`settings.statusline.segments`) in `CONTRIBUTING.md`/`.github/workflows/screenshot.yml`, and the `chmod +x /usr/local/bin freeze` whitespace bug in `screenshot.yml`
 - **[T14]** Added the `skills/statusline-market` Skill + `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` — conversational terminal browse/preview/customize/apply
 - **[T17]** Enabled GitHub Pages — Pages was never turned on for the repo, so `Deploy to GitHub Pages` was always failing with a 404. Enabled Source=GitHub Actions via `gh api`, redeployed, confirmed the live URL returns 200
+- **[T19]** Added the `flex-separator` widget (right-align content — confirmed as a real ccstatusline type, distinct from `separator`, by reading the minified source directly: `"Expands to fill available terminal width"`), and fixed `skills/statusline-market/SKILL.md`'s stale "9 groups" reference (now grows with the catalog — told the Skill to read the actual count instead of trusting a hardcoded number)
 - **[T18]** Fixed the `freeze` version pin in `screenshot.yml` — `FREEZE_VERSION=1.4.3` was a version that never existed (always 404). Bumped to the current `v0.2.2` and updated the install logic for the upstream asset-naming change (`linux_amd64` → `Linux_x86_64`, plus a subdirectory inside the tarball). Confirmed with a real workflow re-run
 
 ## Open

@@ -26,7 +26,7 @@ tools: [Bash, WebFetch]
 
 ## 3. 커스터마이징 (Customize)
 
-1. `${RAW_BASE}/scripts/segment-catalog.json`(또는 로컬 `scripts/segment-catalog.json`)을 읽는다. `groups`(9개 그룹)와 `segments`(각 `{id, label, type, group, defaultConfig:{format,style}, configSchema}`)로 구성된다.
+1. `${RAW_BASE}/scripts/segment-catalog.json`(또는 로컬 `scripts/segment-catalog.json`)을 읽는다. `groups`와 `segments`(각 `{id, label, type, group, defaultConfig:{format,style}, configSchema}`)로 구성된다 — 그룹/세그먼트 개수는 카탈로그가 갱신될 때마다 바뀔 수 있으니 하드코딩된 숫자를 믿지 말고 읽어온 JSON의 실제 길이를 쓸 것.
 2. 진행 중인 구성은 메모리상 `{version:3, lines:[[...]]}` 형태(ccstatusline widget item: `{id, type, color?, bold?, rawValue?, commandPath?}`)로 유지한다. 처음부터 시작하면 빈 `lines:[[]]`에서 출발.
 3. 사용자의 자연어 요청("git 브랜치 추가해줘", "비용 항목 빨간색으로", "굵게 해줘", "두 번째 줄로 옮겨줘")을 다음으로 매핑:
    - **추가**: 카탈로그에서 `id`/`label`로 세그먼트를 찾아 `defaultConfig`의 `style`을 `color`/`bold`로 분해(예: `"cyan bold"` → `color:"cyan", bold:true`)해서 위젯 아이템으로 추가.

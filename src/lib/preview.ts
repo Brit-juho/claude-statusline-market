@@ -247,6 +247,7 @@ const WIDGET_SAMPLE: Record<string, string> = {
   'custom-command':           '[cmd]',
   'link':                     'link',
   'separator':                '|',
+  'flex-separator':           '⇥',
   'sandbox-status':           '🔒 sandboxed',
   'remote-control-status':    '📡 remote',
   'cache-hit-rate':           '⚡87%',

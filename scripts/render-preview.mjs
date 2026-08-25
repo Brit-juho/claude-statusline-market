@@ -99,6 +99,7 @@ const WIDGET_SAMPLE = {
   'custom-command': '[cmd]',
   'link': 'link',
   'separator': '|',
+  'flex-separator': '⇥',
   'sandbox-status': '🔒 sandboxed',
   'remote-control-status': '📡 remote',
   'cache-hit-rate': '⚡87%',

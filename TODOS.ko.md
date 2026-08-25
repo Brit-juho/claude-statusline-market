@@ -18,6 +18,7 @@
 - **[T13]** `CONTRIBUTING.md`/`.github/workflows/screenshot.yml`의 구식 스키마(`settings.statusline.segments`) 참조 수정, `screenshot.yml`의 `chmod +x /usr/local/bin freeze` 공백 버그 수정
 - **[T14]** `skills/statusline-market` Skill + `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` 추가 — 터미널 대화형 탐색/미리보기/커스터마이징/적용
 - **[T17]** GitHub Pages 활성화 — 저장소에 Pages 자체가 꺼져 있어 `Deploy to GitHub Pages`가 항상 404로 실패하고 있었음. `gh api`로 Source=GitHub Actions 활성화 후 재배포, 라이브 URL 200 확인
+- **[T19]** `flex-separator` 위젯 추가 — `separator`와는 별개로 실존하는 ccstatusline 타입임을 소스 직접 확인("Expands to fill available terminal width", 우측 정렬용). `skills/statusline-market/SKILL.md`의 stale "9개 그룹" 표현도 수정(카탈로그가 커질 때마다 바뀌므로 하드코딩 숫자 대신 실제 읽어온 개수를 쓰도록 지침 변경)
 - **[T18]** `screenshot.yml`의 `freeze` 버전 핀 수정 — `FREEZE_VERSION=1.4.3`은 존재한 적 없는 버전(항상 404). 최신 `v0.2.2`로 교체하고 에셋 이름 규칙 변경(`linux_amd64`→`Linux_x86_64`, tar 내부 서브디렉터리 구조)에 맞춰 설치 로직도 수정. 실제 워크플로우 재실행으로 성공 확인
 
 ## 남은 항목

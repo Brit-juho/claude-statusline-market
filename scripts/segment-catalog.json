@@ -4866,6 +4866,59 @@
       ]
     },
     {
+      "id": "flex-separator",
+      "label": {
+        "ko": "플렉스 구분자 (우측 정렬)",
+        "en": "Flex Separator (right-align)"
+      },
+      "type": "flex-separator",
+      "group": "separators",
+      "defaultConfig": {
+        "format": "⇥",
+        "style": "dim"
+      },
+      "configSchema": [
+        {
+          "key": "format",
+          "label": {
+            "ko": "형식",
+            "en": "Format"
+          },
+          "type": "text"
+        },
+        {
+          "key": "color",
+          "label": {
+            "ko": "색상",
+            "en": "Color"
+          },
+          "type": "select",
+          "options": [
+            "accent",
+            "green",
+            "cyan",
+            "blue",
+            "yellow",
+            "orange",
+            "red",
+            "magenta",
+            "pink",
+            "white",
+            "gray",
+            "dim"
+          ]
+        },
+        {
+          "key": "bold",
+          "label": {
+            "ko": "굵게",
+            "en": "Bold"
+          },
+          "type": "boolean"
+        }
+      ]
+    },
+    {
       "id": "custom-symbol",
       "label": {
         "ko": "커스텀 심볼",

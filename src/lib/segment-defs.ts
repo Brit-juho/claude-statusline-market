@@ -496,6 +496,11 @@ export const SEGMENT_DEFS: SegmentDef[] = [
     configSchema: baseSchema,
   },
   {
+    id: 'flex-separator', label: { ko: '플렉스 구분자 (우측 정렬)', en: 'Flex Separator (right-align)' }, type: 'flex-separator', group: 'separators',
+    defaultConfig: { format: '⇥', style: 'dim' },
+    configSchema: baseSchema,
+  },
+  {
     id: 'custom-symbol', label: { ko: '커스텀 심볼', en: 'Custom Symbol' }, type: 'custom-symbol', group: 'separators',
     defaultConfig: { format: '◆', style: 'white' },
     configSchema: baseSchema,
