@@ -20,9 +20,12 @@ jobs:
 
       - name: Install freeze (charmbracelet)
         run: |
-          FREEZE_VERSION="1.4.3"
-          curl -fsSL "https://github.com/charmbracelet/freeze/releases/download/v${FREEZE_VERSION}/freeze_${FREEZE_VERSION}_linux_amd64.tar.gz" | tar xz -C /usr/local/bin freeze
-          chmod +x /usr/local/bin/freeze
+          # Asset naming changed upstream (old pin 1.4.3 never existed; current
+          # releases use "Linux_x86_64" instead of "linux_amd64").
+          FREEZE_VERSION="0.2.2"
+          curl -fsSL "https://github.com/charmbracelet/freeze/releases/download/v${FREEZE_VERSION}/freeze_${FREEZE_VERSION}_Linux_x86_64.tar.gz" -o /tmp/freeze.tar.gz
+          tar xzf /tmp/freeze.tar.gz -C /tmp
+          install -m 0755 /tmp/freeze_${FREEZE_VERSION}_Linux_x86_64/freeze /usr/local/bin/freeze
 
       - name: Generate mock screenshots
         run: |
