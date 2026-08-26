@@ -1,4 +1,4 @@
-**English** · [한국어](./README.ko.md)
+[![English](https://img.shields.io/badge/lang-English-lightgrey.svg)](./README.md) [![한국어](https://img.shields.io/badge/lang-한국어-lightgrey.svg)](./README.ko.md)
 
 # Claude Statusline Market
 

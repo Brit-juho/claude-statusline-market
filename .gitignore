@@ -43,3 +43,7 @@ coverage/
 # CCstatusline local backup files (in case dev runs install scripts locally)
 *.backup-*
 .gstack/
+
+# personal/local-only docs (not for GitHub)
+CLAUDE.md
+DESIGN.md
