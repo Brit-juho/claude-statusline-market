@@ -9,7 +9,7 @@ Anyone can add a preset to the gallery via a pull request.
 1. Fork this repository
 2. Copy an existing preset as a template:
    ```bash
-   cp public/presets/ko-minimal.json public/presets/your-preset-id.json
+   cp public/presets/clean-signal.json public/presets/your-preset-id.json
    ```
 3. Edit the JSON file (see schema below)
 4. Run validation locally (also regenerates `public/presets/index.json` and `scripts/segment-catalog.json` if either is stale — commit the diff if it changes):
@@ -61,5 +61,4 @@ Minimum required fields:
 
 - Test your preset locally with ccstatusline before submitting
 - Add both Korean and English title/description even if your preset is language-specific
-- The `tool_min_version` field is optional but recommended if your preset uses newer segment types
 - Keep `id` stable after publish — the install URL is `curl ... | bash -s -- your-preset-id`

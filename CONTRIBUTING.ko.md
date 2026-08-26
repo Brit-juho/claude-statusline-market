@@ -9,7 +9,7 @@
 1. 이 저장소를 Fork
 2. 기존 프리셋을 템플릿으로 복사:
    ```bash
-   cp public/presets/ko-minimal.json public/presets/your-preset-id.json
+   cp public/presets/clean-signal.json public/presets/your-preset-id.json
    ```
 3. JSON 파일 수정 (아래 스키마 참고)
 4. 로컬에서 검증 실행 (`public/presets/index.json`과 `scripts/segment-catalog.json`이 오래됐으면 자동 재생성됩니다 — 변경되면 diff도 함께 커밋하세요):
@@ -61,5 +61,4 @@
 
 - 제출 전에 ccstatusline으로 로컬에서 프리셋을 테스트해보세요
 - 언어 특화 프리셋이라도 한국어/영어 title·description을 모두 채워주세요
-- `tool_min_version` 필드는 선택이지만, 최신 세그먼트 타입을 쓴다면 추가를 권장합니다
 - 배포 후에는 `id`를 바꾸지 마세요 — 설치 URL이 `curl ... | bash -s -- your-preset-id`이기 때문입니다
