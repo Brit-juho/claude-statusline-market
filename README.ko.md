@@ -2,6 +2,13 @@
 
 # Claude Statusline Market
 
+[![Deploy](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/deploy.yml/badge.svg)](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/deploy.yml)
+[![Validate Presets](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/validate.yml/badge.svg)](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/validate.yml)
+[![Smoke Test](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/smoke.yml/badge.svg)](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/smoke.yml)
+[![License: MIT](https://img.shields.io/github/license/Brit-juho/claude-statusline-market?color=00d97e)](./LICENSE)
+[![Built with Astro](https://img.shields.io/badge/built%20with-Astro-BC52EE?logo=astro&logoColor=white)](https://astro.build)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-00d97e.svg)](./CONTRIBUTING.md)
+
 > 클로드 코드 상태 표시줄 프리셋 갤러리. 한 줄로 설치.
 
 [Claude Code](https://code.claude.com) 상태 표시줄 프리셋을 위한 다국어 마켓플레이스입니다. 스크린샷과 함께 커뮤니티 프리셋을 둘러보고, 명령 한 줄로 설치하고, PR로 직접 기여할 수 있습니다.

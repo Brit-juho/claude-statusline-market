@@ -2,6 +2,13 @@
 
 # Claude Statusline Market
 
+[![Deploy](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/deploy.yml/badge.svg)](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/deploy.yml)
+[![Validate Presets](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/validate.yml/badge.svg)](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/validate.yml)
+[![Smoke Test](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/smoke.yml/badge.svg)](https://github.com/Brit-juho/claude-statusline-market/actions/workflows/smoke.yml)
+[![License: MIT](https://img.shields.io/github/license/Brit-juho/claude-statusline-market?color=00d97e)](./LICENSE)
+[![Built with Astro](https://img.shields.io/badge/built%20with-Astro-BC52EE?logo=astro&logoColor=white)](https://astro.build)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-00d97e.svg)](./CONTRIBUTING.md)
+
 > Discover Claude Code statusline presets. Install in one line.
 
 A multilingual marketplace for [Claude Code](https://code.claude.com) statusline presets. Browse community presets with screenshots, install with one command, contribute your own via PR.
