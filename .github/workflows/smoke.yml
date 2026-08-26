@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
     inputs:
       preset_id:
-        description: "Preset ID to test (default: ko-minimal)"
-        default: "ko-minimal"
+        description: "Preset ID to test (default: clean-signal)"
+        default: "clean-signal"
         required: false
 
 jobs:
@@ -27,16 +27,16 @@ jobs:
         if: ${{ github.event_name == 'workflow_run' }}
         run: sleep 30
 
-      - name: Run install script (ko-minimal)
+      - name: Run install script (clean-signal)
         env:
-          PRESET_ID: ${{ github.event.inputs.preset_id || 'ko-minimal' }}
+          PRESET_ID: ${{ github.event.inputs.preset_id || 'clean-signal' }}
           SITE_BASE: "https://brit-juho.github.io/claude-statusline-market"
         run: |
           bash scripts/install-preset.sh "$PRESET_ID"
 
       - name: Verify settings.json was written
         env:
-          PRESET_ID: ${{ github.event.inputs.preset_id || 'ko-minimal' }}
+          PRESET_ID: ${{ github.event.inputs.preset_id || 'clean-signal' }}
         run: |
           SETTINGS="${XDG_CONFIG_HOME:-$HOME/.config}/ccstatusline/settings.json"
 
@@ -94,7 +94,7 @@ jobs:
       - name: Run install script (Install-Preset)
         shell: pwsh
         env:
-          PRESET_ID: ${{ github.event.inputs.preset_id || 'ko-minimal' }}
+          PRESET_ID: ${{ github.event.inputs.preset_id || 'clean-signal' }}
         run: |
           . .\scripts\install-preset.ps1
           Install-Preset -PresetId $env:PRESET_ID -SiteBase "https://brit-juho.github.io/claude-statusline-market"
@@ -102,7 +102,7 @@ jobs:
       - name: Verify settings.json was written
         shell: pwsh
         env:
-          PRESET_ID: ${{ github.event.inputs.preset_id || 'ko-minimal' }}
+          PRESET_ID: ${{ github.event.inputs.preset_id || 'clean-signal' }}
         run: |
           $settingsPath = Join-Path $HOME ".config" "ccstatusline" "settings.json"
 
