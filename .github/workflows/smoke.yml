@@ -135,8 +135,10 @@ jobs:
 
           # T10 regression check: past versions moved the whole preset file
           # as-is, so id/title/description ended up mixed into ccstatusline's
-          # own settings.json instead of just {version, lines}.
-          $extraProps = $json.PSObject.Properties.Name | Where-Object { $_ -notin @('version', 'lines') }
+          # own settings.json instead of just the real ccstatusline_settings
+          # fields. defaultSeparator and powerline are legitimate top-level
+          # ccstatusline settings (not preset metadata) — allow them too.
+          $extraProps = $json.PSObject.Properties.Name | Where-Object { $_ -notin @('version', 'lines', 'defaultSeparator', 'powerline') }
           if ($extraProps) {
             Write-Error "unexpected top-level keys leaked from the preset file: $($extraProps -join ', ')"
             exit 1
