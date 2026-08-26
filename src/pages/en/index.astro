@@ -53,7 +53,7 @@ const categories = ['minimal', 'productivity', 'cost', 'git', 'powerline', 'cust
       <div class="gallery-count" id="count">{t('gallery.count').replace('{count}', String(presets.length))}</div>
       <div class="grid" id="grid">
         {presets.map(preset => (
-          <PresetCard id={preset.id} title={preset.title} description={preset.description} category={preset.category} tags={preset.tags ?? []} tool={preset.tool} lang={lang} base={base} widgets={preset.ccstatusline_settings.lines[0] ?? []} />
+          <PresetCard id={preset.id} title={preset.title} description={preset.description} category={preset.category} tags={preset.tags ?? []} tool={preset.tool} lang={lang} base={base} widgets={preset.ccstatusline_settings.lines[0] ?? []} powerline={preset.ccstatusline_settings.powerline} />
         ))}
       </div>
       <div class="empty" id="empty" style="display:none">

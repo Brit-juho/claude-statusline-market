@@ -1,0 +1,74 @@
+{
+  "id": "cache-flow",
+  "version": "1.0.0",
+  "title": {
+    "ko": "캐시 플로우",
+    "en": "Cache Flow"
+  },
+  "description": {
+    "ko": "캐시가 돈이 되는 흐름을 실시간으로 — 적중률, 읽기/쓰기, TTL, 세션 비용까지 화살표로 추적",
+    "en": "Watch cache turn into savings in real time — hit rate, read/write, TTL, and session cost with directional arrows"
+  },
+  "tool": "ccstatusline",
+  "category": "cost",
+  "tags": [
+    "cache",
+    "cost",
+    "efficiency",
+    "symbol"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "defaultSeparator": " ",
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "⚡",
+          "color": "green"
+        },
+        {
+          "id": "2",
+          "type": "model",
+          "color": "dim"
+        },
+        {
+          "id": "3",
+          "type": "cache-hit-rate",
+          "color": "green",
+          "bold": true
+        },
+        {
+          "id": "4",
+          "type": "cache-read",
+          "color": "dim"
+        },
+        {
+          "id": "5",
+          "type": "cache-write",
+          "color": "dim"
+        },
+        {
+          "id": "6",
+          "type": "cache-timer",
+          "color": "dim"
+        },
+        {
+          "id": "8",
+          "type": "context-percentage",
+          "color": "dim"
+        },
+        {
+          "id": "7",
+          "type": "session-cost",
+          "color": "yellow"
+        }
+      ]
+    ]
+  }
+}

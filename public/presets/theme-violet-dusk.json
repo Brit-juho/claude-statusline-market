@@ -1,0 +1,62 @@
+{
+  "id": "theme-violet-dusk",
+  "version": "1.0.0",
+  "title": {
+    "ko": "테마: 바이올렛 더스크",
+    "en": "Theme: Violet Dusk"
+  },
+  "description": {
+    "ko": "해질녘처럼 짙어지는 퍼플톤 블록 — 우리만의 톤온톤 다크 팔레트, Nord/Tokyo Night과는 다른 결",
+    "en": "Purple tonal blocks that deepen like dusk falling — our own tone-on-tone dark palette, distinct from Nord/Tokyo Night"
+  },
+  "tool": "ccstatusline",
+  "category": "powerline",
+  "tags": [
+    "theme",
+    "powerline",
+    "purple"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "powerline": {
+      "enabled": true,
+      "separators": ["›"],
+      "separatorInvertBackground": [false]
+    },
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "🌙",
+          "color": "#1c1030"
+        },
+        {
+          "id": "2",
+          "type": "model",
+          "color": "#25153e"
+        },
+        {
+          "id": "3",
+          "type": "current-working-dir",
+          "color": "#2e1a4c"
+        },
+        {
+          "id": "4",
+          "type": "git-branch",
+          "color": "#37205a"
+        },
+        {
+          "id": "5",
+          "type": "session-cost",
+          "color": "#1c1030",
+          "bold": true
+        }
+      ]
+    ]
+  }
+}

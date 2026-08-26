@@ -1,0 +1,70 @@
+{
+  "id": "cost-story",
+  "version": "1.0.0",
+  "title": {
+    "ko": "비용 스토리",
+    "en": "Cost Story"
+  },
+  "description": {
+    "ko": "숫자 나열 대신 요약 문장으로 — \"$0.0234 spent · 7d:41% used · reset:2h 14m\"",
+    "en": "A one-line summary instead of raw numbers — \"$0.0234 spent · 7d:41% used · reset:2h 14m\""
+  },
+  "tool": "ccstatusline",
+  "category": "cost",
+  "tags": [
+    "cost",
+    "narrative",
+    "rate-limit"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "defaultSeparator": " ",
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "💰",
+          "color": "yellow"
+        },
+        {
+          "id": "2",
+          "type": "session-cost",
+          "color": "yellow",
+          "bold": true
+        },
+        {
+          "id": "3",
+          "type": "custom-text",
+          "rawValue": "spent ·",
+          "color": "dim"
+        },
+        {
+          "id": "4",
+          "type": "weekly-usage",
+          "color": "red"
+        },
+        {
+          "id": "5",
+          "type": "custom-text",
+          "rawValue": "used ·",
+          "color": "dim"
+        },
+        {
+          "id": "6",
+          "type": "reset-timer",
+          "color": "dim"
+        },
+        {
+          "id": "7",
+          "type": "context-percentage",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

@@ -118,10 +118,24 @@ const WIDGET_SAMPLE = {
   'jj-root-dir': 'my-project',
 };
 
+function hexToAnsiFg(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `38;2;${r};${g};${b}`;
+}
+
+function hexToAnsiBg(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `48;2;${r};${g};${b}`;
+}
+
 function ansiFor(color, bold) {
   const codes = [];
   if (bold) codes.push('1');
-  const c = COLOR_ANSI[color] ?? COLOR_ANSI.dim;
+  const c = /^#[0-9a-fA-F]{6}$/.test(color ?? '') ? hexToAnsiFg(color) : (COLOR_ANSI[color] ?? COLOR_ANSI.dim);
   codes.push(c);
   return `\x1b[${codes.join(';')}m`;
 }
@@ -132,8 +146,29 @@ function renderWidget(item) {
   return `${ansiFor(item.color ?? 'dim', item.bold)}${text}${reset}`;
 }
 
+function contrastFg(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.6 ? '#0a0a0a' : '#f2f2f2';
+}
+
+function renderPowerlineWidget(item) {
+  const text = item.rawValue ?? WIDGET_SAMPLE[item.type] ?? item.type;
+  const namedBg = { accent:'#00d97e', green:'#00d97e', cyan:'#22d3ee', blue:'#60a5fa', yellow:'#fbbf24', orange:'#fb923c', red:'#f87171', magenta:'#c084fc', pink:'#f472b6', white:'#d0d0d0', gray:'#6b7280', dim:'#4b5563' };
+  const bg = /^#[0-9a-fA-F]{6}$/.test(item.color ?? '') ? item.color : (namedBg[item.color] ?? namedBg.dim);
+  const fg = contrastFg(bg);
+  const bold = item.bold ? '1;' : '';
+  return `\x1b[${bold}${hexToAnsiFg(fg)};${hexToAnsiBg(bg)}m ${text} \x1b[0m`;
+}
+
 function renderLines(ccsSettings) {
   const lines = ccsSettings.lines ?? [];
+  if (ccsSettings.powerline?.enabled) {
+    const sep = ccsSettings.powerline.separators?.[0] ?? '›';
+    return lines.map(line => line.map(renderPowerlineWidget).join(sep));
+  }
   return lines.map(line => line.map(renderWidget).join(' '));
 }
 

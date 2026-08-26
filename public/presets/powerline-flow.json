@@ -1,0 +1,91 @@
+{
+  "id": "powerline-flow",
+  "version": "1.0.0",
+  "title": {
+    "ko": "파워라인 플로우",
+    "en": "Powerline Flow"
+  },
+  "description": {
+    "ko": "Powerlevel10k/Starship류 진짜 파워라인 — ccstatusline의 powerline 모드(색 블록+화살표 구분선)를 켜서 2줄로",
+    "en": "A real Powerlevel10k/Starship-style powerline — ccstatusline's native powerline mode (color blocks + arrow separators) across two lines"
+  },
+  "tool": "ccstatusline",
+  "category": "powerline",
+  "tags": [
+    "powerline",
+    "starship",
+    "two-line"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "defaultSeparator": " ",
+    "powerline": {
+      "enabled": true,
+      "separators": [
+        "›"
+      ],
+      "separatorInvertBackground": [
+        false
+      ]
+    },
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "◆",
+          "color": "cyan",
+          "bold": true
+        },
+        {
+          "id": "2",
+          "type": "model",
+          "color": "white",
+          "bold": true
+        },
+        {
+          "id": "4",
+          "type": "current-working-dir",
+          "color": "blue"
+        },
+        {
+          "id": "6",
+          "type": "git-branch",
+          "color": "green"
+        }
+      ],
+      [
+        {
+          "id": "11",
+          "type": "context-percentage",
+          "color": "dim"
+        },
+        {
+          "id": "7",
+          "type": "session-cost",
+          "color": "yellow",
+          "bold": true
+        },
+        {
+          "id": "8",
+          "type": "tokens-cached",
+          "color": "cyan"
+        },
+        {
+          "id": "9",
+          "type": "tokens-total",
+          "color": "dim"
+        },
+        {
+          "id": "10",
+          "type": "session-clock",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "id": "git-story",
+  "version": "1.0.0",
+  "title": {
+    "ko": "Git 스토리",
+    "en": "Git Story"
+  },
+  "description": {
+    "ko": "기호가 아니라 문장으로 — \"3 files changed, 2 hours ago\"처럼 지금 Git 상태를 말해주는 상태줄",
+    "en": "Sentences, not symbols — a statusline that tells you your Git state like \"3 files changed, 2 hours ago\""
+  },
+  "tool": "ccstatusline",
+  "category": "git",
+  "tags": [
+    "git",
+    "narrative",
+    "branch"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "defaultSeparator": " ",
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "📁",
+          "color": "blue"
+        },
+        {
+          "id": "2",
+          "type": "current-working-dir",
+          "color": "blue"
+        },
+        {
+          "id": "3",
+          "type": "custom-text",
+          "rawValue": "🔀",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "git-status",
+          "color": "green",
+          "bold": true
+        },
+        {
+          "id": "5",
+          "type": "custom-command",
+          "commandPath": "echo \"($(git status --porcelain 2>/dev/null | wc -l | tr -d ' ') files changed, $(git log -1 --format=%cr 2>/dev/null))\"",
+          "color": "dim"
+        },
+        {
+          "id": "6",
+          "type": "context-bar",
+          "color": "yellow"
+        },
+        {
+          "id": "7",
+          "type": "session-cost",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

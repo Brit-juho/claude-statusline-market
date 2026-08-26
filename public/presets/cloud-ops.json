@@ -1,22 +1,22 @@
 {
   "id": "cloud-ops",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "title": {
     "ko": "클라우드 Ops",
     "en": "Cloud Ops"
   },
   "description": {
-    "ko": "클라우드 인프라 작업에 특화 — K8s 컨텍스트, AWS 프로파일, TF 워크스페이스, 비용",
-    "en": "Cloud infra work — K8s context, AWS profile, Terraform workspace, and cost"
+    "ko": "클라우드 인프라 작업에 특화 — K8s 컨텍스트, AWS 리전, Terraform 워크스페이스를 구름 아이콘 아래 정렬",
+    "en": "Built for cloud infra work — K8s context, AWS region, and Terraform workspace lined up under a cloud icon"
   },
   "tool": "ccstatusline",
   "category": "custom",
   "tags": [
     "cloud",
-    "k8s",
+    "kubernetes",
     "aws",
     "terraform",
-    "devops"
+    "symbol"
   ],
   "author": {
     "name": "neo",
@@ -24,36 +24,43 @@
   },
   "ccstatusline_settings": {
     "version": 3,
+    "defaultSeparator": " ",
     "lines": [
       [
         {
           "id": "1",
-          "type": "model",
-          "color": "dim"
+          "type": "custom-text",
+          "rawValue": "☁",
+          "color": "blue"
         },
         {
           "id": "2",
           "type": "custom-command",
-          "color": "cyan",
           "commandPath": "kubectl config current-context",
+          "color": "cyan",
           "bold": true
         },
         {
           "id": "3",
           "type": "custom-command",
-          "color": "orange",
-          "commandPath": "aws configure get region"
+          "commandPath": "aws configure get region",
+          "color": "orange"
         },
         {
           "id": "4",
           "type": "custom-command",
-          "color": "magenta",
-          "commandPath": "terraform workspace show"
+          "commandPath": "terraform workspace show",
+          "color": "magenta"
+        },
+        {
+          "id": "6",
+          "type": "context-percentage",
+          "color": "dim"
         },
         {
           "id": "5",
           "type": "session-cost",
-          "color": "yellow"
+          "color": "dim"
         }
       ]
     ]

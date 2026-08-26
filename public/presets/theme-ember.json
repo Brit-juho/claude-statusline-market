@@ -1,0 +1,62 @@
+{
+  "id": "theme-ember",
+  "version": "1.0.0",
+  "title": {
+    "ko": "테마: 엠버",
+    "en": "Theme: Ember"
+  },
+  "description": {
+    "ko": "숯이 타들어가듯 짙어지는 웜톤 블록 — 우리만의 톤온톤 다크 팔레트, Nord/Tokyo Night과는 다른 결",
+    "en": "Warm tonal blocks that deepen like glowing coal — our own tone-on-tone dark palette, distinct from Nord/Tokyo Night"
+  },
+  "tool": "ccstatusline",
+  "category": "powerline",
+  "tags": [
+    "theme",
+    "powerline",
+    "warm"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "powerline": {
+      "enabled": true,
+      "separators": ["⟩"],
+      "separatorInvertBackground": [false]
+    },
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "🔥",
+          "color": "#2b1210"
+        },
+        {
+          "id": "2",
+          "type": "model",
+          "color": "#3d1a14"
+        },
+        {
+          "id": "3",
+          "type": "current-working-dir",
+          "color": "#4f2318"
+        },
+        {
+          "id": "4",
+          "type": "git-branch",
+          "color": "#612c1c"
+        },
+        {
+          "id": "5",
+          "type": "session-cost",
+          "color": "#2b1210",
+          "bold": true
+        }
+      ]
+    ]
+  }
+}

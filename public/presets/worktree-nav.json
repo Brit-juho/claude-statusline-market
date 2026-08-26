@@ -1,21 +1,20 @@
 {
-  "id": "worktree",
-  "version": "0.1.0",
+  "id": "worktree-nav",
+  "version": "1.0.0",
   "title": {
-    "ko": "워크트리 모드",
-    "en": "Worktree Mode"
+    "ko": "워크트리 내비",
+    "en": "Worktree Nav"
   },
   "description": {
-    "ko": "git worktree 작업 전용 — 현재 워크트리명, 브랜치, 원본 브랜치, 변경 파일, 비용",
-    "en": "Built for git worktree — current worktree name, branch, original branch, changes, and cost"
+    "ko": "여러 워크트리를 오갈 때 길을 잃지 않는다 — 현재 워크트리, 브랜치, 원본 브랜치를 나침반처럼 표시",
+    "en": "Never lose your way across worktrees — current worktree, branch, and original branch shown like a compass"
   },
   "tool": "ccstatusline",
   "category": "git",
   "tags": [
-    "worktree",
     "git",
-    "branch",
-    "parallel"
+    "worktree",
+    "symbol"
   ],
   "author": {
     "name": "neo",
@@ -23,17 +22,19 @@
   },
   "ccstatusline_settings": {
     "version": 3,
+    "defaultSeparator": " ",
     "lines": [
       [
         {
           "id": "1",
-          "type": "model",
-          "color": "dim"
+          "type": "custom-text",
+          "rawValue": "🌲",
+          "color": "green"
         },
         {
           "id": "2",
           "type": "worktree-name",
-          "color": "magenta",
+          "color": "green",
           "bold": true
         },
         {
@@ -52,12 +53,12 @@
           "color": "yellow"
         },
         {
-          "id": "6",
-          "type": "git-ahead-behind",
-          "color": "green"
+          "id": "7",
+          "type": "context-percentage",
+          "color": "dim"
         },
         {
-          "id": "7",
+          "id": "6",
           "type": "session-cost",
           "color": "dim"
         }

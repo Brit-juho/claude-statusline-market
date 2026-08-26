@@ -1,0 +1,49 @@
+{
+  "id": "clean-signal",
+  "version": "1.0.0",
+  "title": {
+    "ko": "클린 시그널",
+    "en": "Clean Signal"
+  },
+  "description": {
+    "ko": "정보를 줄이는 대신 신호를 남긴다 — 모델과 비용만, 심볼 하나로 시선을 고정하는 미니멀 상태줄",
+    "en": "Fewer facts, one clear signal — model and cost only, anchored by a single symbol"
+  },
+  "tool": "ccstatusline",
+  "category": "minimal",
+  "tags": [
+    "minimal",
+    "clean",
+    "quiet",
+    "symbol"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "defaultSeparator": " ",
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "◆",
+          "color": "dim"
+        },
+        {
+          "id": "2",
+          "type": "model",
+          "color": "white"
+        },
+        {
+          "id": "3",
+          "type": "session-cost",
+          "color": "green",
+          "bold": true
+        }
+      ]
+    ]
+  }
+}

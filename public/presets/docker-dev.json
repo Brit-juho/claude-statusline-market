@@ -1,21 +1,21 @@
 {
   "id": "docker-dev",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "title": {
     "ko": "Docker 개발자",
     "en": "Docker Developer"
   },
   "description": {
-    "ko": "컨테이너 개발 환경 — Docker 컨텍스트, 브랜치, 변경 라인, 세션 비용",
-    "en": "Container dev environment — Docker context, branch, diff lines, session cost"
+    "ko": "컨테이너 개발 환경 — Docker 컨텍스트, 브랜치, 변경 라인, 세션 비용을 고래 아이콘 아래",
+    "en": "Container dev environment — Docker context, branch, diff lines, and cost under a whale icon"
   },
   "tool": "ccstatusline",
   "category": "custom",
   "tags": [
     "docker",
     "container",
-    "devops",
-    "git"
+    "dev",
+    "symbol"
   ],
   "author": {
     "name": "neo",
@@ -23,18 +23,20 @@
   },
   "ccstatusline_settings": {
     "version": 3,
+    "defaultSeparator": " ",
     "lines": [
       [
         {
           "id": "1",
-          "type": "model",
-          "color": "cyan"
+          "type": "custom-text",
+          "rawValue": "🐳",
+          "color": "blue"
         },
         {
           "id": "2",
           "type": "custom-command",
-          "color": "blue",
           "commandPath": "docker context show",
+          "color": "blue",
           "bold": true
         },
         {
@@ -46,6 +48,11 @@
           "id": "4",
           "type": "git-changes",
           "color": "yellow"
+        },
+        {
+          "id": "6",
+          "type": "context-percentage",
+          "color": "dim"
         },
         {
           "id": "5",

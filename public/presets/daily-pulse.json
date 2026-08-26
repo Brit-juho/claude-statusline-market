@@ -1,0 +1,66 @@
+{
+  "id": "daily-pulse",
+  "version": "1.0.0",
+  "title": {
+    "ko": "데일리 펄스",
+    "en": "Daily Pulse"
+  },
+  "description": {
+    "ko": "한 도메인에만 특화하지 않은, 매일 그대로 쓸만한 범용 상태줄 — 위치·Git·컨텍스트·비용을 균형 있게 한 줄에",
+    "en": "Not specialized to one domain — a balanced everyday statusline with location, Git, context, and cost in one line"
+  },
+  "tool": "ccstatusline",
+  "category": "productivity",
+  "tags": [
+    "daily",
+    "all-rounder",
+    "context",
+    "git",
+    "cost",
+    "symbol"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "defaultSeparator": " ",
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "◆",
+          "color": "dim"
+        },
+        {
+          "id": "2",
+          "type": "model",
+          "color": "dim"
+        },
+        {
+          "id": "3",
+          "type": "current-working-dir",
+          "color": "blue"
+        },
+        {
+          "id": "4",
+          "type": "git-branch",
+          "color": "green"
+        },
+        {
+          "id": "5",
+          "type": "context-bar",
+          "color": "green"
+        },
+        {
+          "id": "7",
+          "type": "session-cost",
+          "color": "yellow",
+          "bold": true
+        }
+      ]
+    ]
+  }
+}

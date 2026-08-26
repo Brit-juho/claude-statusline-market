@@ -1,21 +1,21 @@
 [
   {
-    "id": "budget-sentinel",
+    "id": "budget-radar",
     "title": {
-      "ko": "예산 파수꾼",
-      "en": "Budget Sentinel"
+      "ko": "예산 레이더",
+      "en": "Budget Radar"
     },
     "description": {
-      "ko": "지출·한도·리셋 타이머를 한눈에 — 비용, 5h/7d 한도, Sonnet 주간 사용량, 리셋까지",
-      "en": "Cost, rate limits, Sonnet weekly usage, and reset timer — all spending signals at once"
+      "ko": "지출과 한도를 레이더처럼 — 비용, 5h/7d 한도, 리셋 타이머까지 심볼로 한눈에 스캔",
+      "en": "Scan spending like a radar — cost, 5h/7d limits, and reset timer, all symbol-marked"
     },
     "category": "cost",
     "tags": [
       "cost",
       "rate-limit",
       "budget",
-      "weekly",
-      "reset"
+      "reset",
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -23,21 +23,21 @@
     }
   },
   {
-    "id": "cache-insights",
+    "id": "cache-flow",
     "title": {
-      "ko": "캐시 인사이트",
-      "en": "Cache Insights"
+      "ko": "캐시 플로우",
+      "en": "Cache Flow"
     },
     "description": {
-      "ko": "프롬프트 캐시 적중률·읽기/쓰기·TTL을 상시 추적하고 싶은 사용자용 — 비용 최적화에 유용",
-      "en": "For users watching prompt cache hit rate, read/write volume, and TTL — useful for cost optimization"
+      "ko": "캐시가 돈이 되는 흐름을 실시간으로 — 적중률, 읽기/쓰기, TTL, 세션 비용까지 화살표로 추적",
+      "en": "Watch cache turn into savings in real time — hit rate, read/write, TTL, and session cost with directional arrows"
     },
     "category": "cost",
     "tags": [
       "cache",
       "cost",
-      "tokens",
-      "colors"
+      "efficiency",
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -45,21 +45,21 @@
     }
   },
   {
-    "id": "clean-pro",
+    "id": "clean-signal",
     "title": {
-      "ko": "클린 프로",
-      "en": "Clean Pro"
+      "ko": "클린 시그널",
+      "en": "Clean Signal"
     },
     "description": {
-      "ko": "군더더기 없는 프로페셔널 스타일 — 모델, 경로, 비용, 세션 시간만 담백하게",
-      "en": "No-noise professional style — model, path, cost, session time. Nothing else"
+      "ko": "정보를 줄이는 대신 신호를 남긴다 — 모델과 비용만, 심볼 하나로 시선을 고정하는 미니멀 상태줄",
+      "en": "Fewer facts, one clear signal — model and cost only, anchored by a single symbol"
     },
     "category": "minimal",
     "tags": [
-      "clean",
-      "professional",
       "minimal",
-      "colors"
+      "clean",
+      "quiet",
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -73,39 +73,16 @@
       "en": "Cloud Ops"
     },
     "description": {
-      "ko": "클라우드 인프라 작업에 특화 — K8s 컨텍스트, AWS 프로파일, TF 워크스페이스, 비용",
-      "en": "Cloud infra work — K8s context, AWS profile, Terraform workspace, and cost"
+      "ko": "클라우드 인프라 작업에 특화 — K8s 컨텍스트, AWS 리전, Terraform 워크스페이스를 구름 아이콘 아래 정렬",
+      "en": "Built for cloud infra work — K8s context, AWS region, and Terraform workspace lined up under a cloud icon"
     },
     "category": "custom",
     "tags": [
       "cloud",
-      "k8s",
+      "kubernetes",
       "aws",
       "terraform",
-      "devops"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "context-bar",
-    "title": {
-      "ko": "컨텍스트 바 (neo)",
-      "en": "Context Bar (neo)"
-    },
-    "description": {
-      "ko": "모델 · 디렉토리 · Git 상태 · 컨텍스트 바 — context-bar.sh 스타일을 ccstatusline로 재현",
-      "en": "Model · directory · Git status · context bar — context-bar.sh style rebuilt for ccstatusline"
-    },
-    "category": "productivity",
-    "tags": [
-      "git",
-      "context",
-      "model",
-      "directory",
-      "personal"
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -119,15 +96,15 @@
       "en": "Context Guardian"
     },
     "description": {
-      "ko": "컨텍스트 창 상태를 중심으로 — 사용량 바, %, 토큰 수, 남은 캐시를 실시간 모니터링",
-      "en": "Context window health first — usage bar, %, token count, and cache savings live"
+      "ko": "컨텍스트 창이 꽉 차기 전에 먼저 안다 — 사용량 바, %, 입출력 토큰을 나침반처럼 상시 감시",
+      "en": "Know before the context window fills up — usage bar, %, and token flow watched like a compass"
     },
     "category": "productivity",
     "tags": [
       "context",
       "tokens",
-      "cache",
-      "monitor"
+      "productivity",
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -135,21 +112,69 @@
     }
   },
   {
-    "id": "cyber-pink",
+    "id": "cost-story",
     "title": {
-      "ko": "사이버 핑크",
-      "en": "Cyber Pink"
+      "ko": "비용 스토리",
+      "en": "Cost Story"
     },
     "description": {
-      "ko": "핑크·마젠타 팔레트의 사이버펑크 스타일 — 세션, 노력, 비용을 강렬하게",
-      "en": "Cyberpunk pink-magenta palette — session, effort, cost rendered with punch"
+      "ko": "숫자 나열 대신 요약 문장으로 — \"$0.0234 spent · 7d:41% used · reset:2h 14m\"",
+      "en": "A one-line summary instead of raw numbers — \"$0.0234 spent · 7d:41% used · reset:2h 14m\""
     },
-    "category": "custom",
+    "category": "cost",
     "tags": [
-      "cyberpunk",
-      "pink",
-      "magenta",
-      "bold"
+      "cost",
+      "narrative",
+      "rate-limit"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
+    "id": "daily-pulse",
+    "title": {
+      "ko": "데일리 펄스",
+      "en": "Daily Pulse"
+    },
+    "description": {
+      "ko": "한 도메인에만 특화하지 않은, 매일 그대로 쓸만한 범용 상태줄 — 위치·Git·컨텍스트·비용을 균형 있게 한 줄에",
+      "en": "Not specialized to one domain — a balanced everyday statusline with location, Git, context, and cost in one line"
+    },
+    "category": "productivity",
+    "tags": [
+      "daily",
+      "all-rounder",
+      "context",
+      "git",
+      "cost",
+      "symbol"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
+    "id": "daily-radar",
+    "title": {
+      "ko": "데일리 레이더",
+      "en": "Daily Radar"
+    },
+    "description": {
+      "ko": "정보를 한 도메인에 몰지 않고 2줄로 나눠 담은 범용 상태줄 — 위치·Git 상태 한 줄, 컨텍스트·비용·한도 한 줄",
+      "en": "A well-rounded two-line statusline — location and Git on one line, context, cost, and rate limits on the next"
+    },
+    "category": "productivity",
+    "tags": [
+      "daily",
+      "all-rounder",
+      "context",
+      "cost",
+      "rate-limit",
+      "two-line",
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -163,15 +188,15 @@
       "en": "Docker Developer"
     },
     "description": {
-      "ko": "컨테이너 개발 환경 — Docker 컨텍스트, 브랜치, 변경 라인, 세션 비용",
-      "en": "Container dev environment — Docker context, branch, diff lines, session cost"
+      "ko": "컨테이너 개발 환경 — Docker 컨텍스트, 브랜치, 변경 라인, 세션 비용을 고래 아이콘 아래",
+      "en": "Container dev environment — Docker context, branch, diff lines, and cost under a whale icon"
     },
     "category": "custom",
     "tags": [
       "docker",
       "container",
-      "devops",
-      "git"
+      "dev",
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -179,132 +204,21 @@
     }
   },
   {
-    "id": "en-git-focused",
+    "id": "git-pulse",
     "title": {
-      "ko": "Git 포커스",
-      "en": "Git Focused"
+      "ko": "Git 펄스",
+      "en": "Git Pulse"
     },
     "description": {
-      "ko": "Git 상태를 중심으로 — 브랜치, 변경 파일 수, 커밋 수를 강조 표시",
-      "en": "Git-centric view — highlights branch, changed file count, and ahead/behind commits"
-    },
-    "category": "git",
-    "tags": [
-      "git",
-      "branch",
-      "version-control"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "en-powerline-pro",
-    "title": {
-      "ko": "파워라인 프로",
-      "en": "Powerline Pro"
-    },
-    "description": {
-      "ko": "파워라인 스타일의 풀 정보 상태바 — Git, 모델, 토큰, 비용, 세션 시간 포함",
-      "en": "Full-info powerline-style statusbar — Git, model, tokens, cost, and session time"
-    },
-    "category": "powerline",
-    "tags": [
-      "powerline",
-      "git",
-      "full-info",
-      "advanced"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "en-token-saver",
-    "title": {
-      "ko": "토큰 절약 모드",
-      "en": "Token Saver Mode"
-    },
-    "description": {
-      "ko": "캐시 히트율을 최대화하는 설정 — 캐시 절약량과 효율을 실시간으로 표시",
-      "en": "Maximize cache hit rate — shows savings and efficiency in real time"
-    },
-    "category": "cost",
-    "tags": [
-      "cache",
-      "tokens",
-      "efficiency",
-      "savings"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "full-spectrum",
-    "title": {
-      "ko": "풀 스펙트럼",
-      "en": "Full Spectrum"
-    },
-    "description": {
-      "ko": "모든 주요 정보를 무지개 색상으로 — 2줄 출력으로 정보 과부하 없이 전부 표시",
-      "en": "All key info in rainbow colors — 2-line output showing everything without overload"
-    },
-    "category": "powerline",
-    "tags": [
-      "full",
-      "colors",
-      "rainbow",
-      "multiline"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "git-deep",
-    "title": {
-      "ko": "Git 딥다이브",
-      "en": "Git Deep Dive"
-    },
-    "description": {
-      "ko": "Git 상태를 최대 해상도로 — staged/unstaged/untracked 파일 수, 추가/삭제 라인, SHA, ahead/behind",
-      "en": "Maximum Git resolution — staged, unstaged, untracked counts, insertions, deletions, SHA, and ahead/behind"
-    },
-    "category": "git",
-    "tags": [
-      "git",
-      "staged",
-      "diff",
-      "sha",
-      "detailed"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "git-pro",
-    "title": {
-      "ko": "Git 프로",
-      "en": "Git Pro"
-    },
-    "description": {
-      "ko": "Git 작업에 최적화 — 브랜치, ahead/behind, 추가/삭제 라인, 변경 파일, SHA까지",
-      "en": "Optimized for Git work — branch, ahead/behind, insertions, deletions, changes, and SHA"
+      "ko": "Git 작업의 심장 박동 — 브랜치, ahead/behind, 변경 파일, 추가/삭제 라인까지 화살표로 압축",
+      "en": "The heartbeat of your Git work — branch, ahead/behind, changed files, and insertions/deletions with arrows"
     },
     "category": "git",
     "tags": [
       "git",
       "branch",
       "diff",
-      "sha",
-      "colors"
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -312,153 +226,20 @@
     }
   },
   {
-    "id": "hacker-mono",
+    "id": "git-story",
     "title": {
-      "ko": "해커 모노",
-      "en": "Hacker Mono"
+      "ko": "Git 스토리",
+      "en": "Git Story"
     },
     "description": {
-      "ko": "단색 그린 해커 미학 — 심볼과 단축 표기로 정보 밀도를 극대화",
-      "en": "Monochrome green hacker aesthetic — max info density with symbols and shorthand"
-    },
-    "category": "minimal",
-    "tags": [
-      "hacker",
-      "mono",
-      "green",
-      "dense"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "jj-workflow",
-    "title": {
-      "ko": "JJ 워크플로우",
-      "en": "JJ Workflow"
-    },
-    "description": {
-      "ko": "Git 대신 Jujutsu(jj)를 쓰는 사용자용 — 리비전, 북마크, 워크스페이스, 변경 통계까지",
-      "en": "For users on Jujutsu (jj) instead of Git — revision, bookmarks, workspace, and change stats"
+      "ko": "기호가 아니라 문장으로 — \"3 files changed, 2 hours ago\"처럼 지금 Git 상태를 말해주는 상태줄",
+      "en": "Sentences, not symbols — a statusline that tells you your Git state like \"3 files changed, 2 hours ago\""
     },
     "category": "git",
     "tags": [
-      "jujutsu",
-      "jj",
-      "vcs",
-      "colors"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "ko-cost-tracker",
-    "title": {
-      "ko": "비용 추적기",
-      "en": "Cost Tracker"
-    },
-    "description": {
-      "ko": "세션별 API 비용을 실시간으로 추적합니다. 토큰 수, 캐시 히트율, 누적 비용을 한눈에",
-      "en": "Track API costs in real time. Tokens, cache hit rate, and cumulative cost at a glance"
-    },
-    "category": "cost",
-    "tags": [
-      "cost",
-      "tokens",
-      "cache",
-      "budget"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "ko-dark-zen",
-    "title": {
-      "ko": "다크 젠",
-      "en": "Dark Zen"
-    },
-    "description": {
-      "ko": "집중을 방해하지 않는 극도로 조용한 상태바 — 모델과 세션 시간만 표시",
-      "en": "Ultra-quiet status bar that won't break your flow — just model and session time"
-    },
-    "category": "minimal",
-    "tags": [
-      "minimal",
-      "zen",
-      "focus",
-      "quiet"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "ko-minimal",
-    "title": {
-      "ko": "미니멀",
-      "en": "Minimal"
-    },
-    "description": {
-      "ko": "꼭 필요한 정보만 — 모델명과 비용만 표시하는 깔끔한 한 줄",
-      "en": "Only the essentials — a clean single line showing model and cost"
-    },
-    "category": "minimal",
-    "tags": [
-      "minimal",
-      "clean",
-      "beginner"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "ko-productivity",
-    "title": {
-      "ko": "생산성 올인원",
-      "en": "Productivity All-in-One"
-    },
-    "description": {
-      "ko": "생산성 극대화를 위한 올인원 설정 — 시간, 작업 수, 토큰, Git, 비용을 모두 표시",
-      "en": "All-in-one for maximum productivity — time, tasks, tokens, Git, and cost in one bar"
-    },
-    "category": "productivity",
-    "tags": [
-      "productivity",
-      "all-in-one",
-      "time",
-      "tasks"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "multi-model-usage",
-    "title": {
-      "ko": "멀티 모델 사용량",
-      "en": "Multi-Model Usage"
-    },
-    "description": {
-      "ko": "Sonnet·Opus·Fable을 오가며 쓰는 사용자용 — 모델별 주간 사용량을 한 줄에서 비교",
-      "en": "For users switching between Sonnet, Opus, and Fable — compare weekly usage across models in one line"
-    },
-    "category": "cost",
-    "tags": [
-      "usage",
-      "fable",
-      "opus",
-      "sonnet",
-      "colors"
+      "git",
+      "narrative",
+      "branch"
     ],
     "author": {
       "name": "neo",
@@ -472,15 +253,15 @@
       "en": "Node Developer"
     },
     "description": {
-      "ko": "Node.js 개발에 최적화 — Node 버전, 브랜치, 디렉터리, 비용을 한눈에",
-      "en": "Optimized for Node.js dev — Node version, branch, dir, and cost at a glance"
+      "ko": "Node.js 개발에 최적화 — Node 버전, 디렉터리, 브랜치, 비용을 육각형 아이콘 아래 한눈에",
+      "en": "Optimized for Node.js dev — Node version, directory, branch, and cost lined up under a hex icon"
     },
     "category": "custom",
     "tags": [
       "node",
       "javascript",
-      "runtime",
-      "git"
+      "dev",
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -488,21 +269,20 @@
     }
   },
   {
-    "id": "powerline-dark",
+    "id": "powerline-flow",
     "title": {
-      "ko": "파워라인 다크",
-      "en": "Powerline Dark"
+      "ko": "파워라인 플로우",
+      "en": "Powerline Flow"
     },
     "description": {
-      "ko": "색상으로 구분된 파워라인 — 모델, 디렉터리, 브랜치, 컨텍스트, 비용을 한 줄에",
-      "en": "Color-coded powerline — model, dir, branch, context, cost in one clean line"
+      "ko": "Powerlevel10k/Starship류 진짜 파워라인 — ccstatusline의 powerline 모드(색 블록+화살표 구분선)를 켜서 2줄로",
+      "en": "A real Powerlevel10k/Starship-style powerline — ccstatusline's native powerline mode (color blocks + arrow separators) across two lines"
     },
     "category": "powerline",
     "tags": [
       "powerline",
-      "colors",
-      "git",
-      "context"
+      "starship",
+      "two-line"
     ],
     "author": {
       "name": "neo",
@@ -510,135 +290,21 @@
     }
   },
   {
-    "id": "python-dev",
+    "id": "session-pulse",
     "title": {
-      "ko": "Python 개발자",
-      "en": "Python Developer"
+      "ko": "세션 펄스",
+      "en": "Session Pulse"
     },
     "description": {
-      "ko": "Python 환경 특화 — 가상환경명, Python 버전, 브랜치, 컨텍스트 상태",
-      "en": "Python-focused — venv name, Python version, branch, and context state"
-    },
-    "category": "custom",
-    "tags": [
-      "python",
-      "venv",
-      "conda",
-      "runtime"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "sandbox-power",
-    "title": {
-      "ko": "샌드박스 파워유저",
-      "en": "Sandbox Power User"
-    },
-    "description": {
-      "ko": "샌드박스/원격 제어 세션을 자주 오가는 사용자용 — 어느 세션이 격리·원격 상태인지 상태줄에서 바로 확인",
-      "en": "For users juggling sandboxed and remote-controlled sessions — see at a glance which session is isolated or remote"
-    },
-    "category": "productivity",
-    "tags": [
-      "sandbox",
-      "remote-control",
-      "power-user",
-      "colors"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "session-rich",
-    "title": {
-      "ko": "세션 리치",
-      "en": "Session Rich"
-    },
-    "description": {
-      "ko": "세션 정보 풀 패키지 — 모델, 추론 수준, 세션 이름, 스킬, 경과 시간, 압축 횟수",
-      "en": "Full session info — model, effort, session name, active skills, elapsed time, compaction count"
+      "ko": "세션의 맥박을 읽는다 — 경과 시간, 추론 수준, 세션명, 활성 스킬, 압축 횟수를 한 줄에",
+      "en": "Read your session's pulse — elapsed time, thinking effort, session name, active skills, and compaction count"
     },
     "category": "productivity",
     "tags": [
       "session",
-      "effort",
-      "skills",
-      "compaction",
-      "time"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "speed-check",
-    "title": {
-      "ko": "속도 체크",
-      "en": "Speed Check"
-    },
-    "description": {
-      "ko": "토큰 생성 속도 실시간 모니터링 — 입출력 속도, 총 토큰, 컨텍스트 사용률",
-      "en": "Real-time token generation speed — input/output speed, total tokens, and context usage"
-    },
-    "category": "productivity",
-    "tags": [
-      "speed",
-      "tokens",
-      "performance",
-      "context",
-      "monitor"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "usage-sentinel",
-    "title": {
-      "ko": "사용량 감시탑",
-      "en": "Usage Sentinel"
-    },
-    "description": {
-      "ko": "API 한도 종합 대시보드 — Sonnet/Opus 주간 사용량, 추가 한도 잔여, 리셋 타이머",
-      "en": "API limits dashboard — Sonnet/Opus weekly usage, extra quota remaining, and reset countdown"
-    },
-    "category": "cost",
-    "tags": [
-      "usage",
-      "weekly",
-      "sonnet",
-      "opus",
-      "quota",
-      "reset"
-    ],
-    "author": {
-      "name": "neo",
-      "github": "Brit-juho"
-    }
-  },
-  {
-    "id": "work-tracker",
-    "title": {
-      "ko": "작업 트래커",
-      "en": "Work Tracker"
-    },
-    "description": {
-      "ko": "개발 생산성 추적 — 경과 시간, 코드 변경량, Git 상태, 컨텍스트 사용률",
-      "en": "Dev productivity tracking — elapsed time, code delta, Git state, context usage"
-    },
-    "category": "productivity",
-    "tags": [
       "productivity",
-      "time",
-      "git",
-      "lines"
+      "skills",
+      "symbol"
     ],
     "author": {
       "name": "neo",
@@ -646,21 +312,104 @@
     }
   },
   {
-    "id": "worktree",
+    "id": "session-story",
     "title": {
-      "ko": "워크트리 모드",
-      "en": "Worktree Mode"
+      "ko": "세션 스토리",
+      "en": "Session Story"
     },
     "description": {
-      "ko": "git worktree 작업 전용 — 현재 워크트리명, 브랜치, 원본 브랜치, 변경 파일, 비용",
-      "en": "Built for git worktree — current worktree name, branch, original branch, changes, and cost"
+      "ko": "지금 이 세션이 무슨 상태인지 문장으로 — \"high effort · 3 skills · 2 compactions\"",
+      "en": "What this session is doing, in a sentence — \"high effort · 3 skills · 2 compactions\""
+    },
+    "category": "productivity",
+    "tags": [
+      "session",
+      "narrative",
+      "skills"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
+    "id": "theme-deep-current",
+    "title": {
+      "ko": "테마: 딥 커런트",
+      "en": "Theme: Deep Current"
+    },
+    "description": {
+      "ko": "심해처럼 깊어지는 쿨톤 블록 — 우리만의 톤온톤 다크 팔레트, Nord/Tokyo Night과는 다른 결",
+      "en": "Cool tonal blocks that deepen like ocean depth — our own tone-on-tone dark palette, distinct from Nord/Tokyo Night"
+    },
+    "category": "powerline",
+    "tags": [
+      "theme",
+      "powerline",
+      "cool"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
+    "id": "theme-ember",
+    "title": {
+      "ko": "테마: 엠버",
+      "en": "Theme: Ember"
+    },
+    "description": {
+      "ko": "숯이 타들어가듯 짙어지는 웜톤 블록 — 우리만의 톤온톤 다크 팔레트, Nord/Tokyo Night과는 다른 결",
+      "en": "Warm tonal blocks that deepen like glowing coal — our own tone-on-tone dark palette, distinct from Nord/Tokyo Night"
+    },
+    "category": "powerline",
+    "tags": [
+      "theme",
+      "powerline",
+      "warm"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
+    "id": "theme-violet-dusk",
+    "title": {
+      "ko": "테마: 바이올렛 더스크",
+      "en": "Theme: Violet Dusk"
+    },
+    "description": {
+      "ko": "해질녘처럼 짙어지는 퍼플톤 블록 — 우리만의 톤온톤 다크 팔레트, Nord/Tokyo Night과는 다른 결",
+      "en": "Purple tonal blocks that deepen like dusk falling — our own tone-on-tone dark palette, distinct from Nord/Tokyo Night"
+    },
+    "category": "powerline",
+    "tags": [
+      "theme",
+      "powerline",
+      "purple"
+    ],
+    "author": {
+      "name": "neo",
+      "github": "Brit-juho"
+    }
+  },
+  {
+    "id": "worktree-nav",
+    "title": {
+      "ko": "워크트리 내비",
+      "en": "Worktree Nav"
+    },
+    "description": {
+      "ko": "여러 워크트리를 오갈 때 길을 잃지 않는다 — 현재 워크트리, 브랜치, 원본 브랜치를 나침반처럼 표시",
+      "en": "Never lose your way across worktrees — current worktree, branch, and original branch shown like a compass"
     },
     "category": "git",
     "tags": [
-      "worktree",
       "git",
-      "branch",
-      "parallel"
+      "worktree",
+      "symbol"
     ],
     "author": {
       "name": "neo",

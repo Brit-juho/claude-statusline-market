@@ -1,0 +1,78 @@
+{
+  "id": "daily-radar",
+  "version": "1.0.0",
+  "title": {
+    "ko": "데일리 레이더",
+    "en": "Daily Radar"
+  },
+  "description": {
+    "ko": "정보를 한 도메인에 몰지 않고 2줄로 나눠 담은 범용 상태줄 — 위치·Git 상태 한 줄, 컨텍스트·비용·한도 한 줄",
+    "en": "A well-rounded two-line statusline — location and Git on one line, context, cost, and rate limits on the next"
+  },
+  "tool": "ccstatusline",
+  "category": "productivity",
+  "tags": [
+    "daily",
+    "all-rounder",
+    "context",
+    "cost",
+    "rate-limit",
+    "two-line",
+    "symbol"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "defaultSeparator": " ",
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "model",
+          "color": "dim"
+        },
+        {
+          "id": "2",
+          "type": "current-working-dir",
+          "color": "blue"
+        },
+        {
+          "id": "3",
+          "type": "git-branch",
+          "color": "green"
+        },
+        {
+          "id": "4",
+          "type": "git-changes",
+          "color": "yellow"
+        }
+      ],
+      [
+        {
+          "id": "5",
+          "type": "context-bar",
+          "color": "green"
+        },
+        {
+          "id": "7",
+          "type": "session-cost",
+          "color": "yellow",
+          "bold": true
+        },
+        {
+          "id": "8",
+          "type": "session-usage",
+          "color": "orange"
+        },
+        {
+          "id": "9",
+          "type": "reset-timer",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

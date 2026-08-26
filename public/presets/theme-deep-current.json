@@ -1,0 +1,62 @@
+{
+  "id": "theme-deep-current",
+  "version": "1.0.0",
+  "title": {
+    "ko": "테마: 딥 커런트",
+    "en": "Theme: Deep Current"
+  },
+  "description": {
+    "ko": "심해처럼 깊어지는 쿨톤 블록 — 우리만의 톤온톤 다크 팔레트, Nord/Tokyo Night과는 다른 결",
+    "en": "Cool tonal blocks that deepen like ocean depth — our own tone-on-tone dark palette, distinct from Nord/Tokyo Night"
+  },
+  "tool": "ccstatusline",
+  "category": "powerline",
+  "tags": [
+    "theme",
+    "powerline",
+    "cool"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "powerline": {
+      "enabled": true,
+      "separators": ["»"],
+      "separatorInvertBackground": [false]
+    },
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "🌊",
+          "color": "#0c1a26"
+        },
+        {
+          "id": "2",
+          "type": "model",
+          "color": "#102431"
+        },
+        {
+          "id": "3",
+          "type": "current-working-dir",
+          "color": "#142e3d"
+        },
+        {
+          "id": "4",
+          "type": "git-branch",
+          "color": "#18384a"
+        },
+        {
+          "id": "5",
+          "type": "session-cost",
+          "color": "#0c1a26",
+          "bold": true
+        }
+      ]
+    ]
+  }
+}

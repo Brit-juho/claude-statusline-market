@@ -1,22 +1,21 @@
 {
-  "id": "git-deep",
-  "version": "0.1.0",
+  "id": "git-pulse",
+  "version": "1.0.0",
   "title": {
-    "ko": "Git 딥다이브",
-    "en": "Git Deep Dive"
+    "ko": "Git 펄스",
+    "en": "Git Pulse"
   },
   "description": {
-    "ko": "Git 상태를 최대 해상도로 — staged/unstaged/untracked 파일 수, 추가/삭제 라인, SHA, ahead/behind",
-    "en": "Maximum Git resolution — staged, unstaged, untracked counts, insertions, deletions, SHA, and ahead/behind"
+    "ko": "Git 작업의 심장 박동 — 브랜치, ahead/behind, 변경 파일, 추가/삭제 라인까지 화살표로 압축",
+    "en": "The heartbeat of your Git work — branch, ahead/behind, changed files, and insertions/deletions with arrows"
   },
   "tool": "ccstatusline",
   "category": "git",
   "tags": [
     "git",
-    "staged",
+    "branch",
     "diff",
-    "sha",
-    "detailed"
+    "symbol"
   ],
   "author": {
     "name": "neo",
@@ -24,51 +23,48 @@
   },
   "ccstatusline_settings": {
     "version": 3,
+    "defaultSeparator": " ",
     "lines": [
       [
         {
           "id": "1",
+          "type": "custom-text",
+          "rawValue": "🌿",
+          "color": "green"
+        },
+        {
+          "id": "2",
           "type": "git-branch",
           "color": "green",
           "bold": true
         },
         {
-          "id": "2",
+          "id": "3",
           "type": "git-ahead-behind",
           "color": "cyan"
         },
         {
-          "id": "3",
-          "type": "git-staged-files",
-          "color": "green"
-        },
-        {
           "id": "4",
-          "type": "git-unstaged-files",
+          "type": "git-changes",
           "color": "yellow"
         },
         {
           "id": "5",
-          "type": "git-untracked-files",
-          "color": "dim"
-        },
-        {
-          "id": "6",
           "type": "git-insertions",
           "color": "green"
         },
         {
-          "id": "7",
+          "id": "6",
           "type": "git-deletions",
           "color": "red"
         },
         {
           "id": "8",
-          "type": "git-sha",
+          "type": "context-percentage",
           "color": "dim"
         },
         {
-          "id": "9",
+          "id": "7",
           "type": "model",
           "color": "dim"
         }

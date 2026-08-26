@@ -143,6 +143,37 @@ const COLOR_MAP: Record<string, string> = {
   pink:'#f472b6', white:'#d0d0d0', gray:'#6b7280', dim:'#4b5563',
 };
 
+// ── Powerline block rendering ─────────────────────────────────
+// Real ccstatusline's powerline mode paints each widget as a solid
+// background block (its `color` becomes the block's background) joined by
+// an arrow separator, with the text foreground auto-contrasted against that
+// background. This resolves a widget color name/hex to a background+text
+// pair so the web preview can approximate that instead of flat colored text.
+export function colorHex(color?: string): string {
+  if (!color) return COLOR_MAP.dim;
+  if (/^#[0-9a-fA-F]{6}$/.test(color)) return color;
+  return COLOR_MAP[color] ?? COLOR_MAP.dim;
+}
+
+export function contrastText(bgHex: string): string {
+  const r = parseInt(bgHex.slice(1, 3), 16);
+  const g = parseInt(bgHex.slice(3, 5), 16);
+  const b = parseInt(bgHex.slice(5, 7), 16);
+  // relative luminance (sRGB, simplified) — light backgrounds get dark text
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.6 ? '#0a0a0a' : '#f2f2f2';
+}
+
+export interface PowerlineBlock { text: string; bg: string; fg: string; }
+
+export function renderPowerlineBlocks(items: CcsWidgetItem[]): PowerlineBlock[] {
+  return items.map(item => {
+    const text = item.rawValue ?? WIDGET_SAMPLE[item.type] ?? item.type;
+    const bg = colorHex(item.color);
+    return { text, bg, fg: contrastText(bg) };
+  });
+}
+
 export function styleToCSS(style?: string): string {
   if (!style) return '';
   const css: string[] = [];

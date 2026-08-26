@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../i18n/index.ts';
-import { renderCcsWidgets, contextBarStyled, SAMPLE_VALUES } from '../lib/preview.ts';
+import { renderCcsWidgets, renderPowerlineBlocks, contextBarStyled, SAMPLE_VALUES } from '../lib/preview.ts';
 import type { CcsWidgetItem } from '../lib/presets.ts';
 
 interface Props {
@@ -13,14 +13,22 @@ interface Props {
   lang: Lang;
   base: string;
   widgets: CcsWidgetItem[];
+  powerline?: { enabled?: boolean; separators?: string[] };
 }
 
-const { id, title, description, category, tags, lang, base, widgets } = Astro.props;
+const { id, title, description, category, tags, lang, base, widgets, powerline } = Astro.props;
 const t_title = title[lang] ?? title.ko;
 const t_desc = description[lang] ?? description.ko;
 const href = lang === 'en' ? `${base}en/presets/${id}` : `${base}presets/${id}`;
 
-const renderedSegs = renderCcsWidgets(widgets);
+// Real ccstatusline's powerline mode paints each widget as a solid
+// background-color block joined by an arrow, instead of flat colored text —
+// approximate that here so powerline-style presets don't look identical to
+// plain-text ones in the gallery card.
+const isPowerline = powerline?.enabled === true;
+const powerlineSep = powerline?.separators?.[0] ?? '›';
+const renderedSegs = isPowerline ? [] : renderCcsWidgets(widgets);
+const blocks = isPowerline ? renderPowerlineBlocks(widgets) : [];
 const usedPct = SAMPLE_VALUES.used_percentage as number;
 const hasContextBar = widgets.some(w => w.type === 'context-bar');
 const ctxBar = hasContextBar ? contextBarStyled(usedPct) : null;
@@ -47,14 +55,27 @@ const catLabel = categoryLabel[category]?.[lang] ?? category;
 
     <!-- 실제 렌더링된 statusline — 색상 적용 -->
     <div class="term-statusline">
-      <div class="sl-row">
-        {renderedSegs.map((seg, i) => (
-          <span class="sl-seg">
-            {i > 0 && <span class="sl-div">·</span>}
-            <span class="sl-val" style={seg.cssStyle || 'color:#00d97e'}>{seg.text}</span>
-          </span>
-        ))}
-      </div>
+      {isPowerline ? (
+        <div class="sl-row sl-row--powerline">
+          {blocks.map((b, i) => (
+            <span class="sl-pl-seg">
+              <span class="sl-pl-block" style={`background:${b.bg};color:${b.fg}`}>{b.text}</span>
+              {i < blocks.length - 1 && (
+                <span class="sl-pl-arrow" style={`color:${b.bg}`}>{powerlineSep}</span>
+              )}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <div class="sl-row">
+          {renderedSegs.map((seg, i) => (
+            <span class="sl-seg">
+              {i > 0 && <span class="sl-div">·</span>}
+              <span class="sl-val" style={seg.cssStyle || 'color:#00d97e'}>{seg.text}</span>
+            </span>
+          ))}
+        </div>
+      )}
       {ctxBar && (
         <div class="sl-bar-row">
           <span class="sl-bar-fill" style={ctxBar.css}>{ctxBar.bar}</span>
@@ -110,6 +131,10 @@ const catLabel = categoryLabel[category]?.[lang] ?? category;
 .sl-seg { display: inline-flex; align-items: center; }
 .sl-div { color: #1e1e1e; margin: 0 0.4rem; font-size: 0.75rem; }
 .sl-val { font-size: 0.8125rem; white-space: nowrap; }
+.sl-row--powerline { gap: 0; }
+.sl-pl-seg { display: inline-flex; align-items: center; }
+.sl-pl-block { font-size: 0.75rem; padding: 0.15rem 0.5rem; white-space: nowrap; }
+.sl-pl-arrow { font-size: 0.9rem; line-height: 1; margin: 0 -1px; }
 .sl-bar-row { display: flex; align-items: center; gap: 0.375rem; }
 .sl-bar-fill { font-size: 0.7rem; letter-spacing: -0.5px; }
 .sl-bar-num { font-size: 0.7rem; color: #444; }

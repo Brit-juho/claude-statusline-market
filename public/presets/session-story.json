@@ -1,0 +1,81 @@
+{
+  "id": "session-story",
+  "version": "1.0.0",
+  "title": {
+    "ko": "세션 스토리",
+    "en": "Session Story"
+  },
+  "description": {
+    "ko": "지금 이 세션이 무슨 상태인지 문장으로 — \"high effort · 3 skills · 2 compactions\"",
+    "en": "What this session is doing, in a sentence — \"high effort · 3 skills · 2 compactions\""
+  },
+  "tool": "ccstatusline",
+  "category": "productivity",
+  "tags": [
+    "session",
+    "narrative",
+    "skills"
+  ],
+  "author": {
+    "name": "neo",
+    "github": "Brit-juho"
+  },
+  "ccstatusline_settings": {
+    "version": 3,
+    "defaultSeparator": " ",
+    "lines": [
+      [
+        {
+          "id": "1",
+          "type": "custom-text",
+          "rawValue": "💬",
+          "color": "cyan"
+        },
+        {
+          "id": "2",
+          "type": "thinking-effort",
+          "color": "magenta",
+          "bold": true
+        },
+        {
+          "id": "3",
+          "type": "custom-text",
+          "rawValue": "effort ·",
+          "color": "dim"
+        },
+        {
+          "id": "4",
+          "type": "skills",
+          "color": "green"
+        },
+        {
+          "id": "5",
+          "type": "custom-text",
+          "rawValue": "·",
+          "color": "dim"
+        },
+        {
+          "id": "6",
+          "type": "compaction-counter",
+          "color": "dim"
+        },
+        {
+          "id": "7",
+          "type": "custom-text",
+          "rawValue": "compactions",
+          "color": "dim"
+        },
+        {
+          "id": "8",
+          "type": "session-clock",
+          "color": "cyan"
+        },
+        {
+          "id": "9",
+          "type": "context-percentage",
+          "color": "dim"
+        }
+      ]
+    ]
+  }
+}

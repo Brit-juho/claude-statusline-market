@@ -120,7 +120,8 @@
                     "jj-changes", "jj-insertions", "jj-deletions", "jj-root-dir",
                     "current-working-dir",
                     "worktree-mode", "worktree-name", "worktree-branch", "worktree-original-branch",
-                    "custom-text", "custom-symbol", "custom-command", "link", "separator", "flex-separator"
+                    "custom-text", "custom-symbol", "custom-command", "link", "separator", "flex-separator",
+                    "docker", "k8s", "cloud", "terraform", "runtime", "python-version", "venv"
                   ]
                 },
                 "color": { "type": "string", "description": "Widget color (named color or hex)" },
